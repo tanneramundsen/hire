@@ -2,33 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac99cfa6-6c30-4749-b8a8-5447d86ebe3c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/hïre.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/5.2.1/fileChanges/last-build.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/5.2.1/fileContent/fileContent.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/5.2.1/gc.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.gradle/vcs-1/gc.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/hïre.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hïre.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Applicant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Applicant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/StaffMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/StaffMember.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,11 +19,25 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1YBJ4RHGfOIF6aOlBlj9YcJTwWI" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -54,6 +47,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="SvnConfiguration">
@@ -69,10 +65,29 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
-    <state x="238" y="121" key="SettingsEditor" timestamp="1582410387426">
+    <state x="329" y="147" key="#Project_Structure" timestamp="1582410971948">
       <screen x="0" y="23" width="1680" height="960" />
     </state>
-    <state x="238" y="121" key="SettingsEditor/0.23.1680.960@0.23.1680.960" timestamp="1582410387426" />
+    <state x="329" y="147" key="#Project_Structure/0.23.1680.960@0.23.1680.960" timestamp="1582410971948" />
+    <state x="542" y="205" key="#com.intellij.ide.util.MemberChooser" timestamp="1582411629645">
+      <screen x="0" y="23" width="1680" height="960" />
+    </state>
+    <state x="542" y="205" key="#com.intellij.ide.util.MemberChooser/0.23.1680.960@0.23.1680.960" timestamp="1582411629645" />
+    <state x="238" y="121" key="SettingsEditor" timestamp="1582411009207">
+      <screen x="0" y="23" width="1680" height="960" />
+    </state>
+    <state x="238" y="121" key="SettingsEditor/0.23.1680.960@0.23.1680.960" timestamp="1582411009207" />
   </component>
 </project>
