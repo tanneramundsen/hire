@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac99cfa6-6c30-4749-b8a8-5447d86ebe3c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/hire.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/modules/hire.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../hire/.idea/modules/hire.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ApplicantDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ApplicantDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/Sql2oApplicantDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oApplicantDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/Sql2oStaffMemberDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oStaffMemberDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
