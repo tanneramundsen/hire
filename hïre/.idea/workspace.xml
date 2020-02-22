@@ -2,25 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac99cfa6-6c30-4749-b8a8-5447d86ebe3c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../hire/.idea/hire.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../hire/.idea/modules/hire.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../hire/.idea/modules/hire.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/api/ApiServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/api/RunApiServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/ApplicantDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/CourseDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/DaoFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/DaoUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oApplicantDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oCourseDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oStaffMemberDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/StaffMemberDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hïre.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hïre.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hire/.idea/hire.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hire/.idea/modules/hire.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../hire/.idea/modules/hire.test.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ApplicantDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ApplicantDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/Sql2oApplicantDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oApplicantDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +50,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -103,9 +92,10 @@
       <screen x="0" y="23" width="1680" height="960" />
     </state>
     <state x="329" y="147" key="#Project_Structure/0.23.1680.960@0.23.1680.960" timestamp="1582410971948" />
-    <state x="542" y="205" key="#com.intellij.ide.util.MemberChooser" timestamp="1582411629645">
-      <screen x="0" y="23" width="1680" height="960" />
+    <state x="542" y="199" key="#com.intellij.ide.util.MemberChooser" timestamp="1582414618863">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state x="542" y="199" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1582414618863" />
     <state x="542" y="205" key="#com.intellij.ide.util.MemberChooser/0.23.1680.960@0.23.1680.960" timestamp="1582411629645" />
     <state x="238" y="121" key="SettingsEditor" timestamp="1582411009207">
       <screen x="0" y="23" width="1680" height="960" />
