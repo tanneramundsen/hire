@@ -1,6 +1,7 @@
 package api;
 
 import com.google.gson.Gson;
+
 import dao.ApplicantDao;
 import dao.CourseDao;
 import dao.DaoFactory;
@@ -8,6 +9,7 @@ import dao.DaoUtil;
 import io.javalin.Javalin;
 import io.javalin.plugin.json.JavalinJson;
 import model.Course;
+
 
 import java.util.HashMap;
 import java.util.List;
