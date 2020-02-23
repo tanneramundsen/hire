@@ -2,6 +2,7 @@ package model;
 import java.util.*;
 
 public class StaffMember extends User {
+    int id;
     String name;
     String jhed;
     List<Course> courses;
@@ -19,6 +20,14 @@ public class StaffMember extends User {
         this.name = name;
         this.jhed = jhed;
         this.courses = courses;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
