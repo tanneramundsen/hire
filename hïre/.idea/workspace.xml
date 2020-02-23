@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ac99cfa6-6c30-4749-b8a8-5447d86ebe3c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/Sql2oCourseDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oCourseDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ApplicantDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ApplicantDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/Sql2oApplicantDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/Sql2oApplicantDao.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,6 +96,10 @@
       <screen x="0" y="23" width="1680" height="960" />
     </state>
     <state x="329" y="147" key="#Project_Structure/0.23.1680.960@0.23.1680.960" timestamp="1582410971948" />
+    <state x="578" y="298" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1582489012491">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="578" y="298" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1582489012491" />
     <state x="542" y="199" key="#com.intellij.ide.util.MemberChooser" timestamp="1582414618863">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

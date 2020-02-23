@@ -31,7 +31,33 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 course.setId(id);
             }
         } catch (Sql2oException ex) {
-            throw new RuntimeException("Unable to add the Applicant", ex);
+            throw new RuntimeException("Unable to add the applicant", ex);
+        }
+    }
+
+    public void update(Applicant applicant) throws RuntimeException {
+        try(Connection conn = sql2o.open()) {
+            String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed, courseId = :courseId WHERE id = :id;";
+            conn.createQuery(sql)
+                    .addParameter("name", applicant.getName())
+                    .addParameter("email", applicant.getEmail())
+                    .addParameter("jhed", applicant.getJhed())
+                    .addParameter("courseId", applicant.getEligibleCourses())
+                    .addParameter("id", applicant.getId())
+                    .executeUpdate();
+        } catch (Sql2oException e) {
+            throw new RuntimeException("Unable to update applicant", e);
+        }
+    }
+
+    public void delete(Applicant applicant) throws RuntimeException {
+        try(Connection conn = sql2o.open()) {
+            String sql = "DELETE FROM Applicants where id = :id";
+            conn.createQuery(sql)
+                    .addParameter("id", applicant.getId())
+                    .executeUpdate();
+        } catch(Sql2oException e) {
+            throw new RuntimeException("Unable to delete applicant", e);
         }
     }
 
