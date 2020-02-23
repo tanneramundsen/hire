@@ -55,12 +55,6 @@ public class Sql2oCourseDao implements CourseDao {
         }
     }
 
-    public List<Course> findCoursesByStaff(StaffMember staff){
-        try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Courses WHERE ;";
-            return conn.createQuery(sql).executeAndFetch(Course.class);
-        }
-    }
 
     public List<Course> findAll(){
         try (Connection conn = sql2o.open()) {
