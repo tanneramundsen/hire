@@ -19,18 +19,13 @@ public class Sql2oApplicantDao implements ApplicantDao {
     @Override
     public void add(Applicant applicant) throws RuntimeException {
         try (Connection conn = sql2o.open()) {
-            for(Course course: applicant.getEligibleCourses()) {
-                String sql = "INSERT INTO Applicants(name, email, jhed)" +
-                        "VALUES(:name, :email, :jhed);";
-                int id = (int) conn.createQuery(sql)
-                        .addParameter("name", applicant.getName())
-                        .addParameter("email", applicant.getEmail())
-                        .addParameter("jhed", applicant.getJhed())
-                        .addParameter("courseId", course.getId())
-                        .executeUpdate()
-                        .getKey();
-                course.setId(id);
-            }
+            String sql = "INSERT INTO Applicants(name, email, jhed)" +
+                    "VALUES(:name, :email, :jhed);";
+            int id = (int) conn.createQuery(sql)
+                    .bind(applicant)
+                    .executeUpdate()
+                    .getKey();
+            applicant.setId(id);
         } catch (Sql2oException ex) {
             throw new RuntimeException("Unable to add the applicant", ex);
         }
@@ -62,7 +57,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
         }
     }
 
-    Applicant read(int id) {
+    public Applicant read(int id) {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Applicants WHERE id = :id";
             return conn.createQuery(sql).executeAndFetch(Applicant.class).get(0);
