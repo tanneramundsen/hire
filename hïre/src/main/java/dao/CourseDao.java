@@ -8,6 +8,8 @@ import java.util.List;
 public interface CourseDao {
     void add(Course course) throws RuntimeException;
 
+    Course read(int id) throws RuntimeException;
+
     void update(Course course) throws RuntimeException;
 
     void delete(Course course) throws RuntimeException;

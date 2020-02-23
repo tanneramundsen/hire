@@ -3,6 +3,7 @@ package dao;
 //import exception.DaoException;
 import model.Applicant;
 import model.Course;
+import model.StaffMember;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -18,20 +19,48 @@ public class Sql2oApplicantDao implements ApplicantDao {
     @Override
     public void add(Applicant applicant) throws RuntimeException {
         try (Connection conn = sql2o.open()) {
-            for(Course course: applicant.getEligibleCourses()) {
-                String sql = "INSERT INTO Applicants(name, email, jhed, courseId)" +
-                        "VALUES(:name, :email, :jhed, :courseId);";
-                int id = (int) conn.createQuery(sql)
-                        .addParameter("name", applicant.getName())
-                        .addParameter("email", applicant.getEmail())
-                        .addParameter("jhed", applicant.getJhed())
-                        .addParameter("courseId", course.getId())
-                        .executeUpdate()
-                        .getKey();
-                course.setId(id);
-            }
+            String sql = "INSERT INTO Applicants(name, email, jhed)" +
+                    "VALUES(:name, :email, :jhed);";
+            int id = (int) conn.createQuery(sql)
+                    .bind(applicant)
+                    .executeUpdate()
+                    .getKey();
+            applicant.setId(id);
         } catch (Sql2oException ex) {
-            throw new RuntimeException("Unable to add the Applicant", ex);
+            throw new RuntimeException("Unable to add the applicant", ex);
+        }
+    }
+
+    public void update(Applicant applicant) throws RuntimeException {
+        try(Connection conn = sql2o.open()) {
+            String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed, courseId = :courseId WHERE id = :id;";
+            conn.createQuery(sql)
+                    .addParameter("name", applicant.getName())
+                    .addParameter("email", applicant.getEmail())
+                    .addParameter("jhed", applicant.getJhed())
+                    .addParameter("courseId", applicant.getEligibleCourses())
+                    .addParameter("id", applicant.getId())
+                    .executeUpdate();
+        } catch (Sql2oException e) {
+            throw new RuntimeException("Unable to update applicant", e);
+        }
+    }
+
+    public void delete(Applicant applicant) throws RuntimeException {
+        try(Connection conn = sql2o.open()) {
+            String sql = "DELETE FROM Applicants where id = :id";
+            conn.createQuery(sql)
+                    .addParameter("id", applicant.getId())
+                    .executeUpdate();
+        } catch(Sql2oException e) {
+            throw new RuntimeException("Unable to delete applicant", e);
+        }
+    }
+
+    public Applicant read(int id) {
+        try (Connection conn = sql2o.open()) {
+            String sql = "SELECT * FROM Applicants WHERE id = :id";
+            return conn.createQuery(sql).executeAndFetch(Applicant.class).get(0);
         }
     }
 

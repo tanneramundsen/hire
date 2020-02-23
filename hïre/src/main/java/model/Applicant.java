@@ -6,6 +6,7 @@ public class Applicant extends User {
     String name;
     String email;
     String jhed;
+    Course hiredCourse;
     List<Course> eligibleCourses;
 
     @Override
@@ -22,6 +23,7 @@ public class Applicant extends User {
         this.name = name;
         this.email = email;
         this.jhed = jhed;
+        this.hiredCourse = null;
         this.eligibleCourses = eligibleCourses;
     }
 
@@ -63,6 +65,14 @@ public class Applicant extends User {
 
     public void setEligibleCourses(List<Course> eligibleCourses) {
         this.eligibleCourses = eligibleCourses;
+    }
+
+    public Course getHiredCourse() {
+        return hiredCourse;
+    }
+
+    public void setHiredCourse(Course hiredCourse) {
+        this.hiredCourse = hiredCourse;
     }
 
     @Override

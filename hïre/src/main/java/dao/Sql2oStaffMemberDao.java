@@ -38,7 +38,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
     @Override
     public StaffMember read(int id) {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Reviews WHERE id = :id";
+            String sql = "SELECT * FROM StaffMember WHERE id = :id";
             return conn.createQuery(sql).executeAndFetch(StaffMember.class).get(0);
         }
     }
