@@ -58,7 +58,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.language" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -100,9 +100,14 @@
     </state>
     <state x="542" y="199" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1582414618863" />
     <state x="542" y="205" key="#com.intellij.ide.util.MemberChooser/0.23.1680.960@0.23.1680.960" timestamp="1582411629645" />
-    <state x="238" y="121" key="SettingsEditor" timestamp="1582411009207">
-      <screen x="0" y="23" width="1680" height="960" />
+    <state x="700" y="389" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1582488163430">
+      <screen x="0" y="23" width="1680" height="961" />
+    </state>
+    <state x="700" y="389" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.23.1680.961@0.23.1680.961" timestamp="1582488163430" />
+    <state x="238" y="121" key="SettingsEditor" timestamp="1582488158522">
+      <screen x="0" y="23" width="1680" height="961" />
     </state>
     <state x="238" y="121" key="SettingsEditor/0.23.1680.960@0.23.1680.960" timestamp="1582411009207" />
+    <state x="238" y="121" key="SettingsEditor/0.23.1680.961@0.23.1680.961" timestamp="1582488158522" />
   </component>
 </project>
