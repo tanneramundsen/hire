@@ -3,6 +3,7 @@ package dao;
 //import exception.DaoException;
 import model.Applicant;
 import model.Course;
+import model.StaffMember;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -19,8 +20,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
     public void add(Applicant applicant) throws RuntimeException {
         try (Connection conn = sql2o.open()) {
             for(Course course: applicant.getEligibleCourses()) {
-                String sql = "INSERT INTO Applicants(name, email, jhed, courseId)" +
-                        "VALUES(:name, :email, :jhed, :courseId);";
+                String sql = "INSERT INTO Applicants(name, email, jhed)" +
+                        "VALUES(:name, :email, :jhed);";
                 int id = (int) conn.createQuery(sql)
                         .addParameter("name", applicant.getName())
                         .addParameter("email", applicant.getEmail())
@@ -58,6 +59,13 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeUpdate();
         } catch(Sql2oException e) {
             throw new RuntimeException("Unable to delete applicant", e);
+        }
+    }
+
+    Applicant read(int id) {
+        try (Connection conn = sql2o.open()) {
+            String sql = "SELECT * FROM Applicants WHERE id = :id";
+            return conn.createQuery(sql).executeAndFetch(Applicant.class).get(0);
         }
     }
 
