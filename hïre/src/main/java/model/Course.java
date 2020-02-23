@@ -2,6 +2,7 @@ package model;
 import java.util.*;
 
 public class Course {
+    int id;
     String name;
     String courseNumber;
     List<StaffMember> instructors;
@@ -19,6 +20,14 @@ public class Course {
         this.hiringComplete = hiringComplete;
         this.cas = cas;
         this.qualifiedStudents = qualifiedStudents;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

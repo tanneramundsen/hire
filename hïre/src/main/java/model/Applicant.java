@@ -2,6 +2,7 @@ package model;
 import java.util.*;
 
 public class Applicant extends User {
+    int id;
     String name;
     String email;
     String jhed;
@@ -22,6 +23,14 @@ public class Applicant extends User {
         this.email = email;
         this.jhed = jhed;
         this.eligibleCourses = eligibleCourses;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
