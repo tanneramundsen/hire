@@ -12,7 +12,5 @@ public interface CourseDao {
 
     void delete(Course course) throws RuntimeException;
 
-    List<Course> findCoursesByStaff(StaffMember staff);
-
     List<Course> findAll();
 }
