@@ -18,14 +18,38 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     @Override
     public void add(Applicant applicant) throws RuntimeException {
+
         try (Connection conn = sql2o.open()) {
-            String sql = "INSERT INTO Applicants(name, email, jhed)" +
-                    "VALUES(:name, :email, :jhed);";
-            int id = (int) conn.createQuery(sql)
-                    .bind(applicant)
-                    .executeUpdate()
-                    .getKey();
-            applicant.setId(id);
+
+            //check for duplicates
+            String sql = "SELECT id FROM Applicants WHERE id = :id AND name = :name";
+            List<Applicant> duplicates = conn.createQuery(sql)
+                    .addParameter("id", applicant.getId())
+                    .addParameter("name", applicant.getName())
+                    .executeAndFetch(Applicant.class);
+            if(duplicates.isEmpty()) {
+                //no duplicates --> insert
+                sql = "INSERT INTO Applicants(name, email, jhed)" +
+                        "VALUES(:name, :email, :jhed);";
+                int id = (int) conn.createQuery(sql)
+                        .bind(applicant)
+                        .executeUpdate()
+                        .getKey();
+                applicant.setId(id);
+                for (Course course : applicant.getEligibleCourses()) {
+                    sql = "INSERT INTO QualifiedApplicants_Courses(id, courseId)" +
+                            "VALUES(:id, :courseId);";
+                    conn.createQuery(sql)
+                            .addParameter("id", applicant.getId())
+                            .addParameter("courseId", course.getId())
+                            .executeUpdate()
+                            .getKey();
+                }
+            } else {
+                //yes duplicates --> update
+                this.update(applicant);
+            }
+
         } catch (Sql2oException ex) {
             throw new RuntimeException("Unable to add the applicant", ex);
         }
@@ -33,7 +57,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public void update(Applicant applicant) throws RuntimeException {
         try(Connection conn = sql2o.open()) {
-            String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed, courseId = :courseId WHERE id = :id;";
+            String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed," +
+                    "courseId = :courseId WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", applicant.getName())
                     .addParameter("email", applicant.getEmail())
@@ -48,7 +73,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public void delete(Applicant applicant) throws RuntimeException {
         try(Connection conn = sql2o.open()) {
-            String sql = "DELETE FROM Applicants where id = :id";
+            String sql = "DELETE FROM Applicants WHERE id = :id";
+            conn.createQuery(sql)
+                    .addParameter("id", applicant.getId())
+                    .executeUpdate();
+            sql = "DELETE FROM QualifiedApplicants_Courses WHERE id = :id";
             conn.createQuery(sql)
                     .addParameter("id", applicant.getId())
                     .executeUpdate();
