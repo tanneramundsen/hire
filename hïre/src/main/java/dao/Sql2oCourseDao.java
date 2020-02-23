@@ -25,7 +25,14 @@ public class Sql2oCourseDao implements CourseDao {
         }
     }
 
-    public void update(Course course) throws RuntimeException{
+    public Course read(int id) throws RuntimeException {
+        try (Connection conn = sql2o.open()) {
+            String sql = "SELECT * FROM Course WHERE id = :id";
+            return conn.createQuery(sql).executeAndFetch(Course.class).get(0);
+        }
+    }
+
+    public void update(Course course) throws RuntimeException {
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Course SET name = :name, courseNumber = :courseNumber, instructors = :instructors, semester = :semester, " +
                     "hiringComplete = :hiringComplete, cas = :cas, qualifiedStudents = :qualifiedStudents";
