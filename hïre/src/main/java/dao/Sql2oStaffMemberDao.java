@@ -24,7 +24,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                 int id = (int) conn.createQuery(sql)
                         .addParameter("name", staffMember.getName())
                         .addParameter("jhed", staffMember.getJhed())
-                        .addParameter("courseId", course.getId());
+                        .addParameter("courseId", course.getId())
                         .executeUpdate()
                         .getKey();
 
