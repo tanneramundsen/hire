@@ -26,6 +26,10 @@ public final class ApiServer {
 
     public static void start() {
         app = startJavalin();
+
+        app.get("/login", ctx -> {
+
+        });
     }
 
     public static void stop() {
@@ -41,5 +45,6 @@ public final class ApiServer {
             config.addStaticFiles("/public");
         }).start(PORT);
     }
+
 
 }
