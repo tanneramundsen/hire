@@ -78,8 +78,8 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             // Get corresponding courses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM StaffMember_Courses " +
-                  "INNER JOIN Courses" +
-                    "ON StaffMember_Courses.courseId = Courses.id" +
+                  "INNER JOIN Courses " +
+                    "ON StaffMember_Courses.courseId = Courses.id " +
                   "WHERE StaffMember_Courses.staffId = :staffId";
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("staffId", id)
@@ -105,7 +105,9 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
             // Delete existing entries with this staff member in joining table
             sql = "DELETE FROM StaffMembers_Courses WHERE staffId = :staffId;";
-            conn.createQuery(sql).addParameter("staffId", staffMember.getId());
+            conn.createQuery(sql)
+                    .addParameter("staffId", staffMember.getId())
+                    .executeUpdate();
 
             // Fresh update to joining table
             int staffId = staffMember.getId();
