@@ -41,8 +41,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     conn.createQuery(sql)
                             .addParameter("applicantId", applicant.getId())
                             .addParameter("courseId", course.getId())
-                            .executeUpdate()
-                            .getKey();
+                            .executeUpdate();
+                }
+                if (applicant.getHiredCourse() != null) {
+                    Course course = applicant.getHiredCourse();
+                    sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
+                            "VALUES(:applicantId, :courseId);";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", applicant.getId())
+                            .addParameter("courseId", course.getId())
+                            .executeUpdate();
                 }
             } else {
                 //yes duplicates --> update
@@ -65,13 +73,17 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("id", applicant.getId())
                     .executeUpdate();
 
-            // Delete existing entries with this applicant in joining table
-            sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :id;";
+            // Delete existing entries with this applicant in joining tables
+            sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :applicantId;";
             conn.createQuery(sql)
-                    .addParameter("id", applicant.getId())
+                    .addParameter("applicantId", applicant.getId())
+                    .executeUpdate();
+            sql = "DELETE FROM HiredApplicants_Courses WHERE applicantId = :applicantId;";
+            conn.createQuery(sql)
+                    .addParameter("applicantId", applicant.getId())
                     .executeUpdate();
 
-            // Fresh update to joining table
+            // Fresh update to joining tables
             for (Course course : applicant.getEligibleCourses()) {
                 int courseId = course.getId();
                 sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
@@ -81,6 +93,13 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .addParameter("courseId", courseId)
                         .executeUpdate();
             }
+            int hiredCourseId = applicant.getHiredCourse().getId();
+            sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
+                    "VALUES(:applicantId, :courseId);";
+            conn.createQuery(sql)
+                    .addParameter("applicantId", applicant.getId())
+                    .addParameter("courseId", hiredCourseId)
+                    .executeUpdate();
         } catch (Sql2oException e) {
             throw new RuntimeException("Unable to update applicant", e);
         }
@@ -93,9 +112,13 @@ public class Sql2oApplicantDao implements ApplicantDao {
             conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
-            sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :id;";
+            sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :applicantId;";
             conn.createQuery(sql)
-                    .addParameter("id", id)
+                    .addParameter("applicantId", id)
+                    .executeUpdate();
+            sql = "DELETE FROM HiredApplicants_Courses WHERE applicantId = :applicantId;";
+            conn.createQuery(sql)
+                    .addParameter("applicantId", id)
                     .executeUpdate();
         } catch(Sql2oException e) {
             throw new RuntimeException("Unable to delete applicant", e);
@@ -109,16 +132,27 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("id", id)
                     .executeAndFetch(Applicant.class)
                     .get(0);
-            //get corresponding courses according to joining table
+            //get corresponding eligibleCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
                     "ON QualifiedApplicants_Courses.courseId = Courses.id " +
-                    "WHERE QualifiedApplicants_Courses.applicantId = :id;";
+                    "WHERE QualifiedApplicants_Courses.applicantId = :applicantId;";
             List<Course> courses = conn.createQuery(sql)
-                    .addParameter("id", id)
+                    .addParameter("applicantId", id)
                     .executeAndFetch(Course.class);
             applicant.setEligibleCourses(courses);
 
+            sql = "SELECT Courses.* " +
+                    "FROM HiredApplicants_Courses INNER JOIN Courses " +
+                    "ON HiredApplicants_Courses.courseId = Course.id " +
+                    "WHERE HiredApplicants_Courses.applicantId = :applicantId;";
+            List<Course> hiredCourses = (conn.createQuery(sql)
+                    .addParameter("applicantId", id)
+                    .executeAndFetch(Course.class));
+            if (!hiredCourses.isEmpty()) {
+                applicant.setHiredCourse(hiredCourses.get(0));
+                //should only be one
+            }
             return applicant;
 
         } catch (Sql2oException e) {
@@ -142,6 +176,18 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .addParameter("id", applicantId)
                         .executeAndFetch(Course.class);
                 applicant.setEligibleCourses(courses);
+
+                sql = "SELECT Courses.* " +
+                        "FROM HiredApplicants_Courses INNER JOIN Courses " +
+                        "ON HiredApplicants_Courses.courseId = Course.id " +
+                        "WHERE HiredApplicants_Courses.applicantId = :applicantId;";
+                List<Course> hiredCourses = (conn.createQuery(sql)
+                        .addParameter("applicantId", applicantId)
+                        .executeAndFetch(Course.class));
+                if (!hiredCourses.isEmpty()) {
+                    applicant.setHiredCourse(hiredCourses.get(0));
+                    //should only be one
+                }
             }
             return applicants;
         } catch(Sql2oException e) {
