@@ -58,8 +58,7 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                        <li class="scroll-to-section"><a href="#about">About Us</a></li>
-                        <li class="scroll-to-section"><a href="#top">Account</a></li>
+                        <li class="scroll-to-section"><a href="#Sign-Up">Sign-Up </a></li>
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -80,39 +79,73 @@
             <div class="img-fill">
                 <img src="assets/images/slide-01.jpg" alt="">
                 <div class="text-content">
-                    <h3>Welcome To Hïre</h3>
+                    <h3>Hïre</h3>
                     <h5>CREATE YOUR ACCOUNT</h5>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="scroll-down scroll-to-section"><a href="#about"><i class="fa fa-arrow-down"></i></a></div>
 <!-- ***** Main Banner Area End ***** -->
 
-<!-- ***** About Area Starts ***** -->
-<section class="section" id="about">
+<!-- ***** Sign-Up Area Starts ***** -->
+
+<section class="signup">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-xs-12">
-                <div class="left-text-content">
-                    <div class="section-heading">
-                        <h6>About Us</h6>
-                        <br>We are a team of undergraduate students at Johns Hopkins University.
-                        We wanted to create an all-in-one application for Course Assistants in
-                        the Computer Science department to streamline the application process on
-                        both the student and professor side.</br>
-                    </div>
+        <div align="center"class="sign-up-content">
+            <form method="POST" class="signup-form">
+                <h2 class="form-title">I am a...</h2>
+                <div class="form-radio">
+                    <input type="radio" name="member_level" value="Student" id="Student" checked="checked" />
+                    <label for="Student">Student </label>
+
+                    <input type="radio" name="member_level" value="Instructor" id="Instructor" />
+                    <label for="Instructor">Instructor</label>
+
                 </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-xs-12">
-                <div class="right-text-content">
+
+                <div class="form-textbox">
+                    <label for="first">First name</label>
+                    <input type="text" name="first" id="first" />
                 </div>
-            </div>
+
+                <div class="form-textbox">
+                    <label for="last">Last name</label>
+                    <input type="text" name="last" id="last" />
+                </div>
+
+                <div class="form-textbox">
+                    <label for="JHED">JHED</label>
+                    <input type="text" name="JHED" id="JHED" />
+                </div>
+
+                <div class="form-textbox">
+                    <label for="pass">Password</label>
+                    <input type="password" name="pass" id="pass" />
+                </div>
+                <li class="submenu">
+                    <a href="javascript:;">Choose Your Courses</a>
+                    <ul>
+                        <li><a href="">OOSE</a></li>
+                        <li><a href="">Data Structures</a></li>
+                        <li><a href="">Gateway Java</a></li>
+                        <li><a href="">Computer System Fundamentals</a></li>
+                    </ul>
+                </li>
+
+                <div class="form-textbox">
+                    <input type="submit" name="submit" id="submit" class="submit" value="Create account" />
+                </div>
+            </form>
+
+            <p class="loginhere">
+                Already have an account ?<a href="login.html" class="main-filled-button">Log In</a>
+            </p>
         </div>
     </div>
 </section>
-<!-- ***** About Area Ends ***** -->
+
+<!-- ***** Sign-Up Area Ends ***** -->
 
 <!-- ***** Footer Start ***** -->
 <footer>
