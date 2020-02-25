@@ -10,13 +10,11 @@ import java.util.List;
 
 public interface StaffMemberDao {
 
-    void create(StaffMember staffMember);
+    void add(StaffMember staffMember);
 
     StaffMember read(int id);
 
     void update(StaffMember staffMember);
 
     void delete(StaffMember staffMember);
-
-    List<Course> getCoursesByStaff(StaffMember staffMember);
 }

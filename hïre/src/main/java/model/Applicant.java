@@ -23,7 +23,6 @@ public class Applicant extends User {
         this.name = name;
         this.email = email;
         this.jhed = jhed;
-        this.hiredCourse = null;
         this.eligibleCourses = eligibleCourses;
     }
 

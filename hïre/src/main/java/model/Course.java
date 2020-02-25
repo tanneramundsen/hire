@@ -8,8 +8,8 @@ public class Course {
     List<StaffMember> instructors;
     String semester;
     boolean hiringComplete;
-    List<Applicant> cas;
-    List<Applicant> qualifiedStudents;
+    List<Applicant> hiredApplicants;
+    List<Applicant> qualifiedApplicants;
 
     public Course(String name, String courseNumber, List<StaffMember> instructors, String semester,
                   boolean hiringComplete, List<Applicant> cas, List<Applicant> qualifiedStudents) {
@@ -18,8 +18,8 @@ public class Course {
         this.instructors = instructors;
         this.semester = semester;
         this.hiringComplete = hiringComplete;
-        this.cas = cas;
-        this.qualifiedStudents = qualifiedStudents;
+        this.hiredApplicants = cas;
+        this.qualifiedApplicants = qualifiedStudents;
     }
 
     public int getId() {
@@ -70,20 +70,20 @@ public class Course {
         this.hiringComplete = hiringComplete;
     }
 
-    public List<Applicant> getCas() {
-        return cas;
+    public List<Applicant> getHiredApplicants() {
+        return hiredApplicants;
     }
 
-    public void setCas(List<Applicant> cas) {
-        this.cas = cas;
+    public void setHiredApplicants(List<Applicant> hiredApplicants) {
+        this.hiredApplicants = hiredApplicants;
     }
 
-    public List<Applicant> getQualifiedStudents() {
-        return qualifiedStudents;
+    public List<Applicant> getQualifiedApplicants() {
+        return qualifiedApplicants;
     }
 
-    public void setQualifiedStudents(List<Applicant> qualifiedStudents) {
-        this.qualifiedStudents = qualifiedStudents;
+    public void setQualifiedApplicants(List<Applicant> qualifiedApplicants) {
+        this.qualifiedApplicants = qualifiedApplicants;
     }
 
     @Override
