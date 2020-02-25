@@ -12,6 +12,10 @@ public class Sql2oCourseDao implements CourseDao {
 
     private Sql2o sql2o;
 
+    public Sql2oCourseDao(Sql2o sql2o) {
+        this.sql2o = sql2o;
+    }
+
     public void add(Course course) throws RuntimeException{
         if (read(course.getId()) != null) {
             this.update(course);
