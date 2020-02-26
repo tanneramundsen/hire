@@ -132,7 +132,6 @@ public class Sql2oApplicantDaoTest {
 
     @Test
     public void deleteApplicantWorks() {
-        //TODO check to make sure deleting an applicant deletes it from c1's hired and qualified lists
         Course c1 = new Course(
                 "oose",
                 "601.434",
@@ -159,6 +158,10 @@ public class Sql2oApplicantDaoTest {
         //make sure delete didn't delete course
         Course c2 = courseDao.read(c1.getId());
         assertNotNull(c2);
+        //make sure deleted applicant does not show up on course's hiredApplicant or
+        //qualified applicant lists
+        assertEquals(0, c2.getHiredApplicants().size());
+        assertEquals(0, c2.getQualifiedApplicants().size());
     }
 
     @Test (expected = DaoException.class)
@@ -205,10 +208,60 @@ public class Sql2oApplicantDaoTest {
         }
     }
 
+    @Test
+    public void findByCourseIdWorks() {
+        Course c1 = new Course(
+                "oose",
+                "601.434",
+                null,
+                "Spring 2020",
+                false,
+                null,
+                null
+        );
+        Course c2 =  new Course(
+                "data structures",
+                "601.226",
+                null,
+                "Spring 2020",
+                false,
+                null,
+                null
+        );
+        Applicant applicant1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", null);
+        Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", null);
+        Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", null);
+        List<Applicant> applicants_c1 = Arrays.asList(applicant1, applicant2, applicant3);
+        List<Applicant> applicants_c2 = Arrays.asList(applicant1, applicant2);
+        List<Course> courses_just_c1 = Collections.singletonList(c1);
+        List<Course> courses_c1_and_c2 = Arrays.asList(c1, c2);
+        c1.setQualifiedApplicants(applicants_c1);
+        c1.setHiredApplicants(applicants_c1);
+        c2.setQualifiedApplicants(applicants_c2);
+        c2.setHiredApplicants(applicants_c2);
+        applicant1.setEligibleCourses(courses_c1_and_c2);
+        applicant2.setEligibleCourses(courses_c1_and_c2);
+        applicant3.setEligibleCourses(courses_just_c1);
+
+        courseDao.add(c1);
+        courseDao.add(c2);
+        applicantDao.add(applicant1);
+        applicantDao.add(applicant2);
+        applicantDao.add(applicant3);
+
+        List<Applicant> results_c1 = applicantDao.findByCourseId(c1.getId());
+        assertTrue(results_c1.contains(applicant1));
+        assertTrue(results_c1.contains(applicant2));
+        assertTrue(results_c1.contains(applicant3));
+        List<Applicant> results_c2 = applicantDao.findByCourseId(c2.getId());
+        assertTrue(results_c2.contains(applicant1));
+        assertTrue(results_c2.contains(applicant2));
+        assertFalse(results_c2.contains(applicant3));
+    }
+
     @AfterClass
     public static void afterClass() throws Exception {
         ApiServer.stop();
     }
 
-    //TODO test findByCourseId
 }
