@@ -70,6 +70,7 @@ public class Sql2oApplicantDaoTest {
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
         a1.setEligibleCourses(courses);
+        a1.setHiredCourse(c1);
 
         courseDao.add(c1);
         applicantDao.add(a1);
@@ -79,6 +80,7 @@ public class Sql2oApplicantDaoTest {
         assertEquals(a1, a2);
         assertNotEquals(0, courses2.size());
         assertEquals(c1, courses2.get(0));
+        assertEquals(c1, a2.getHiredCourse());
     }
 
     @Test
@@ -108,6 +110,7 @@ public class Sql2oApplicantDaoTest {
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
         a1.setEligibleCourses(courses1);
+        a1.setHiredCourse(c1);
 
         courseDao.add(c1);
         applicantDao.add(a1);
@@ -115,6 +118,7 @@ public class Sql2oApplicantDaoTest {
 
         a1.setEmail("NOTtamunds1@jhu.edu");
         a1.setEligibleCourses(courses2);
+        a1.setHiredCourse(c2);
 
         applicantDao.update(a1);
 
@@ -123,10 +127,12 @@ public class Sql2oApplicantDaoTest {
         assertEquals(a1, a2);
         assertNotEquals(0, courses2Check.size());
         assertEquals(c2, courses2Check.get(0));
+        assertEquals(c2, a2.getHiredCourse());
     }
 
     @Test
     public void deleteApplicantWorks() {
+        //TODO check to make sure deleting an applicant deletes it from c1's hired and qualified lists
         Course c1 = new Course(
                 "oose",
                 "601.434",
@@ -203,4 +209,6 @@ public class Sql2oApplicantDaoTest {
     public static void afterClass() throws Exception {
         ApiServer.stop();
     }
+
+    //TODO test findByCourseId
 }
