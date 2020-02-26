@@ -125,6 +125,7 @@ public class Sql2oApplicantDaoTest {
         Applicant a2 = applicantDao.read(a1.getId());
         List<Course> courses2Check = a2.getEligibleCourses();
         assertEquals(a1, a2);
+        assertTrue(a2.getEmail().equals("NOTtamunds1@jhu.edu"));
         assertNotEquals(0, courses2Check.size());
         assertEquals(c2, courses2Check.get(0));
         assertEquals(c2, a2.getHiredCourse());
