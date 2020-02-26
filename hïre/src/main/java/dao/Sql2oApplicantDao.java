@@ -1,9 +1,8 @@
 package dao;
 
-//import exception.DaoException;
+import exception.DaoException;
 import model.Applicant;
 import model.Course;
-import model.StaffMember;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -16,7 +15,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public Sql2oApplicantDao(Sql2o sql2o) { this.sql2o = sql2o; }
 
-    public void add(Applicant applicant) throws RuntimeException {
+    public void add(Applicant applicant) throws DaoException {
 
         try (Connection conn = sql2o.open()) {
 
@@ -58,11 +57,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
 
         } catch (Sql2oException ex) {
-            throw new RuntimeException("Unable to add the applicant", ex);
+            throw new DaoException("Unable to add the applicant", ex);
         }
     }
 
-    public void update(Applicant applicant) throws RuntimeException {
+    public void update(Applicant applicant) throws DaoException {
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed, " +
                     "courseId = :courseId WHERE id = :id;";
@@ -101,11 +100,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("courseId", hiredCourseId)
                     .executeUpdate();
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to update applicant", e);
+            throw new DaoException("Unable to update applicant", e);
         }
     }
 
-    public void delete(Applicant applicant) throws RuntimeException {
+    public void delete(Applicant applicant) throws DaoException {
         try(Connection conn = sql2o.open()) {
             int id = applicant.getId();
             String sql = "DELETE FROM Applicants WHERE id = :id;";
@@ -121,11 +120,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("applicantId", id)
                     .executeUpdate();
         } catch(Sql2oException e) {
-            throw new RuntimeException("Unable to delete applicant", e);
+            throw new DaoException("Unable to delete applicant", e);
         }
     }
 
-    public Applicant read(int id) {
+    public Applicant read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Applicants WHERE id = :id;";
             Applicant applicant = conn.createQuery(sql)
@@ -156,12 +155,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
             return applicant;
 
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to read applicant", e);
+            throw new DaoException("Unable to read applicant", e);
         }
     }
 
     @Override
-    public List<Applicant> findAll() {
+    public List<Applicant> findAll() throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Applicants;";
             List<Applicant> applicants = conn.createQuery(sql)
@@ -191,12 +190,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             return applicants;
         } catch(Sql2oException e) {
-            throw new RuntimeException("Unable to find all applicants", e);
+            throw new DaoException("Unable to find all applicants", e);
         }
     }
 
     @Override
-    public List<Applicant> findByCourseId(int courseId) {
+    public List<Applicant> findByCourseId(int courseId) throws DaoException{
         try(Connection conn = sql2o.open()) {
             //TODO: confirm that this SQL is correct
             String sql = "SELECT Applicants.* " +
@@ -208,6 +207,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
             return conn.createQuery(sql)
                     .addParameter("courseId", courseId)
                     .executeAndFetch(Applicant.class);
+        } catch(Sql2oException e) {
+            throw new DaoException("Unable to find applicants by course id", e);
         }
     }
 

@@ -1,14 +1,13 @@
 package dao;
 
+import exception.DaoException;
 import model.Course;
 import model.StaffMember;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
-import org.sql2o.data.Table;
 
 import java.util.List;
-import java.util.Map;
 
 public class Sql2oStaffMemberDao implements StaffMemberDao {
 
@@ -19,7 +18,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
     }
 
     @Override
-    public void add(StaffMember staffMember) {
+    public void add(StaffMember staffMember) throws DaoException {
         try(Connection conn = sql2o.open()) {
             String sql;
             int staffId = staffMember.getId();
@@ -61,12 +60,12 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                         .executeUpdate();
             }
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to add staff member", e);
+            throw new DaoException("Unable to add staff member", e);
         }
     }
 
     @Override
-    public StaffMember read(int id) {
+    public StaffMember read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             // Populate non-list attributes of StaffMember object
             String sql = "SELECT * FROM StaffMembers WHERE id = :id";
@@ -89,12 +88,12 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             return staffMember;
 
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to read staff member", e);
+            throw new DaoException("Unable to read staff member", e);
         }
     }
 
     @Override
-    public void update(StaffMember staffMember) {
+    public void update(StaffMember staffMember) throws DaoException {
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE StaffMembers SET name = :name, jhed = :jhed WHERE id = :id;";
             conn.createQuery(sql)
@@ -120,12 +119,12 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                         .executeUpdate();
             }
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to update staff member", e);
+            throw new DaoException("Unable to update staff member", e);
         }
     }
 
     @Override
-    public void delete(StaffMember staffMember) {
+    public void delete(StaffMember staffMember) throws DaoException {
         try(Connection conn = sql2o.open()) {
             int staffId = staffMember.getId();
 
@@ -141,7 +140,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                     .addParameter("id", staffId)
                     .executeUpdate();
         } catch(Sql2oException e) {
-            throw new RuntimeException("Unable to delete staff member", e);
+            throw new DaoException("Unable to delete staff member", e);
         }
     }
 }

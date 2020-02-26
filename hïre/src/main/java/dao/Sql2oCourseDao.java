@@ -1,4 +1,5 @@
 package dao;
+import exception.DaoException;
 import model.Course;
 import model.Applicant;
 import model.StaffMember;
@@ -16,7 +17,7 @@ public class Sql2oCourseDao implements CourseDao {
         this.sql2o = sql2o;
     }
 
-    public void add(Course course) throws RuntimeException{
+    public void add(Course course) throws DaoException {
         if (read(course.getId()) != null) {
             this.update(course);
         }
@@ -58,7 +59,7 @@ public class Sql2oCourseDao implements CourseDao {
         }
     }
 
-    public Course read(int id) throws RuntimeException {
+    public Course read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Courses WHERE id = :id";
             Course c = conn.createQuery(sql).executeAndFetch(Course.class).get(0);
@@ -99,11 +100,11 @@ public class Sql2oCourseDao implements CourseDao {
             return c;
 
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to read course", e);
+            throw new DaoException("Unable to read course", e);
         }
     }
 
-    public void update(Course course) throws RuntimeException {
+    public void update(Course course) throws DaoException {
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, semester = :semester, " +
                     "hiringComplete = :hiringComplete";
@@ -136,11 +137,11 @@ public class Sql2oCourseDao implements CourseDao {
             }
 
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to update course", e);
+            throw new DaoException("Unable to update course", e);
         }
     }
 
-    public void delete(Course course) throws RuntimeException{
+    public void delete(Course course) throws DaoException{
         int id = course.getId();
         try(Connection conn = sql2o.open()) {
             String sql = "DELETE FROM Courses where id = :id";
@@ -152,11 +153,11 @@ public class Sql2oCourseDao implements CourseDao {
             sql = "DELETE FROM QualifiedApplicants_Courses WHERE courseId = id";
             conn.createQuery(sql).executeUpdate();
         } catch(Sql2oException e) {
-            throw new RuntimeException("Unable to delete course", e);
+            throw new DaoException("Unable to delete course", e);
         }
     }
 
-    public List<Course> findAll(){
+    public List<Course> findAll() throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Courses;";
             List<Course> courses = conn.createQuery(sql).executeAndFetch(Course.class);
@@ -198,7 +199,7 @@ public class Sql2oCourseDao implements CourseDao {
 
             return courses;
         } catch(Sql2oException e) {
-            throw new RuntimeException("unable to find all courses", e);
+            throw new DaoException("unable to find all courses", e);
         }
     }
 }
