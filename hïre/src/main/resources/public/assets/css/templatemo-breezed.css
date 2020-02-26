@@ -1018,7 +1018,7 @@ features
 
 #features {
   padding-top: 80px;
-  padding-bottom: 70px;
+  padding-bottom: 80px;
 }
 
 #features .features-item {
@@ -1053,21 +1053,22 @@ subscribe
 ---------------------------------------------
 */
 
-#subscribe {
-  padding: 250px 0px;
-  background-image: url(../images/slide-02.jpg);
+#landing {
+  padding: 150px 0px;
+  background-image: url(../images/slide-01.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-#subscribe .section-heading {
+#landing .section-heading {
   text-align: center;
   color: #fff;
-  margin-bottom: 25px;
+  margin-top: 60px;
+  margin-bottom: 0px;
 }
 
-#subscribe p {
+#landing p {
   text-align: center;
   font-size: 16px;
   line-height: 27px;
