@@ -55,7 +55,7 @@ public class Sql2oCourseDao implements CourseDao {
             }
 
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to add the course", e);
+            throw new DaoException("Unable to add the course", e);
         }
     }
 
