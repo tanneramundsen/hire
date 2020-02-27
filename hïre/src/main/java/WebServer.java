@@ -38,7 +38,7 @@ public class WebServer {
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
             boolean isStaffMember = false;
-            if (profileType.equals("Staff Member")) {
+            if (profileType.equals("Professor")) {
                 isStaffMember = true;
             }
             // using jhed and profile type, extract info from applicant or staff database
