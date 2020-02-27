@@ -15,7 +15,7 @@ public final class DaoFactory {
 
     private static void instantiateSql2o() {
         if (sql2o == null) {
-            final String URI = "jdbc:mysql:" + PATH_TO_DATABASE_FILE;
+            final String URI = "jdbc:sqlite:" + PATH_TO_DATABASE_FILE;
             final String USERNAME = "";
             final String PASSWORD = "";
             sql2o = new Sql2o(URI, USERNAME, PASSWORD);
