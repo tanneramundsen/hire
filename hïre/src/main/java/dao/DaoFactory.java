@@ -22,13 +22,13 @@ public final class DaoFactory {
         }
     }
 
-    public static CourseDao getCourseDao() {
+    public static Sql2oCourseDao getCourseDao() {
         instantiateSql2o();
         createCoursesTable(sql2o);
         return new Sql2oCourseDao(sql2o);
     }
 
-    public static StaffMemberDao getStaffMemberDao() {
+    public static Sql2oStaffMemberDao getStaffMemberDao() {
         instantiateSql2o();
 
         // Create parent tables
@@ -40,7 +40,7 @@ public final class DaoFactory {
         return new Sql2oStaffMemberDao(sql2o);
     }
 
-    public static ApplicantDao getApplicantDao() {
+    public static Sql2oApplicantDao getApplicantDao() {
         instantiateSql2o();
 
         // Create parent tables
@@ -72,7 +72,8 @@ public final class DaoFactory {
         if (DROP_TABLES_IF_EXIST) dropCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS Courses(" +
                 "id INTEGER PRIMARY KEY," +
-                "name VARCHAR(100) NOT NULL," +
+                "name VARCHAR(100) NOT NULL, " +
+                "courseNumber VARCHAR(100) NOT NULL, " +
                 "semester VARCHAR(100) NOT NULL," +
                 "hiringComplete BOOLEAN" +
                 ");";
