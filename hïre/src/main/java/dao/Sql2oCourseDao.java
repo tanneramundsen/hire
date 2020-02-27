@@ -34,28 +34,34 @@ public class Sql2oCourseDao implements CourseDao {
                     .getKey();
             course.setId(id);
 
-            List<StaffMember> instructors = course.getInstructors();
-            for (int i = 0; i < instructors.size(); i++) {
-                int staffId = instructors.get(i).getId();
+            for (StaffMember staffMember: course.getInstructors()) {
+                int staffId = staffMember.getId();
                 int courseId = course.getId();
                 sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) Values(:staffId, :courseId)";
-                conn.createQuery(sql).executeUpdate();
+                conn.createQuery(sql)
+                        .addParameter("staffId", staffId)
+                        .addParameter("courseId", courseId)
+                        .executeUpdate();
             }
 
-            List<Applicant> hired = course.getHiredApplicants();
-            for (int i = 0; i < hired.size(); i++) {
-                int applicantId = hired.get(i).getId();
+            for (Applicant hired: course.getHiredApplicants()) {
+                int applicantId = hired.getId();
                 int courseId = course.getId();
                 sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
-                conn.createQuery(sql).executeUpdate();
+                conn.createQuery(sql)
+                        .addParameter("applicantId", applicantId)
+                        .addParameter("courseId", courseId)
+                        .executeUpdate();
             }
 
-            List<Applicant> qualified = course.getQualifiedApplicants();
-            for (int i = 0; i < qualified.size(); i++) {
-                int applicantId = qualified.get(i).getId();
+            for (Applicant qualified: course.getQualifiedApplicants()) {
+                int applicantId = qualified.getId();
                 int courseId = course.getId();
                 sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
-                conn.createQuery(sql).executeUpdate();
+                conn.createQuery(sql)
+                        .addParameter("applicantId", applicantId)
+                        .addParameter("courseId", courseId)
+                        .executeUpdate();
             }
 
         } catch (Sql2oException e) {
@@ -119,28 +125,34 @@ public class Sql2oCourseDao implements CourseDao {
                     .addParameter("hiringComplete", course.isHiringComplete())
                     .executeUpdate();
 
-            List<StaffMember> instructors = course.getInstructors();
-            for (int i = 0; i < instructors.size(); i++) {
-                int staffId = instructors.get(i).getId();
+            for (StaffMember staffMember: course.getInstructors()) {
+                int staffId = staffMember.getId();
                 int courseId = course.getId();
                 sql = "UPDATE StaffMembers_Courses SET staffId = :staffId, courseId = :courseId";
-                conn.createQuery(sql).executeUpdate();
+                conn.createQuery(sql)
+                        .addParameter("staffId", staffId)
+                        .addParameter("courseId", courseId)
+                        .executeUpdate();
             }
 
-            List<Applicant> hired = course.getHiredApplicants();
-            for (int i = 0; i < hired.size(); i++) {
-                int applicantId = hired.get(i).getId();
+            for (Applicant hired: course.getHiredApplicants()) {
+                int applicantId = hired.getId();
                 int courseId = course.getId();
                 sql = "UPDATE HiredApplicants_Courses SET applicantId = :applicantId, courseId = :courseId";
-                conn.createQuery(sql).executeUpdate();
+                conn.createQuery(sql)
+                        .addParameter("applicantId", applicantId)
+                        .addParameter("courseId", courseId)
+                        .executeUpdate();
             }
 
-            List<Applicant> qualified = course.getQualifiedApplicants();
-            for (int i = 0; i < qualified.size(); i++) {
-                int applicantId = qualified.get(i).getId();
+            for (Applicant qualified: course.getQualifiedApplicants()) {
+                int applicantId = qualified.getId();
                 int courseId = course.getId();
                 sql = "UPDATE QualifiedApplicants_Courses SET applicantId = :applicantId, courseId = :courseId";
-                conn.createQuery(sql).executeUpdate();
+                conn.createQuery(sql)
+                        .addParameter("applicantId", applicantId)
+                        .addParameter("courseId", courseId)
+                        .executeUpdate();
             }
 
         } catch (Sql2oException e) {
@@ -152,13 +164,24 @@ public class Sql2oCourseDao implements CourseDao {
         int id = course.getId();
         try(Connection conn = sql2o.open()) {
             String sql = "DELETE FROM Courses where id = :id";
-            conn.createQuery(sql).executeUpdate();
-            sql = "DELETE FROM StaffMembers_Courses WHERE courseId = id";
-            conn.createQuery(sql).executeUpdate();
-            sql = "DELETE FROM HiredApplicants_Courses WHERE courseId = id";
-            conn.createQuery(sql).executeUpdate();
-            sql = "DELETE FROM QualifiedApplicants_Courses WHERE courseId = id";
-            conn.createQuery(sql).executeUpdate();
+            conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+
+            sql = "DELETE FROM StaffMembers_Courses WHERE courseId = :id";
+            conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+
+            sql = "DELETE FROM HiredApplicants_Courses WHERE courseId = :id";
+            conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+
+            sql = "DELETE FROM QualifiedApplicants_Courses WHERE courseId = :id";
+            conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
         } catch(Sql2oException e) {
             throw new DaoException("Unable to delete course", e);
         }
