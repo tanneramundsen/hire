@@ -39,8 +39,8 @@ public class Sql2oStaffMemberDaoTest {
     @Before
     public void setUp() {
         // below method drops all dependent tables and creates new ones
-        staffMemberDao = DaoFactory.getStaffMemberDao();
         courseDao = DaoFactory.getCourseDao();
+        staffMemberDao = DaoFactory.getStaffMemberDao();
         applicantDao = DaoFactory.getApplicantDao();
 
     }
