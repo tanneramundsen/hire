@@ -59,7 +59,7 @@ public final class DaoFactory {
                 "id INTEGER PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
                 "email VARCHAR(100) NOT NULL," +
-                "jhed VARCHAR(100) NOT NULL," +
+                "jhed VARCHAR(100) NOT NULL, " +
                 "hiredCourse INTEGER," +
                 "FOREIGN KEY(hiredCourse) REFERENCES Courses(id)" +
                 ");";
