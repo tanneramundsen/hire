@@ -34,13 +34,15 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .executeUpdate()
                         .getKey();
                 applicant.setId(id);
-                for (Course course : applicant.getEligibleCourses()) {
-                    sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
-                            "VALUES(:applicantId, :courseId);";
-                    conn.createQuery(sql)
-                            .addParameter("applicantId", applicant.getId())
-                            .addParameter("courseId", course.getId())
-                            .executeUpdate();
+                if (applicant.getEligibleCourses() != null) {
+                    for (Course course : applicant.getEligibleCourses()) {
+                        sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
+                                "VALUES(:applicantId, :courseId);";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", applicant.getId())
+                                .addParameter("courseId", course.getId())
+                                .executeUpdate();
+                    }
                 }
                 if (applicant.getHiredCourse() != null) {
                     Course course = applicant.getHiredCourse();
@@ -83,22 +85,27 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeUpdate();
 
             // Fresh update to joining tables
-            for (Course course : applicant.getEligibleCourses()) {
-                int courseId = course.getId();
-                sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
+            if (applicant.getEligibleCourses() != null) {
+                for (Course course : applicant.getEligibleCourses()) {
+                    int courseId = course.getId();
+                    sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
+                            "VALUES(:applicantId, :courseId);";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", applicant.getId())
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
+            }
+            if (applicant.getHiredCourse() != null) {
+                int hiredCourseId = applicant.getHiredCourse().getId();
+
+                sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
                         "VALUES(:applicantId, :courseId);";
                 conn.createQuery(sql)
                         .addParameter("applicantId", applicant.getId())
-                        .addParameter("courseId", courseId)
+                        .addParameter("courseId", hiredCourseId)
                         .executeUpdate();
             }
-            int hiredCourseId = applicant.getHiredCourse().getId();
-            sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
-                    "VALUES(:applicantId, :courseId);";
-            conn.createQuery(sql)
-                    .addParameter("applicantId", applicant.getId())
-                    .addParameter("courseId", hiredCourseId)
-                    .executeUpdate();
         } catch (Sql2oException e) {
             throw new DaoException("Unable to update applicant", e);
         }
