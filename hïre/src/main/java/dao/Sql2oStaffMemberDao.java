@@ -32,6 +32,31 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                         .executeUpdate()
                         .getKey();
                 staffMember.setId(staffId);
+
+                // Add courses
+                for (Course course: staffMember.getCourses()) {
+                    int courseId = course.getId();
+                    if (courseId == 0) {
+                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
+                                "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                        courseId = (int) conn.createQuery(sql)
+                                .addParameter("name", course.getName())
+                                .addParameter("courseNumber", course.getCourseNumber())
+                                .addParameter("semester", course.getSemester())
+                                .addParameter("hiringComplete", course.isHiringComplete())
+                                .executeUpdate()
+                                .getKey();
+
+                        course.setId(courseId);
+                    }
+
+                    // Insert into joining table
+                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
+                    conn.createQuery(sql)
+                            .addParameter("staffId", staffId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
             else {
                 // Staff member already exists, just update
@@ -39,30 +64,6 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                 staffId = staffMember.getId();
             }
 
-            // Add courses
-            for (Course course: staffMember.getCourses()) {
-                int courseId = course.getId();
-                if (courseId == 0) {
-                    sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
-                            "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
-                    courseId = (int) conn.createQuery(sql)
-                            .addParameter("name", course.getName())
-                            .addParameter("courseNumber", course.getCourseNumber())
-                            .addParameter("semester", course.getSemester())
-                            .addParameter("hiringComplete", course.isHiringComplete())
-                            .executeUpdate()
-                            .getKey();
-
-                    course.setId(courseId);
-                }
-
-                // Insert into joining table
-                sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
-                conn.createQuery(sql)
-                        .addParameter("staffId", staffId)
-                        .addParameter("courseId", courseId)
-                        .executeUpdate();
-            }
         } catch (Sql2oException e) {
             throw new DaoException("Unable to add staff member", e);
         }
