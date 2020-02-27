@@ -38,10 +38,12 @@ public class StaffMember extends User {
         return jhed;
     }
 
-    public void setName(String name) { this.name = name; }
-
     public void setJhed(String jhed) {
         this.jhed = jhed;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Course> getCourses() {

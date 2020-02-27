@@ -40,8 +40,7 @@ public class Sql2oCourseDao implements CourseDao {
                     for (StaffMember staffMember : course.getInstructors()) {
                         int staffId = staffMember.getId();
                         if (staffId == 0) {
-                            sql = "INSERT INTO StaffMembers(name, jhed) " +
-                                    "VALUES(:name, :jhed);";
+                            sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed)";
                             staffId = (int) conn.createQuery(sql)
                                     .addParameter("name", staffMember.getName())
                                     .addParameter("jhed", staffMember.getJhed())
@@ -50,8 +49,7 @@ public class Sql2oCourseDao implements CourseDao {
                             staffMember.setId(staffId);
                         }
                         int courseId = course.getId();
-                        sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) " +
-                                "VALUES(:staffId, :courseId);";
+                        sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) Values(:staffId, :courseId)";
                         conn.createQuery(sql)
                                 .addParameter("staffId", staffId)
                                 .addParameter("courseId", courseId)
@@ -63,8 +61,7 @@ public class Sql2oCourseDao implements CourseDao {
                     for (Applicant hired : course.getHiredApplicants()) {
                         int hiredId = hired.getId();
                         if (hiredId == 0) {
-                            sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                    "VALUES(:name, :email, :jhed);";
+                            sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, :email, :jhed)";
                             hiredId = (int) conn.createQuery(sql)
                                     .addParameter("name", hired.getName())
                                     .addParameter("email", hired.getEmail())
@@ -74,9 +71,15 @@ public class Sql2oCourseDao implements CourseDao {
                             hired.setId(hiredId);
                             hired.setHiredCourse(course);
                         }
-
-                        sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
-                                "VALUES(:applicantId, :courseId);";
+                        String sql1 = "CREATE TABLE IF NOT EXISTS HiredApplicants_Courses(" +
+                                "id INTEGER PRIMARY KEY," +
+                                "applicantId INTEGER," +
+                                "courseId INTEGER," +
+                                "FOREIGN KEY (applicantId) REFERENCES Applicants(id)" +
+                                "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
+                                ");";
+                        conn.createQuery(sql).executeUpdate();
+                        sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", hired.getId())
                                 .addParameter("courseId", course.getId())
@@ -88,8 +91,7 @@ public class Sql2oCourseDao implements CourseDao {
                     for (Applicant qualified : course.getQualifiedApplicants()) {
                         int qualifiedId = qualified.getId();
                         if (qualifiedId == 0) {
-                            sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                    "VALUES(:name, :email, :jhed);";
+                            sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, :email, :jhed)";
                             qualifiedId = (int) conn.createQuery(sql)
                                     .addParameter("name", qualified.getName())
                                     .addParameter("email", qualified.getEmail())
@@ -99,8 +101,7 @@ public class Sql2oCourseDao implements CourseDao {
                             qualified.setId(qualifiedId);
                         }
                         int courseId = course.getId();
-                        sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
-                                "VALUES(:applicantId, :courseId);";
+                        sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", qualified.getId())
                                 .addParameter("courseId", courseId)
@@ -117,12 +118,15 @@ public class Sql2oCourseDao implements CourseDao {
     public Course read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Courses WHERE id = :id";
-            Course course = conn.createQuery(sql)
+            Course c;
+            List<Course> courses = conn.createQuery(sql)
                     .addParameter("id", id)
-                    .executeAndFetchFirst(Course.class);
+                    .executeAndFetch(Course.class);
 
-            if (course == null) {
+            if (courses.isEmpty()) {
                 return null;
+            } else {
+                c = courses.get(0);
             }
 
             //get corresponding staff members
@@ -134,7 +138,7 @@ public class Sql2oCourseDao implements CourseDao {
             List<StaffMember> staff = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(StaffMember.class);
-            course.setInstructors(staff);
+            c.setInstructors(staff);
 
             //get corresponding hired applicants
             sql = "SELECT Applicants.* " +
@@ -142,10 +146,10 @@ public class Sql2oCourseDao implements CourseDao {
                     "INNER JOIN Applicants " +
                     "ON HiredApplicants_Courses.applicantId = Applicants.id " +
                     "WHERE HiredApplicants_Courses.courseId = :courseId";
-            List<Applicant> hiredApps = conn.createQuery(sql)
+            List<Applicant> hired_apps = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(Applicant.class);
-            course.setHiredApplicants(hiredApps);
+            c.setHiredApplicants(hired_apps);
 
             //get corresponding qualified applicants
             sql = "SELECT Applicants.* " +
@@ -153,12 +157,12 @@ public class Sql2oCourseDao implements CourseDao {
                     "INNER JOIN Applicants " +
                     "ON QualifiedApplicants_Courses.applicantId = Applicants.id " +
                     "WHERE QualifiedApplicants_Courses.courseId = :courseId";
-            List<Applicant> qualifiedApps = conn.createQuery(sql)
+            List<Applicant> qualified_apps = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(Applicant.class);
-            course.setQualifiedApplicants(qualifiedApps);
+            c.setQualifiedApplicants(qualified_apps);
 
-            return course;
+            return c;
 
         } catch (Sql2oException e) {
             throw new DaoException("Unable to read course", e);
@@ -167,8 +171,8 @@ public class Sql2oCourseDao implements CourseDao {
 
     public void update(Course course) throws DaoException {
         try(Connection conn = sql2o.open()) {
-            String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, " +
-                    "semester = :semester, hiringComplete = :hiringComplete WHERE id = :id";
+            String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, semester = :semester, " +
+                    "hiringComplete = :hiringComplete WHERE id = :id";
             conn.createQuery(sql)
                     .addParameter("name", course.getName())
                     .addParameter("courseNumber", course.getCourseNumber())
@@ -194,19 +198,8 @@ public class Sql2oCourseDao implements CourseDao {
             if (course.getInstructors() != null) {
                 for (StaffMember staffMember : course.getInstructors()) {
                     int staffId = staffMember.getId();
-                    if (staffId == 0) {
-                        sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed);";
-                        staffId = (int) conn.createQuery(sql)
-                                .addParameter("name", staffMember.getName())
-                                .addParameter("jhed", staffMember.getJhed())
-                                .executeUpdate()
-                                .getKey();
-                        staffMember.setId(staffId);
-                    }
-
                     int courseId = course.getId();
-                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) " +
-                            "VALUES(:staffId, :courseId);";
+                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
                     conn.createQuery(sql)
                             .addParameter("staffId", staffId)
                             .addParameter("courseId", courseId)
@@ -217,18 +210,6 @@ public class Sql2oCourseDao implements CourseDao {
             if (course.getHiredApplicants() != null) {
                 for (Applicant hired : course.getHiredApplicants()) {
                     int applicantId = hired.getId();
-                    if (applicantId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                "VALUES(:name, :email, :jhed);";
-                        applicantId = (int) conn.createQuery(sql)
-                                .addParameter("name", hired.getName())
-                                .addParameter("email", hired.getEmail())
-                                .addParameter("jhed", hired.getJhed())
-                                .executeUpdate()
-                                .getKey();
-                        hired.setId(applicantId);
-                    }
-
                     int courseId = course.getId();
                     sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
                             "VALUES(:applicantId, :courseId);";
@@ -242,18 +223,6 @@ public class Sql2oCourseDao implements CourseDao {
             if(course.getQualifiedApplicants() != null) {
                 for (Applicant qualified : course.getQualifiedApplicants()) {
                     int applicantId = qualified.getId();
-                    if (applicantId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                "VALUES(:name, :email, :jhed);";
-                        applicantId = (int) conn.createQuery(sql)
-                                .addParameter("name", qualified.getName())
-                                .addParameter("email", qualified.getEmail())
-                                .addParameter("jhed", qualified.getJhed())
-                                .executeUpdate()
-                                .getKey();
-                        qualified.setId(applicantId);
-                    }
-
                     int courseId = course.getId();
                     sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
                             "VALUES(:applicantId, :courseId);";
@@ -305,7 +274,7 @@ public class Sql2oCourseDao implements CourseDao {
                 sql = "SELECT StaffMembers.* " +
                         "FROM StaffMembers_Courses " +
                         "INNER JOIN StaffMembers " +
-                        "ON StaffMembers_Courses.staffId = StaffMembers.id " +
+                        "ON StaffMembers_Courses.staffId = StaffMembers.id" +
                         "WHERE StaffMembers_Courses.courseId = :courseId";
                 List<StaffMember> staff = conn.createQuery(sql)
                         .addParameter("courseId", c.getId())
@@ -316,23 +285,23 @@ public class Sql2oCourseDao implements CourseDao {
                 sql = "SELECT Applicants.* " +
                         "FROM HiredApplicants_Courses " +
                         "INNER JOIN Applicants " +
-                        "ON HiredApplicants_Courses.applicantId = Applicants.id " +
+                        "ON HiredApplicants_Courses.applicantId = Applicants.id" +
                         "WHERE HiredApplicants_Courses.courseId = :courseId";
-                List<Applicant> hiredApps = conn.createQuery(sql)
+                List<Applicant> hired_apps = conn.createQuery(sql)
                         .addParameter("courseId", c.getId())
                         .executeAndFetch(Applicant.class);
-                c.setHiredApplicants(hiredApps);
+                c.setHiredApplicants(hired_apps);
 
-                // get corresponding qualified applicants
+                //get corresponding qualified applicants
                 sql = "SELECT Applicants.* " +
                         "FROM QualifiedApplicants_Courses " +
                         "INNER JOIN Applicants " +
-                        "ON QualifiedApplicants_Courses.applicantId = Applicants.id " +
+                        "ON QualifiedApplicants_Courses.applicantId = Applicants.id" +
                         "WHERE QualifiedApplicants_Courses.courseId = :courseId";
-                List<Applicant> qualifiedApps = conn.createQuery(sql)
+                List<Applicant> qualified_apps = conn.createQuery(sql)
                         .addParameter("courseId", c.getId())
                         .executeAndFetch(Applicant.class);
-                c.setQualifiedApplicants(qualifiedApps);
+                c.setQualifiedApplicants(qualified_apps);
             }
 
             return courses;

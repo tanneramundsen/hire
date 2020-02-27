@@ -5,7 +5,6 @@ import api.ApiServer;
 import dao.DaoFactory;
 import dao.Sql2oApplicantDao;
 import dao.Sql2oCourseDao;
-import dao.Sql2oStaffMemberDao;
 import exception.DaoException;
 import model.Applicant;
 import model.Course;
@@ -22,10 +21,8 @@ import static org.junit.Assert.*;
 
 public class Sql2oApplicantDaoTest {
 
-    private Sql2oStaffMemberDao staffMemberDao;
     private Sql2oApplicantDao applicantDao;
     private Sql2oCourseDao courseDao;
-
 
     private String getResourcesPath() {
         Path resourceDirectory = Paths.get("src", "test", "resources");
@@ -44,9 +41,8 @@ public class Sql2oApplicantDaoTest {
     @Before
     public void setUp() {
         // below method drops all dependent tables and creates new ones
-        staffMemberDao = DaoFactory.getStaffMemberDao();
-        applicantDao = DaoFactory.getApplicantDao();
-        courseDao = DaoFactory.getCourseDao();
+        applicantDao = (Sql2oApplicantDao) DaoFactory.getApplicantDao();
+        courseDao = (Sql2oCourseDao) DaoFactory.getCourseDao();
     }
 
     @Test
@@ -118,6 +114,7 @@ public class Sql2oApplicantDaoTest {
 
         courseDao.add(c1);
         applicantDao.add(a1);
+
 
         a1.setEmail("NOTtamunds1@jhu.edu");
         a1.setEligibleCourses(courses2);
