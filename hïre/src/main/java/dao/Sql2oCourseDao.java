@@ -20,6 +20,7 @@ public class Sql2oCourseDao implements CourseDao {
     public void add(Course course) throws DaoException {
         if (read(course.getId()) != null) {
             this.update(course);
+            return;
         }
         try (Connection conn = sql2o.open()) {
             String sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
