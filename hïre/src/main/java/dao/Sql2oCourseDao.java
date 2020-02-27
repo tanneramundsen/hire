@@ -74,7 +74,7 @@ public class Sql2oCourseDao implements CourseDao {
                         int courseId = course.getId();
                         sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
                         conn.createQuery(sql)
-                                .addParameter("applicantId", hiredId)
+                                .addParameter("applicantId", hired.getId())
                                 .addParameter("courseId", courseId)
                                 .executeUpdate();
                     }
@@ -96,7 +96,7 @@ public class Sql2oCourseDao implements CourseDao {
                         int courseId = course.getId();
                         sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
                         conn.createQuery(sql)
-                                .addParameter("applicantId", qualifiedId)
+                                .addParameter("applicantId", qualified.getId())
                                 .addParameter("courseId", courseId)
                                 .executeUpdate();
                     }
