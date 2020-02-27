@@ -127,10 +127,15 @@ public class Sql2oApplicantDao implements ApplicantDao {
     public Applicant read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Applicants WHERE id = :id;";
-            Applicant applicant = conn.createQuery(sql)
+            Applicant applicant;
+            List<Applicant> applicants = conn.createQuery(sql)
                     .addParameter("id", id)
-                    .executeAndFetch(Applicant.class)
-                    .get(0);
+                    .executeAndFetch(Applicant.class);
+            if (applicants.isEmpty()) {
+                return null;
+            } else {
+                applicant = applicants.get(0);
+            }
             //get corresponding eligibleCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
