@@ -26,17 +26,16 @@ public class WebServer {
 
         get("/landing", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
-            String jhed = request.session().attribute("jhed");
+            String jhed = request.cookie("jhed");
             model.put("jhed", jhed);
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/login", (request, response) -> {
-            Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.queryParams("jhed");
-            request.session().attribute("jhed", jhed);
-            model.put("jhed", jhed);
-            return new ModelAndView(model, "landing.hbs");
+            response.cookie("jhed", jhed);
+            response.redirect("/landing");
+            return null;
         }, new HandlebarsTemplateEngine());
     }
 
