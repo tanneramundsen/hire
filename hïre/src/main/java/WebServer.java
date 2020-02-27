@@ -1,7 +1,9 @@
 
 import spark.ModelAndView;
+import spark.Redirect;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,20 +25,20 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
 
         get("/landing", (request, response) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("jhed", request.cookie("jhed"));
+            Map<String, Object> model = new HashMap<String, Object>();
+            String jhed = request.session().attribute("jhed");
+            model.put("jhed", jhed);
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/login", ((request, response) -> {
-            // TODO Capture client's username
+        post("/login", (request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.queryParams("jhed");
-            // TODO store that username
-            response.cookie("jhed", jhed);
-            // TODO refresh homepage
-            response.redirect("/landing");
-            return null;
-        }), new HandlebarsTemplateEngine());
+            request.session().attribute("jhed", jhed);
+            model.put("jhed", jhed);
+            return new ModelAndView(model, "landing.hbs");
+        }, new HandlebarsTemplateEngine());
     }
+
 }
 
