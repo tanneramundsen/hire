@@ -35,7 +35,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
                 // Add courses
                 List<Course> courses = staffMember.getCourses();
-                if (!courses.isEmpty()) {
+                if (courses != null) {
                     for (Course course: courses) {
                         int courseId = course.getId();
                         if (courseId == 0) {
@@ -80,7 +80,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             List<StaffMember> staffMembers = conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetch(StaffMember.class);
-            if (staffMembers.isEmpty()) {
+            if (staffMembers == null) {
                 return null;
             } else {
                 staffMember = staffMembers.get(0);
@@ -107,25 +107,24 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
     @Override
     public void update(StaffMember staffMember) throws DaoException {
         try(Connection conn = sql2o.open()) {
+            int staffId = staffMember.getId();
+
             String sql = "UPDATE StaffMembers SET name = :name, jhed = :jhed WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", staffMember.getName())
                     .addParameter("jhed", staffMember.getJhed())
-                    .addParameter("id", staffMember.getId())
+                    .addParameter("id", staffId)
                     .executeUpdate();
 
             // Delete existing entries with this staff member in joining table
             sql = "DELETE FROM StaffMembers_Courses WHERE staffId = :staffId;";
             conn.createQuery(sql)
-                    .addParameter("staffId", staffMember.getId())
+                    .addParameter("staffId", staffId)
                     .executeUpdate();
 
             // Fresh update to joining table
-            int staffId = staffMember.getId();
-
-
             List<Course> courses = staffMember.getCourses();
-            if (!courses.isEmpty()) {
+            if (courses == null) {
                 for (Course course: courses) {
                     int courseId = course.getId();
                     sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";

@@ -25,7 +25,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("id", applicant.getId())
                     .addParameter("name", applicant.getName())
                     .executeAndFetch(Applicant.class);
-            if(duplicates.isEmpty()) {
+            if(duplicates == null) {
                 //no duplicates --> insert
                 sql = "INSERT INTO Applicants(name, email, jhed)" +
                         "VALUES(:name, :email, :jhed);";
@@ -114,17 +114,17 @@ public class Sql2oApplicantDao implements ApplicantDao {
     public void delete(Applicant applicant) throws DaoException {
         try(Connection conn = sql2o.open()) {
             int id = applicant.getId();
-            String sql = "DELETE FROM Applicants WHERE id = :id;";
-            conn.createQuery(sql)
-                    .addParameter("id", id)
-                    .executeUpdate();
-            sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :applicantId;";
+            String sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :applicantId;";
             conn.createQuery(sql)
                     .addParameter("applicantId", id)
                     .executeUpdate();
             sql = "DELETE FROM HiredApplicants_Courses WHERE applicantId = :applicantId;";
             conn.createQuery(sql)
                     .addParameter("applicantId", id)
+                    .executeUpdate();
+            sql = "DELETE FROM Applicants WHERE id = :id;";
+            conn.createQuery(sql)
+                    .addParameter("id", id)
                     .executeUpdate();
         } catch(Sql2oException e) {
             throw new DaoException("Unable to delete applicant", e);
