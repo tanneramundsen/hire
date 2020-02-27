@@ -19,6 +19,7 @@ import static spark.Spark.*;
 public class WebServer {
     public static void main(String[] args) {
 
+
         staticFileLocation("/templates");
         get("/", (request, response) -> {
             // remove cookie username
@@ -53,8 +54,8 @@ public class WebServer {
         post("/login", (request, response) -> {
             String jhed = request.queryParams("jhed");
             response.cookie("jhed", jhed);
-            // also need to have profileType
-            response.cookie("profileType", "Student");
+            String profileType = request.queryParams("profileType");
+            response.cookie("profileType", profileType);
             response.redirect("/landing");
             return null;
         }, new HandlebarsTemplateEngine());
@@ -64,9 +65,11 @@ public class WebServer {
             String jhed = request.queryParams("jhed");
             String email = jhed + "@jhu.edu";
             String profileType = request.queryParams("profileType");
-            String course = request.queryParams("courses");
+            String[] courses = request.queryParamsValues("courses");
+            if (profileType.equals("Professor")) {
+
+            }
             // use information to create either an applicant or staff member
-            // pass the id to /landing
             response.cookie("jhed", jhed);
             response.cookie("profileType", profileType);
             response.redirect("/landing");

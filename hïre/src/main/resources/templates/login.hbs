@@ -86,6 +86,18 @@
     <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="assets/css/util.css">
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <!-- Icons font CSS-->
+    <link href="assets/vendor2/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="assets/vendor2/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="assets/vendor2/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="assets/vendor2/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="assets/css/main2.css" rel="stylesheet" media="all">
 
 </head>
 <body>
@@ -101,6 +113,21 @@
                         <input class="input100" type="text" name="jhed" placeholder="Type your JHED">
                         <span class="focus-input100" data-symbol="&#xf206;"></span>
                     </div>
+                <div class="row row-space">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group">
+                            <label class="label">My Account type:</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="profileType">
+                                    <option disabled="disabled" selected="selected">I am a..</option>
+                                    <option>Student</option>
+                                    <option>Professor</option>
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     <!--
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
                         <span class="label-input100">Password</span>
