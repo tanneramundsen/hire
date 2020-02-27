@@ -72,7 +72,15 @@ public class Sql2oCourseDao implements CourseDao {
     public Course read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Courses WHERE id = :id";
-            Course c = conn.createQuery(sql).executeAndFetch(Course.class).get(0);
+            Course c;
+            List<Course> courses = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Course.class);
+            if (courses.isEmpty()) {
+                return null;
+            } else {
+                c = courses.get(0);
+            }
 
             //get corresponding staff members
             sql = "SELECT StaffMembers.* " +
@@ -117,12 +125,13 @@ public class Sql2oCourseDao implements CourseDao {
     public void update(Course course) throws DaoException {
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, semester = :semester, " +
-                    "hiringComplete = :hiringComplete";
+                    "hiringComplete = :hiringComplete WHERE id = :id";
             conn.createQuery(sql)
                     .addParameter("name", course.getName())
                     .addParameter("courseNumber", course.getCourseNumber())
                     .addParameter("semester", course.getSemester())
                     .addParameter("hiringComplete", course.isHiringComplete())
+                    .addParameter("id", course.getId())
                     .executeUpdate();
 
             for (StaffMember staffMember: course.getInstructors()) {

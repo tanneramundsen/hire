@@ -74,10 +74,15 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
         try (Connection conn = sql2o.open()) {
             // Populate non-list attributes of StaffMember object
             String sql = "SELECT * FROM StaffMembers WHERE id = :id";
-            StaffMember staffMember = conn.createQuery(sql)
+            StaffMember staffMember;
+            List<StaffMember> staffMembers = conn.createQuery(sql)
                     .addParameter("id", id)
-                    .executeAndFetch(StaffMember.class)
-                    .get(0);
+                    .executeAndFetch(StaffMember.class);
+            if (staffMembers.isEmpty()) {
+                return null;
+            } else {
+                staffMember = staffMembers.get(0);
+            }
 
             // Get corresponding courses according to joining table
             sql = "SELECT Courses.* " +

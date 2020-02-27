@@ -23,13 +23,13 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">2</div>
+<div class="counter">1</div>
 <p>tests</p>
 </div>
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">2</div>
+<div class="counter">1</div>
 <p>failures</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.001s</div>
+<div class="counter">0.047s</div>
 <p>duration</p>
 </div>
 </td>
@@ -66,16 +66,19 @@
 <li>
 <a href="#tab1">Tests</a>
 </li>
+<li>
+<a href="#tab2">Standard error</a>
+</li>
 </ul>
 <div id="tab0" class="tab">
 <h2>Failed tests</h2>
 <div class="test">
-<a name="classMethod"></a>
-<h3 class="failures">classMethod</h3>
+<a name="addApplicantChangesId"></a>
+<h3 class="failures">addApplicantChangesId</h3>
 <span class="code">
 <pre>java.lang.NullPointerException
-	at api.ApiServer.stop(ApiServer.java:180)
-	at persist.Sql2oApplicantDaoTest.afterClass(Sql2oApplicantDaoTest.java:265)
+	at dao.Sql2oApplicantDao.add(Sql2oApplicantDao.java:37)
+	at persist.Sql2oApplicantDaoTest.addApplicantChangesId(Sql2oApplicantDaoTest.java:53)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -83,63 +86,17 @@
 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)
-	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)
-	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:62)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
-	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:118)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:175)
-	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:157)
-	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
-	at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:46)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-</pre>
-</span>
-</div>
-<div class="test">
-<a name="classMethod"></a>
-<h3 class="failures">classMethod</h3>
-<span class="code">
-<pre>org.sql2o.Sql2oException: Could not acquire a connection from DataSource - No suitable driver found for jdbc:mysql:/Users/tanneramundsen/Projects/oose/2020-spring-group-oozers/hïre/src/test/resources/db/Test.db
-	at org.sql2o.Connection.createConnection(Connection.java:291)
-	at org.sql2o.Connection.&lt;init&gt;(Connection.java:51)
-	at org.sql2o.Sql2o.open(Sql2o.java:225)
-	at dao.DaoFactory.dropStaffMemberCoursesTable(DaoFactory.java:151)
-	at dao.DaoFactory.dropCoursesTableIfExists(DaoFactory.java:169)
-	at dao.DaoFactory.createCoursesTable(DaoFactory.java:72)
-	at dao.DaoFactory.getCourseDao(DaoFactory.java:27)
-	at api.ApiServer.start(ApiServer.java:34)
-	at persist.Sql2oApplicantDaoTest.beforeClass(Sql2oApplicantDaoTest.java:38)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
 	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
 	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)
@@ -172,12 +129,6 @@
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:55)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-Caused by: java.sql.SQLException: No suitable driver found for jdbc:mysql:/Users/tanneramundsen/Projects/oose/2020-spring-group-oozers/hïre/src/test/resources/db/Test.db
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:702)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:189)
-	at org.sql2o.GenericDatasource.getConnection(GenericDatasource.java:62)
-	at org.sql2o.Connection.createConnection(Connection.java:288)
-	... 48 more
 </pre>
 </span>
 </div>
@@ -193,16 +144,33 @@ Caused by: java.sql.SQLException: No suitable driver found for jdbc:mysql:/Users
 </tr>
 </thead>
 <tr>
-<td class="failures">classMethod</td>
-<td class="failures">0s</td>
-<td class="failures">failed</td>
-</tr>
-<tr>
-<td class="failures">classMethod</td>
-<td class="failures">0.001s</td>
+<td class="failures">addApplicantChangesId</td>
+<td class="failures">0.047s</td>
 <td class="failures">failed</td>
 </tr>
 </table>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre>[Test worker] INFO org.eclipse.jetty.util.log - Logging initialized @1100ms to org.eclipse.jetty.util.log.Slf4jLog
+[Test worker] INFO io.javalin.Javalin - Static file handler added with path=/public and location=CLASSPATH. Absolute path: 'file:///Users/tanneramundsen/Projects/oose/2020-spring-group-oozers/hi%CC%88re/build/resources/main/public/'.
+[Test worker] INFO io.javalin.Javalin - 
+           __                      __ _
+          / /____ _ _   __ ____ _ / /(_)____
+     __  / // __ `/| | / // __ `// // // __ \
+    / /_/ // /_/ / | |/ // /_/ // // // / / /
+    \____/ \__,_/  |___/ \__,_//_//_//_/ /_/
+
+        https://javalin.io/documentation
+
+[Test worker] INFO io.javalin.Javalin - Starting Javalin ...
+[Test worker] INFO io.javalin.Javalin - Listening on http://localhost:7000/
+[Test worker] INFO io.javalin.Javalin - Javalin started in 101ms \o/
+[Test worker] INFO io.javalin.Javalin - Stopping Javalin ...
+[Test worker] INFO io.javalin.Javalin - Javalin has stopped
+</pre>
+</span>
 </div>
 </div>
 <div id="footer">
@@ -212,7 +180,7 @@ Caused by: java.sql.SQLException: No suitable driver found for jdbc:mysql:/Users
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 5.2.1</a> at Feb 26, 2020, 7:31:20 PM</p>
+<a href="http://www.gradle.org">Gradle 5.2.1</a> at Feb 26, 2020, 9:01:31 PM</p>
 </div>
 </div>
 </body>

@@ -90,7 +90,7 @@ public final class ApiServer {
 
     private static void updateCourses(CourseDao courseDao) {
         // client updates a course through HTTP POST request
-        app.post("/courses", ctx -> {
+        app.post("/coursesUpdate", ctx -> {
             Course course = ctx.bodyAsClass(Course.class);
             try {
                 courseDao.update(course);
@@ -141,7 +141,7 @@ public final class ApiServer {
 
     private static void updateApplicants(ApplicantDao applicantDao) {
         // client updates a course through HTTP POST request
-        app.post("/applicants", ctx -> {
+        app.post("/applicantsUpdate", ctx -> {
             Applicant applicant = ctx.bodyAsClass(Applicant.class);
             try {
                 applicantDao.update(applicant);
