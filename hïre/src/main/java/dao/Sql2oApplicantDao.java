@@ -28,7 +28,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 sql = "INSERT INTO Applicants(name, email, jhed)" +
                         "VALUES(:name, :email, :jhed);";
                 int id = (int) conn.createQuery(sql)
-                        .bind(applicant)
+                        .addParameter("name", applicant.getName())
+                        .addParameter("email", applicant.getEmail())
+                        .addParameter("jhed", applicant.getJhed())
                         .executeUpdate()
                         .getKey();
                 applicant.setId(id);
@@ -162,7 +164,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
-                    "ON HiredApplicants_Courses.courseId = Course.id " +
+                    "ON HiredApplicants_Courses.courseId = Courses.id " +
                     "WHERE HiredApplicants_Courses.applicantId = :applicantId;";
             List<Course> hiredCourses = (conn.createQuery(sql)
                     .addParameter("applicantId", id)

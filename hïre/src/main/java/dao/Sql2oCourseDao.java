@@ -71,11 +71,18 @@ public class Sql2oCourseDao implements CourseDao {
                             hired.setId(hiredId);
                             hired.setHiredCourse(course);
                         }
-                        int courseId = course.getId();
+                        String sql1 = "CREATE TABLE IF NOT EXISTS HiredApplicants_Courses(" +
+                                "id INTEGER PRIMARY KEY," +
+                                "applicantId INTEGER," +
+                                "courseId INTEGER," +
+                                "FOREIGN KEY (applicantId) REFERENCES Applicants(id)" +
+                                "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
+                                ");";
+                        conn.createQuery(sql).executeUpdate();
                         sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", hired.getId())
-                                .addParameter("courseId", courseId)
+                                .addParameter("courseId", course.getId())
                                 .executeUpdate();
                     }
                 }
