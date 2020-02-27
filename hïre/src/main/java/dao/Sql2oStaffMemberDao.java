@@ -35,7 +35,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
                 // Add courses
                 List<Course> courses = staffMember.getCourses();
-                if (!courses.isEmpty()) {
+                if (courses != null) {
                     for (Course course: courses) {
                         int courseId = course.getId();
                         if (courseId == 0) {
@@ -125,7 +125,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
 
             List<Course> courses = staffMember.getCourses();
-            if (!courses.isEmpty()) {
+            if (courses != null) {
                 for (Course course: courses) {
                     int courseId = course.getId();
                     sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
