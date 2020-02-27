@@ -76,15 +76,13 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
         try (Connection conn = sql2o.open()) {
             // Populate non-list attributes of StaffMember object
             String sql = "SELECT * FROM StaffMembers WHERE id = :id";
-            StaffMember staffMember;
             List<StaffMember> staffMembers = conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetch(StaffMember.class);
             if (staffMembers.isEmpty()) {
                 return null;
-            } else {
-                staffMember = staffMembers.get(0);
             }
+            StaffMember staffMember = staffMembers.get(0);
 
             // Get corresponding courses according to joining table
             sql = "SELECT Courses.* " +
@@ -124,9 +122,22 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
             // Fresh update to joining table
             List<Course> courses = staffMember.getCourses();
-            if (courses.isEmpty()) {
+            if (!courses.isEmpty()) {
                 for (Course course: courses) {
                     int courseId = course.getId();
+                    if (course.getId() == 0) {
+                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
+                                "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                        courseId = (int) conn.createQuery(sql)
+                                .addParameter("name", course.getName())
+                                .addParameter("courseNumber", course.getCourseNumber())
+                                .addParameter("semester", course.getSemester())
+                                .addParameter("hiringComplete", course.isHiringComplete())
+                                .executeUpdate()
+                                .getKey();
+
+                        course.setId(courseId);
+                    }
                     sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
                     conn.createQuery(sql)
                             .addParameter("staffId", staffId)

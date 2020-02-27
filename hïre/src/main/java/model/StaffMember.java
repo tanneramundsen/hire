@@ -66,4 +66,14 @@ public class StaffMember extends User {
     public int hashCode() {
         return Objects.hash(getJhed());
     }
+
+    @Override
+    public String toString() {
+        return "StaffMember{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", jhed='" + jhed + '\'' +
+                '}';
+    }
+
 }

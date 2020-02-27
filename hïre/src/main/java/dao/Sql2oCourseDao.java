@@ -133,7 +133,7 @@ public class Sql2oCourseDao implements CourseDao {
             sql = "SELECT StaffMembers.* " +
                     "FROM StaffMembers_Courses " +
                     "INNER JOIN StaffMembers " +
-                    "ON StaffMembers_Courses.staffId = StaffMembers.id" +
+                    "ON StaffMembers_Courses.staffId = StaffMembers.id " +
                     "WHERE StaffMembers_Courses.courseId = :courseId";
             List<StaffMember> staff = conn.createQuery(sql)
                     .addParameter("courseId", id)
@@ -144,7 +144,7 @@ public class Sql2oCourseDao implements CourseDao {
             sql = "SELECT Applicants.* " +
                     "FROM HiredApplicants_Courses " +
                     "INNER JOIN Applicants " +
-                    "ON HiredApplicants_Courses.applicantId = Applicants.id" +
+                    "ON HiredApplicants_Courses.applicantId = Applicants.id " +
                     "WHERE HiredApplicants_Courses.courseId = :courseId";
             List<Applicant> hired_apps = conn.createQuery(sql)
                     .addParameter("courseId", id)
@@ -155,7 +155,7 @@ public class Sql2oCourseDao implements CourseDao {
             sql = "SELECT Applicants.* " +
                     "FROM QualifiedApplicants_Courses " +
                     "INNER JOIN Applicants " +
-                    "ON QualifiedApplicants_Courses.applicantId = Applicants.id" +
+                    "ON QualifiedApplicants_Courses.applicantId = Applicants.id " +
                     "WHERE QualifiedApplicants_Courses.courseId = :courseId";
             List<Applicant> qualified_apps = conn.createQuery(sql)
                     .addParameter("courseId", id)

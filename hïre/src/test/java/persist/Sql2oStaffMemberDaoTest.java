@@ -118,6 +118,7 @@ public class Sql2oStaffMemberDaoTest {
         StaffMember s2 = staffMemberDao.read(s1.getId());
         List<Course> courses2Check = s2.getCourses();
         assertEquals(s1, s2);
+        System.out.println(s2);
         assertTrue(s2.getName().equals("Joanne Selinski"));
         assertNotEquals(0, courses2Check.size());
         assertEquals(c2, courses2Check.get(0));
