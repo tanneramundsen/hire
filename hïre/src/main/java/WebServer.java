@@ -1,7 +1,7 @@
-import dao.ApplicantDao;
-import dao.Sql2oApplicantDao;
+import dao.*;
 import model.Applicant;
 import model.Course;
+import model.StaffMember;
 import org.sql2o.Sql2o;
 import spark.ModelAndView;
 import spark.Redirect;
@@ -18,6 +18,9 @@ import static spark.Spark.*;
 public class WebServer {
     public static void main(String[] args) {
 
+        Sql2oStaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
+        Sql2oApplicantDao applicantDao = DaoFactory.getApplicantDao();
+        Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
 
         staticFileLocation("/templates");
         get("/", (request, response) -> {
@@ -37,12 +40,14 @@ public class WebServer {
             Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
+            List<Course> courseList = new ArrayList<Course>();
             boolean isStaffMember = false;
             if (profileType.equals("Professor")) {
                 isStaffMember = true;
+                courseList = staffMemberDao.read(1).getCourses();
+            } else {
+                courseList = applicantDao.read(1).getEligibleCourses();
             }
-            // using jhed and profile type, extract info from applicant or staff database
-            List<Course> courseList = new ArrayList<Course>();
             // add courseList either eligible courses or courses
             model.put("jhed", jhed);
             model.put("courseList", courseList);
@@ -65,8 +70,17 @@ public class WebServer {
             String email = jhed + "@jhu.edu";
             String profileType = request.queryParams("profileType");
             String[] courses = request.queryParamsValues("courses");
+            List<Course> courseList = new ArrayList<Course>();
+            for (String course:courses) {
+                // should find course instead of creating
+                Course newCourse = new Course(course,"123",null,null,false,null,null);
+                courseDao.add(newCourse);
+                courseList.add(newCourse);
+            }
             if (profileType.equals("Professor")) {
-
+                staffMemberDao.add(new StaffMember(name,jhed,courseList));
+            } else {
+                applicantDao.add(new Applicant(name,email,jhed,courseList));
             }
             // use information to create either an applicant or staff member
             response.cookie("jhed", jhed);
