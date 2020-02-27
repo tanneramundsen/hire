@@ -29,7 +29,7 @@ public class Sql2oStaffMemberDaoTest {
     }
 
     @BeforeClass
-    public void beforeClass() throws Exception {
+    public static void beforeClass() throws Exception {
         DaoFactory.DROP_TABLES_IF_EXIST = true;
         DaoFactory.PATH_TO_DATABASE_FILE = Paths.get("src", "test", "resources").toFile().getAbsolutePath()
                 + "/db/Test.db";
