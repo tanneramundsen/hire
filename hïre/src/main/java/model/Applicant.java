@@ -83,7 +83,15 @@ public class Applicant extends User {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getJhed());
+    public int hashCode() { return Objects.hash(getJhed()); }
+
+    @Override
+    public String toString() {
+        return "Applicant{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", jhed='" + jhed + '\'' +
+                '}';
     }
 }

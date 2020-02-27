@@ -18,14 +18,14 @@ public class Sql2oApplicantDao implements ApplicantDao {
     public void add(Applicant applicant) throws DaoException {
 
         //check for duplicates
-        if (read(applicant.getId()) != null) {
+        if (applicant.getId() != 0) {
             update(applicant);
         } else {
             try (Connection conn = sql2o.open()) {
 
                 String sql;
                 //no duplicates --> insert
-                sql = "INSERT INTO Applicants(name, email, jhed)" +
+                sql = "INSERT INTO Applicants(name, email, jhed) " +
                         "VALUES(:name, :email, :jhed);";
                 int id = (int) conn.createQuery(sql)
                         .addParameter("name", applicant.getName())
@@ -74,8 +74,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public void update(Applicant applicant) throws DaoException {
         try(Connection conn = sql2o.open()) {
-            String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed, " +
-                    "courseId = :courseId WHERE id = :id;";
+            String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", applicant.getName())
                     .addParameter("email", applicant.getEmail())
@@ -97,6 +96,20 @@ public class Sql2oApplicantDao implements ApplicantDao {
             if (applicant.getEligibleCourses() != null) {
                 for (Course course : applicant.getEligibleCourses()) {
                     int courseId = course.getId();
+                    if (course.getId() == 0) {
+                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
+                                "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                        courseId = (int) conn.createQuery(sql)
+                                .addParameter("name", course.getName())
+                                .addParameter("courseNumber", course.getCourseNumber())
+                                .addParameter("semester", course.getSemester())
+                                .addParameter("hiringComplete", course.isHiringComplete())
+                                .executeUpdate()
+                                .getKey();
+
+                        course.setId(courseId);
+                    }
+
                     sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
                             "VALUES(:applicantId, :courseId);";
                     conn.createQuery(sql)
@@ -105,8 +118,23 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             .executeUpdate();
                 }
             }
-            if (applicant.getHiredCourse() != null) {
-                int hiredCourseId = applicant.getHiredCourse().getId();
+            Course hiredCourse = applicant.getHiredCourse();
+            if (hiredCourse != null) {
+                int hiredCourseId = hiredCourse.getId();
+
+                if (hiredCourseId == 0) {
+                    sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
+                            "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                    hiredCourseId = (int) conn.createQuery(sql)
+                            .addParameter("name", hiredCourse.getName())
+                            .addParameter("courseNumber", hiredCourse.getCourseNumber())
+                            .addParameter("semester", hiredCourse.getSemester())
+                            .addParameter("hiringComplete", hiredCourse.isHiringComplete())
+                            .executeUpdate()
+                            .getKey();
+
+                    hiredCourse.setId(hiredCourseId);
+                }
 
                 sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
                         "VALUES(:applicantId, :courseId);";
@@ -143,15 +171,14 @@ public class Sql2oApplicantDao implements ApplicantDao {
     public Applicant read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Applicants WHERE id = :id;";
-            Applicant applicant;
-            List<Applicant> applicants = conn.createQuery(sql)
+            Applicant applicant = conn.createQuery(sql)
                     .addParameter("id", id)
-                    .executeAndFetch(Applicant.class);
-            if (applicants.isEmpty()) {
+                    .executeAndFetchFirst(Applicant.class);
+
+            if (applicant == null) {
                 return null;
-            } else {
-                applicant = applicants.get(0);
             }
+
             //get corresponding eligibleCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
@@ -199,14 +226,13 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
                 sql = "SELECT Courses.* " +
                         "FROM HiredApplicants_Courses INNER JOIN Courses " +
-                        "ON HiredApplicants_Courses.courseId = Course.id " +
+                        "ON HiredApplicants_Courses.courseId = Courses.id " +
                         "WHERE HiredApplicants_Courses.applicantId = :applicantId;";
-                List<Course> hiredCourses = (conn.createQuery(sql)
+                Course hiredCourse = (conn.createQuery(sql)
                         .addParameter("applicantId", applicantId)
-                        .executeAndFetch(Course.class));
-                if (!hiredCourses.isEmpty()) {
-                    applicant.setHiredCourse(hiredCourses.get(0));
-                    //should only be one
+                        .executeAndFetchFirst(Course.class));
+                if (hiredCourse != null) {
+                    applicant.setHiredCourse(hiredCourse);
                 }
             }
             return applicants;
@@ -218,13 +244,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
     @Override
     public List<Applicant> findByCourseId(int courseId) throws DaoException{
         try(Connection conn = sql2o.open()) {
-            //TODO: confirm that this SQL is correct
             String sql = "SELECT Applicants.* " +
-                    "FROM (" +
-                        "(SELECT * " +
-                        "QualifiedApplicants_Courses " +
-                        "WHERE courseId = :courseId) AS C), Applicants " +
-                    "WHERE C.applicantId = Applicants.id;";
+                    "FROM Applicants " +
+                    "INNER JOIN QualifiedApplicants_Courses " +
+                    "ON Applicants.id = QualifiedApplicants_Courses.applicantId " +
+                    "WHERE QualifiedApplicants_Courses.courseId = :courseId";
             return conn.createQuery(sql)
                     .addParameter("courseId", courseId)
                     .executeAndFetch(Applicant.class);
