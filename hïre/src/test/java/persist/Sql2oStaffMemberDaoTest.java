@@ -2,9 +2,7 @@ package persist;
 
 import api.ApiServer;
 
-import dao.DaoFactory;
-import dao.Sql2oStaffMemberDao;
-import dao.Sql2oCourseDao;
+import dao.*;
 import exception.DaoException;
 import model.StaffMember;
 import model.Course;
@@ -22,6 +20,7 @@ public class Sql2oStaffMemberDaoTest {
 
     private Sql2oStaffMemberDao staffMemberDao;
     private Sql2oCourseDao courseDao;
+    private Sql2oApplicantDao applicantDao;
 
     private String getResourcesPath() {
         Path resourceDirectory = Paths.get("src", "test", "resources");
@@ -40,8 +39,10 @@ public class Sql2oStaffMemberDaoTest {
     @Before
     public void setUp() {
         // below method drops all dependent tables and creates new ones
-        staffMemberDao = (Sql2oStaffMemberDao) DaoFactory.getStaffMemberDao();
-        courseDao = (Sql2oCourseDao) DaoFactory.getCourseDao();
+        staffMemberDao = DaoFactory.getStaffMemberDao();
+        courseDao = DaoFactory.getCourseDao();
+        applicantDao = DaoFactory.getApplicantDao();
+
     }
 
     @Test
@@ -66,8 +67,9 @@ public class Sql2oStaffMemberDaoTest {
         StaffMember s1 = new StaffMember("Ali Madooei", "madooei1", null);
         List<StaffMember> staffMembers = Collections.singletonList(s1);
         List<Course> courses = Collections.singletonList(c1);
-        c1.setInstructors(staffMembers);
+
         s1.setCourses(courses);
+        c1.setInstructors(staffMembers);
 
         courseDao.add(c1);
         staffMemberDao.add(s1);
@@ -110,7 +112,7 @@ public class Sql2oStaffMemberDaoTest {
         staffMemberDao.add(s1);
 
 
-        s1.setName("Joanne Selinksi");
+        s1.setName("Joanne Selinski");
         s1.setCourses(courses2);
 
         staffMemberDao.update(s1);
@@ -118,7 +120,7 @@ public class Sql2oStaffMemberDaoTest {
         StaffMember s2 = staffMemberDao.read(s1.getId());
         List<Course> courses2Check = s2.getCourses();
         assertEquals(s1, s2);
-        assertTrue(s2.getName().equals("Joanne Selinksi"));
+        assertTrue(s2.getName().equals("Joanne Selinski"));
         assertNotEquals(0, courses2Check.size());
         assertEquals(c2, courses2Check.get(0));
     }
@@ -143,7 +145,6 @@ public class Sql2oStaffMemberDaoTest {
         courseDao.add(c1);
         staffMemberDao.add(s1);
 
-
         staffMemberDao.delete(s1);
         StaffMember s2 = staffMemberDao.read(s1.getId());
         assertNull(s2);
@@ -157,7 +158,7 @@ public class Sql2oStaffMemberDaoTest {
 
     @Test (expected = DaoException.class)
     public void addingStaffMemberWithNullNameFails() {
-        StaffMember s1 = new StaffMember("Ali Madooei", "madooei1", null);
+        StaffMember s1 = new StaffMember(null, "madooei1", null);
         staffMemberDao.add(s1);
     }
 

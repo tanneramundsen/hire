@@ -18,93 +18,93 @@ public class Sql2oCourseDao implements CourseDao {
     }
 
     public void add(Course course) throws DaoException {
-        if (read(course.getId()) != null) {
-            this.update(course);
-            return;
+        if (course.getId() != 0) {
+            update(course);
         }
-        try (Connection conn = sql2o.open()) {
-            String sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
-                    "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
-            int id = (int) conn.createQuery(sql)
-                    //.bind(course)
-                    .addParameter("name", course.getName())
-                    .addParameter("courseNumber", course.getCourseNumber())
-                    .addParameter("semester", course.getSemester())
-                    .addParameter("hiringComplete", course.isHiringComplete())
-                    .executeUpdate()
-                    .getKey();
-            course.setId(id);
+        else {
 
-            if (course.getInstructors() != null) {
-                for (StaffMember staffMember : course.getInstructors()) {
-                    int staffId = staffMember.getId();
-                    if (staffId == 0) {
-                        sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed)";
-                        int sId = (int) conn.createQuery(sql)
-                                .addParameter("name", staffMember.getName())
-                                .addParameter("jhed", staffMember.getJhed())
-                                .executeUpdate()
-                                .getKey();
-                        staffMember.setId(sId);
+            try (Connection conn = sql2o.open()) {
+                String sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
+                        "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                int id = (int) conn.createQuery(sql)
+                        //.bind(course)
+                        .addParameter("name", course.getName())
+                        .addParameter("courseNumber", course.getCourseNumber())
+                        .addParameter("semester", course.getSemester())
+                        .addParameter("hiringComplete", course.isHiringComplete())
+                        .executeUpdate()
+                        .getKey();
+                course.setId(id);
+
+                if (course.getInstructors() != null) {
+                    for (StaffMember staffMember : course.getInstructors()) {
+                        int staffId = staffMember.getId();
+                        if (staffId == 0) {
+                            sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed)";
+                            staffId = (int) conn.createQuery(sql)
+                                    .addParameter("name", staffMember.getName())
+                                    .addParameter("jhed", staffMember.getJhed())
+                                    .executeUpdate()
+                                    .getKey();
+                            staffMember.setId(staffId);
+                        }
+                        int courseId = course.getId();
+                        sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) Values(:staffId, :courseId)";
+                        conn.createQuery(sql)
+                                .addParameter("staffId", staffId)
+                                .addParameter("courseId", courseId)
+                                .executeUpdate();
                     }
-                    int courseId = course.getId();
-                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) Values(:staffId, :courseId)";
-                    conn.createQuery(sql)
-                            .addParameter("staffId", staffId)
-                            .addParameter("courseId", courseId)
-                            .executeUpdate();
                 }
-            }
 
-            if (course.getHiredApplicants() != null) {
-                for (Applicant hired : course.getHiredApplicants()) {
-                    int hiredId = hired.getId();
-                    if (hiredId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, :email, :jhed)";
-                        int sId = (int) conn.createQuery(sql)
-                                .addParameter("name", hired.getName())
-                                .addParameter("email", hired.getEmail())
-                                .addParameter("jhed", hired.getJhed())
-                                .executeUpdate()
-                                .getKey();
-                        hired.setId(sId);
-                        hired.setHiredCourse(course);
+                if (course.getHiredApplicants() != null) {
+                    for (Applicant hired : course.getHiredApplicants()) {
+                        int hiredId = hired.getId();
+                        if (hiredId == 0) {
+                            sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, :email, :jhed)";
+                            hiredId = (int) conn.createQuery(sql)
+                                    .addParameter("name", hired.getName())
+                                    .addParameter("email", hired.getEmail())
+                                    .addParameter("jhed", hired.getJhed())
+                                    .executeUpdate()
+                                    .getKey();
+                            hired.setId(hiredId);
+                            hired.setHiredCourse(course);
+                        }
+                        int courseId = course.getId();
+                        sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", hiredId)
+                                .addParameter("courseId", courseId)
+                                .executeUpdate();
                     }
-                    int applicantId = hired.getId();
-                    int courseId = course.getId();
-                    sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
-                    conn.createQuery(sql)
-                            .addParameter("applicantId", applicantId)
-                            .addParameter("courseId", courseId)
-                            .executeUpdate();
                 }
-            }
 
-            if(course.getQualifiedApplicants() != null) {
-                for (Applicant qualified : course.getQualifiedApplicants()) {
-                    int qualifiedId = qualified.getId();
-                    if (qualifiedId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, :email, :jhed)";
-                        int sId = (int) conn.createQuery(sql)
-                                .addParameter("name", qualified.getName())
-                                .addParameter("email", qualified.getEmail())
-                                .addParameter("jhed", qualified.getJhed())
-                                .executeUpdate()
-                                .getKey();
-                        qualified.setId(sId);
+                if(course.getQualifiedApplicants() != null) {
+                    for (Applicant qualified : course.getQualifiedApplicants()) {
+                        int qualifiedId = qualified.getId();
+                        if (qualifiedId == 0) {
+                            sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, :email, :jhed)";
+                            qualifiedId = (int) conn.createQuery(sql)
+                                    .addParameter("name", qualified.getName())
+                                    .addParameter("email", qualified.getEmail())
+                                    .addParameter("jhed", qualified.getJhed())
+                                    .executeUpdate()
+                                    .getKey();
+                            qualified.setId(qualifiedId);
+                        }
+                        int courseId = course.getId();
+                        sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", qualifiedId)
+                                .addParameter("courseId", courseId)
+                                .executeUpdate();
                     }
-                    int applicantId = qualified.getId();
-                    int courseId = course.getId();
-                    sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
-                    conn.createQuery(sql)
-                            .addParameter("applicantId", applicantId)
-                            .addParameter("courseId", courseId)
-                            .executeUpdate();
                 }
-            }
 
-        } catch (Sql2oException e) {
-            throw new DaoException("Unable to add the course", e);
+            } catch (Sql2oException e) {
+                throw new DaoException("Unable to add the course", e);
+            }
         }
     }
 
@@ -115,6 +115,7 @@ public class Sql2oCourseDao implements CourseDao {
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetch(Course.class);
+
             if (courses.isEmpty()) {
                 return null;
             } else {

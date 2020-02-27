@@ -80,7 +80,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             List<StaffMember> staffMembers = conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetch(StaffMember.class);
-            if (staffMembers == null) {
+            if (staffMembers.isEmpty()) {
                 return null;
             } else {
                 staffMember = staffMembers.get(0);
@@ -124,7 +124,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
             // Fresh update to joining table
             List<Course> courses = staffMember.getCourses();
-            if (courses == null) {
+            if (courses.isEmpty()) {
                 for (Course course: courses) {
                     int courseId = course.getId();
                     sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
