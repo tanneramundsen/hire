@@ -39,10 +39,9 @@ public class Sql2oStaffMemberDaoTest {
     @Before
     public void setUp() {
         // below method drops all dependent tables and creates new ones
-        courseDao = DaoFactory.getCourseDao();
-        staffMemberDao = DaoFactory.getStaffMemberDao();
         applicantDao = DaoFactory.getApplicantDao();
-
+        staffMemberDao = DaoFactory.getStaffMemberDao();
+        courseDao = DaoFactory.getCourseDao();
     }
 
     @Test
@@ -108,9 +107,8 @@ public class Sql2oStaffMemberDaoTest {
         c1.setInstructors(staffMembers);
         s1.setCourses(courses1);
 
-        courseDao.add(c1);
         staffMemberDao.add(s1);
-
+        courseDao.add(c1);
 
         s1.setName("Joanne Selinski");
         s1.setCourses(courses2);
@@ -142,8 +140,8 @@ public class Sql2oStaffMemberDaoTest {
         c1.setInstructors(staffMembers);
         s1.setCourses(courses);
 
-        courseDao.add(c1);
         staffMemberDao.add(s1);
+        courseDao.add(c1);
 
         staffMemberDao.delete(s1);
         StaffMember s2 = staffMemberDao.read(s1.getId());

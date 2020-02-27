@@ -24,32 +24,29 @@ public final class DaoFactory {
 
     public static Sql2oCourseDao getCourseDao() {
         instantiateSql2o();
-        createCoursesTable(sql2o);
-        return new Sql2oCourseDao(sql2o);
-    }
 
-    public static Sql2oStaffMemberDao getStaffMemberDao() {
-        instantiateSql2o();
-
-        // Create parent tables
         createCoursesTable(sql2o);
+
+        // Create sibling tables
         createStaffMembersTable(sql2o);
-
-        // Create dependent tables
-        createStaffMembersCoursesTable(sql2o);
-        return new Sql2oStaffMemberDao(sql2o);
-    }
-
-    public static Sql2oApplicantDao getApplicantDao() {
-        instantiateSql2o();
-
-        // Create parent tables
-        createCoursesTable(sql2o);
         createApplicantsTable(sql2o);
 
         // Create dependent tables
         createQualifiedApplicantsCoursesTable(sql2o);
         createHiredApplicantsCoursesTable(sql2o);
+        createStaffMembersCoursesTable(sql2o);
+        return new Sql2oCourseDao(sql2o);
+    }
+
+    public static Sql2oStaffMemberDao getStaffMemberDao() {
+        instantiateSql2o();
+        createStaffMembersTable(sql2o);
+        return new Sql2oStaffMemberDao(sql2o);
+    }
+
+    public static Sql2oApplicantDao getApplicantDao() {
+        instantiateSql2o();
+        createApplicantsTable(sql2o);
         return new Sql2oApplicantDao(sql2o);
     }
 
