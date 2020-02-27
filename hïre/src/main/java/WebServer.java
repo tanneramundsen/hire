@@ -1,4 +1,3 @@
-
 import dao.ApplicantDao;
 import dao.Sql2oApplicantDao;
 import model.Applicant;
@@ -78,4 +77,3 @@ public class WebServer {
     }
 
 }
-
