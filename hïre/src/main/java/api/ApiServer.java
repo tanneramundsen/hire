@@ -31,7 +31,7 @@ public final class ApiServer {
     }
 
     public static void start() {
-        CourseDao courseDao = DaoFactory.getCourseDao();
+        /**CourseDao courseDao = DaoFactory.getCourseDao();
         ApplicantDao applicantDao = DaoFactory.getApplicantDao();
         StaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
 
@@ -39,7 +39,7 @@ public final class ApiServer {
             DaoUtil.addSampleCourses(courseDao);
             DaoUtil.addSampleApplicants(courseDao, applicantDao);
             DaoUtil.addSampleStaffMembers(courseDao, staffMemberDao);
-        }
+        }*/
 
         Gson gson = new Gson();
         JavalinJson.setFromJsonMapper(gson::fromJson);
@@ -49,14 +49,14 @@ public final class ApiServer {
         }).start(7000);
 
         // routing
-        postCourses(courseDao);
+        /**postCourses(courseDao);
         getCourses(courseDao);
         updateCourses(courseDao);
         deleteCourses(courseDao);
         postApplicants(applicantDao);
         getApplicants(applicantDao);
         updateApplicants(applicantDao);
-        deleteApplicants(applicantDao);
+        deleteApplicants(applicantDao);*/
 
         // Handle exceptions
         app.exception(ApiError.class, (exception, ctx) -> {
