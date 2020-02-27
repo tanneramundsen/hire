@@ -59,7 +59,7 @@ public class Sql2oCourseDao implements CourseDao {
                 for (Applicant hired : course.getHiredApplicants()) {
                     int hiredId = hired.getId();
                     if (hiredId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, : email, :jhed)";
+                        sql = "INSERT INTO Applicants(name, email, jhed) VALUES(:name, :email, :jhed)";
                         int sId = (int) conn.createQuery(sql)
                                 .addParameter("name", hired.getName())
                                 .addParameter("email", hired.getEmail())
