@@ -95,7 +95,7 @@ public final class DaoFactory {
     }
 
     private static void createStaffMembersCoursesTable(Sql2o sql2o) {
-        if (DROP_TABLES_IF_EXIST) dropStaffMemberCoursesTable(sql2o);
+        if (DROP_TABLES_IF_EXIST) dropStaffMemberCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS StaffMembers_Courses(" +
                 "id INTEGER PRIMARY KEY," +
                 "staffId INTEGER," +
@@ -109,7 +109,7 @@ public final class DaoFactory {
     }
 
     private static void createQualifiedApplicantsCoursesTable(Sql2o sql2o) {
-        if (DROP_TABLES_IF_EXIST) dropQualifiedApplicantsCoursesTable(sql2o);
+        if (DROP_TABLES_IF_EXIST) dropQualifiedApplicantsCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS QualifiedApplicants_Courses(" +
                 "id INTEGER PRIMARY KEY," +
                 "applicantId INTEGER," +
@@ -123,7 +123,7 @@ public final class DaoFactory {
     }
 
     private static void createHiredApplicantsCoursesTable(Sql2o sql2o) {
-        if (DROP_TABLES_IF_EXIST) dropHiredApplicantsCoursesTable(sql2o);
+        if (DROP_TABLES_IF_EXIST) dropHiredApplicantsCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS HiredApplicants_Courses(" +
                 "id INTEGER PRIMARY KEY," +
                 "applicantId INTEGER," +
@@ -136,32 +136,7 @@ public final class DaoFactory {
         }
     }
 
-    private static void dropHiredApplicantsCoursesTable(Sql2o sql2o) {
-        String sql = "DROP TABLE IF EXISTS HiredApplicants_Courses;";
-        try (Connection conn = sql2o.open()) {
-            conn.createQuery(sql).executeUpdate();
-        }
-    }
-
-    private static void dropQualifiedApplicantsCoursesTable(Sql2o sql2o) {
-        String sql = "DROP TABLE IF EXISTS QualifiedApplicants_Courses;";
-        try (Connection conn = sql2o.open()) {
-            conn.createQuery(sql).executeUpdate();
-        }
-    }
-
-    private static void dropStaffMemberCoursesTable(Sql2o sql2o) {
-        String sql = "DROP TABLE IF EXISTS StaffMember_Courses;";
-        try (Connection conn = sql2o.open()) {
-            conn.createQuery(sql).executeUpdate();
-        }
-    }
-
     private static void dropApplicantsTableIfExists(Sql2o sql2o) {
-        // Drop all tables with a foreign key reference to Applicants first
-        dropHiredApplicantsCoursesTable(sql2o);
-        dropQualifiedApplicantsCoursesTable(sql2o);
-
         String sql = "DROP TABLE IF EXISTS Applicants;";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
@@ -169,11 +144,6 @@ public final class DaoFactory {
     }
 
     private static void dropCoursesTableIfExists(Sql2o sql2o) {
-        // Drop all tables with a foreign key reference to Courses first
-        dropStaffMemberCoursesTable(sql2o);
-        dropHiredApplicantsCoursesTable(sql2o);
-        dropQualifiedApplicantsCoursesTable(sql2o);
-
         String sql = "DROP TABLE IF EXISTS Courses;";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
@@ -181,10 +151,29 @@ public final class DaoFactory {
     }
 
     private static void dropStaffMembersTableIfExists(Sql2o sql2o) {
-        // Drop all tables with a foreign key reference to StaffMembers first
-        dropStaffMemberCoursesTable(sql2o);
-
         String sql = "DROP TABLE IF EXISTS StaffMembers;";
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
+
+    private static void dropHiredApplicantsCoursesTableIfExists(Sql2o sql2o) {
+        String sql = "DROP TABLE IF EXISTS HiredApplicants_Courses;";
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
+    private static void dropQualifiedApplicantsCoursesTableIfExists(Sql2o sql2o) {
+        String sql = "DROP TABLE IF EXISTS QualifiedApplicants_Courses;";
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
+    private static void dropStaffMemberCoursesTableIfExists(Sql2o sql2o) {
+        String sql = "DROP TABLE IF EXISTS StaffMembers_Courses;";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
         }
