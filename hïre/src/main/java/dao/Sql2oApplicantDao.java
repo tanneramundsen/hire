@@ -36,6 +36,19 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 applicant.setId(id);
                 if (applicant.getEligibleCourses() != null) {
                     for (Course course : applicant.getEligibleCourses()) {
+                        int courseId = course.getId();
+                        if (courseId == 0) {
+                            sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
+                                    "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                            int sId = (int) conn.createQuery(sql)
+                                    .addParameter("name", course.getName())
+                                    .addParameter("courseNumber", course.getCourseNumber())
+                                    .addParameter("semester", course.getSemester())
+                                    .addParameter("hiringComplete", course.isHiringComplete())
+                                    .executeUpdate()
+                                    .getKey();
+                            course.setId(sId);
+                        }
                         sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
                                 "VALUES(:applicantId, :courseId);";
                         conn.createQuery(sql)
