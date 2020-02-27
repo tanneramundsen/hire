@@ -71,8 +71,8 @@ public class Sql2oStaffMemberDaoTest {
         s1.setCourses(courses);
         c1.setInstructors(staffMembers);
 
-        courseDao.add(c1);
         staffMemberDao.add(s1);
+        courseDao.add(c1);
 
         StaffMember s2 = staffMemberDao.read(s1.getId());
         List<Course> courses2 = s2.getCourses();
