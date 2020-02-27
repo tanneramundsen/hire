@@ -97,7 +97,7 @@ public final class DaoFactory {
         if (DROP_TABLES_IF_EXIST) dropStaffMemberCoursesTable(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS StaffMembers_Courses(" +
                 "staffId INTEGER PRIMARY KEY," +
-                "courseId INTEGER PRIMARY KEY," +
+                "courseId INTEGER," +
                 "FOREIGN KEY (staffId) REFERENCES StaffMembers(id)" +
                 "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
                 ");";
@@ -110,7 +110,7 @@ public final class DaoFactory {
         if (DROP_TABLES_IF_EXIST) dropQualifiedApplicantsCoursesTable(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS QualifiedApplicants_Courses(" +
                 "applicantId INTEGER PRIMARY KEY," +
-                "courseId INTEGER PRIMARY KEY," +
+                "courseId INTEGER," +
                 "FOREIGN KEY (applicantId) REFERENCES Applicants(id)" +
                 "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
                 ");";
@@ -123,7 +123,7 @@ public final class DaoFactory {
         if (DROP_TABLES_IF_EXIST) dropHiredApplicantsCoursesTable(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS HiredApplicants_Courses(" +
                 "applicantId INTEGER PRIMARY KEY," +
-                "courseId INTEGER PRIMARY KEY," +
+                "courseId INTEGER," +
                 "FOREIGN KEY (applicantId) REFERENCES Applicants(id)" +
                 "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
                 ");";
