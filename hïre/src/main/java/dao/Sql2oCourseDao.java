@@ -67,6 +67,7 @@ public class Sql2oCourseDao implements CourseDao {
                                 .executeUpdate()
                                 .getKey();
                         hired.setId(sId);
+                        hired.setHiredCourse(course);
                     }
                     int applicantId = hired.getId();
                     int courseId = course.getId();
