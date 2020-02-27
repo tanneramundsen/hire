@@ -51,14 +51,14 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
+                    <a href="/" class="logo">
                         hïre
                     </a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
-                        <li class="scroll-to-section"><a href="signup.html">Sign Up</a></li>
+                        <li class="scroll-to-section"><a href="/" class="active">Home</a></li>
+                        <li class="scroll-to-section"><a href="/signup">Sign Up</a></li>
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -96,37 +96,37 @@
 					<span class="login100-form-title p-b-49">
 						Login
 					</span>
-
-                <div class="wrap-input100 validate-input m-b-23" data-validate = "JHED is required">
-                    <span class="label-input100">JHED</span>
-                    <input class="input100" type="text" name="jhed" placeholder="Type your JHED">
-                    <span class="focus-input100" data-symbol="&#xf206;"></span>
-                </div>
-                <!--
-                <div class="wrap-input100 validate-input" data-validate="Password is required">
-                    <span class="label-input100">Password</span>
-                    <input class="input100" type="password" name="pass" placeholder="Type your password">
-                    <span class="focus-input100" data-symbol="&#xf190;"></span>
-                </div>
-
-                <div class="text-right p-t-8 p-b-31">
-                    <a href="#">
-                        Forgot password?
-                    </a>
-                </div>
-                -->
-                <div class="text-right p-t-8 p-b-31"></div>
-
-                <div class="container-login100-form-btn">
-                    <div class="wrap-login100-form-btn">
-                        <div class="login100-form-bgbtn"></div>
-                        <button class="login100-form-btn">
-                            Login
-                        </button>
+                <form action="/login" method="post">
+                    <div class="wrap-input100 validate-input m-b-23" data-validate = "JHED is required">
+                        <span class="label-input100">JHED</span>
+                        <input class="input100" type="text" name="jhed" placeholder="Type your JHED">
+                        <span class="focus-input100" data-symbol="&#xf206;"></span>
                     </div>
-                </div>
+                    <!--
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <span class="label-input100">Password</span>
+                        <input class="input100" type="password" name="pass" placeholder="Type your password">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
 
-            </form>
+                    <div class="text-right p-t-8 p-b-31">
+                        <a href="#">
+                            Forgot password?
+                        </a>
+                    </div>
+                    -->
+                    <div class="text-right p-t-8 p-b-31"></div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
         </div>
     </div>
 </div>

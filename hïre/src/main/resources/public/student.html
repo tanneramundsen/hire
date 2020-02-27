@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
 
     <title>Landing Page</title>
 
@@ -51,7 +52,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
+                    <a href="/" class="logo">
                         HIRE
                     </a>
                     <!-- ***** Logo End ***** -->
@@ -59,7 +60,7 @@
                     <ul class="nav">
                         <!-- add profile html-->
                         <li class="scroll-to-section"><a href="">My Profile</a></li>
-                        <li class="scroll-to-section"><a href="index.html">Sign Out</a></li>
+                        <li class="scroll-to-section"><a href="/">Sign Out</a></li>
                     </ul>
                     <!-- ***** Menu End ***** -->
                 </nav>
@@ -75,7 +76,7 @@
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
                 <div class="section-heading">
-                    <h2>Welcome Back, [Student}] !</h2>
+                    <h2>Welcome Back, {{jhed}} !</h2>
                     <h2></h2>
                     <h6>See your courses below</h6>
                 </div>
@@ -89,7 +90,8 @@
 <section class="section" id="features">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
+                 data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
                 <div class="features-item">
                     <div class="features-icon">
                         <img src="assets/images/features-icon-1.png" alt="">
@@ -103,7 +105,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
+                 data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
                 <div class="features-item">
                     <div class="features-icon">
                         <img src="assets/images/features-icon-1.png" alt="">
@@ -117,7 +120,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
+                 data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
                 <div class="features-item">
                     <div class="features-icon">
                         <img src="assets/images/features-icon-1.png" alt="">
@@ -131,7 +135,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
+                 data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
                 <div class="features-item">
                     <div class="features-icon">
                         <img src="assets/images/features-icon-1.png" alt="">
@@ -145,7 +150,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
+                 data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
                 <div class="features-item">
                     <div class="features-content">
                         <a href="#" class="text-button-icon">
@@ -208,14 +214,14 @@
 
 <script>
 
-    $(function() {
+    $(function () {
         var selectedClass = "";
-        $("p").click(function(){
+        $("p").click(function () {
             selectedClass = $(this).attr("data-rel");
             $("#portfolio").fadeTo(50, 0.1);
-            $("#portfolio div").not("."+selectedClass).fadeOut();
-            setTimeout(function() {
-                $("."+selectedClass).fadeIn();
+            $("#portfolio div").not("." + selectedClass).fadeOut();
+            setTimeout(function () {
+                $("." + selectedClass).fadeIn();
                 $("#portfolio").fadeTo(50, 1);
             }, 500);
 
