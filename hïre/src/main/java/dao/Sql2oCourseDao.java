@@ -38,7 +38,7 @@ public class Sql2oCourseDao implements CourseDao {
                 for (StaffMember staffMember : course.getInstructors()) {
                     int staffId = staffMember.getId();
                     if (staffId == 0) {
-                        sql = "INSERT INTO StaffMember(name, jhed) VALUES(:name, :jhed)";
+                        sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed)";
                         int sId = (int) conn.createQuery(sql)
                                 .addParameter("name", staffMember.getName())
                                 .addParameter("jhed", staffMember.getJhed())
@@ -59,10 +59,9 @@ public class Sql2oCourseDao implements CourseDao {
                 for (Applicant hired : course.getHiredApplicants()) {
                     int hiredId = hired.getId();
                     if (hiredId == 0) {
-                        sql = "INSERT INTO StaffMember(name, email, jhed) VALUES(:name, :email, :jhed)";
+                        sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed)";
                         int sId = (int) conn.createQuery(sql)
                                 .addParameter("name", hired.getName())
-                                .addParameter("email", hired.getEmail())
                                 .addParameter("jhed", hired.getJhed())
                                 .executeUpdate()
                                 .getKey();
@@ -82,7 +81,7 @@ public class Sql2oCourseDao implements CourseDao {
                 for (Applicant qualified : course.getQualifiedApplicants()) {
                     int qualifiedId = qualified.getId();
                     if (qualifiedId == 0) {
-                        sql = "INSERT INTO StaffMember(name, email, jhed) VALUES(:name, :email, :jhed)";
+                        sql = "INSERT INTO StaffMembers(name, email, jhed) VALUES(:name, :email, :jhed)";
                         int sId = (int) conn.createQuery(sql)
                                 .addParameter("name", qualified.getName())
                                 .addParameter("email", qualified.getEmail())
