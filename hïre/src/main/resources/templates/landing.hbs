@@ -77,7 +77,11 @@
                 <div class="section-heading">
                     <h2>Welcome Back {{ jhed }}!</h2>
                     <h2></h2>
-                    <h6>Manage your courses below</h6>
+                    {{#if isStaffMember}}
+                        <h6>Manage your courses below</h6>
+                    {{else}}
+                        <h6>See your courses below</h6>
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -89,63 +93,30 @@
 <section class="section" id="features">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
-                <div class="features-item">
-                    <div class="features-icon">
-                        <img src="assets/images/features-icon-1.png" alt="">
-                    </div>
-                    <div class="features-content">
-                        <h4>Gateway Java</h4>
-                        <p>Proin euismod sem ut diam ultricies, ut faucibus velit ultricies. Nam eu turpis quam. Duis ac condimentum eros.</p>
-                        <a href="#" class="text-button-icon">
-                            Manage Course <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
-                <div class="features-item">
-                    <div class="features-icon">
-                        <img src="assets/images/features-icon-1.png" alt="">
-                    </div>
-                    <div class="features-content">
-                        <h4>Data Structures</h4>
-                        <p>Proin euismod sem ut diam ultricies, ut faucibus velit ultricies. Nam eu turpis quam. Duis ac condimentum eros.</p>
-                        <a href="#" class="text-button-icon">
-                            Manage Course <i class="fa fa-arrow-right"></i>
-                        </a>
+            {{#each courseList}}
+                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
+                    <div class="features-item">
+                        <div class="features-icon">
+                            <img src="assets/images/features-icon-1.png" alt="">
+                        </div>
+                        <div class="features-content">
+                            <h4>{{name}}</h4>
+                            <p>Course Number: {{courseNumber}}</p>
+                            {{#if isStaffMember}}
+                                <a href="" class="text-button-icon">
+                                    Manage Course <i class="fa fa-arrow-right"></i>
+                                </a>
+                            {{else}}
+                                <a href="" class="text-button-icon">
+                                    See Progress <i class="fa fa-arrow-right"></i>
+                                </a>
+                            {{/if}}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-                <div class="features-item">
-                    <div class="features-icon">
-                        <img src="assets/images/features-icon-1.png" alt="">
-                    </div>
-                    <div class="features-content">
-                        <h4>Course #3</h4>
-                        <p>Proin euismod sem ut diam ultricies, ut faucibus velit ultricies. Nam eu turpis quam. Duis ac condimentum eros.</p>
-                        <a href="#" class="text-button-icon">
-                            Manage Course <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-                <div class="features-item">
-                    <div class="features-icon">
-                        <img src="assets/images/features-icon-1.png" alt="">
-                    </div>
-                    <div class="features-content">
-                        <h4>Course #4</h4>
-                        <p>Proin euismod sem ut diam ultricies, ut faucibus velit ultricies. Nam eu turpis quam. Duis ac condimentum eros.</p>
-                        <a href="#" class="text-button-icon">
-                            Manage Course <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+            {{/each}}
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
+                 data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
                 <div class="features-item">
                     <div class="features-content">
                         <a href="#" class="text-button-icon">

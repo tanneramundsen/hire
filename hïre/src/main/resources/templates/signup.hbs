@@ -119,23 +119,19 @@
                             <div class="col-md-6 col-sm-12">
                                 <div class="input-group">
                                     <label class="label">JHED</label>
-                                    <div class="input-group-icon">
-                                        <input class="input--style-4" type="text" name="jhed">
-                                    </div>
+                                    <input class="input--style-4" type="text" name="jhed">
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-12">
                                 <div class="input-group">
-                                    <label class="label">I am a...</label>
-                                    <div class="p-t-10">
-                                        <label class="radio-container m-r-45">Student
-                                            <input type="radio" checked="checked" name="profileType">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label class="radio-container">Staff Member
-                                            <input type="radio" name="profileType">
-                                            <span class="checkmark"></span>
-                                        </label>
+                                    <label class="label">Choose account type:</label>
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="profileType">
+                                            <option disabled="disabled" selected="selected">I am a...</option>
+                                            <option>Student</option>
+                                            <option>Staff Member</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
                                     </div>
                                 </div>
                             </div>
@@ -150,19 +146,23 @@
                             </div>
                         </div>
                         -->
-                        <div class="input-group">
-                            <label class="label">Courses Taken:</label>
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="courses">
-                                    <option disabled="disabled" selected="selected">Choose courses</option>
-                                    <option>Gateway Java</option>
-                                    <option>Intermediate Programming</option>
-                                    <option>Data Structures</option>
-                                    <option>Computer Systems Fundamentals</option>
-                                    <option>Intro Algorithms</option>
-                                    <option>Automata</option>
-                                </select>
-                                <div class="select-dropdown"></div>
+                        <div class="row row-space">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="input-group">
+                                    <label class="label">Courses Taken:</label>
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="courses">
+                                            <option disabled="disabled" selected="selected">Choose courses</option>
+                                            <option>Gateway Java</option>
+                                            <option>Intermediate Programming</option>
+                                            <option>Data Structures</option>
+                                            <option>Computer Systems Fundamentals</option>
+                                            <option>Intro Algorithms</option>
+                                            <option>Automata</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="p-t-15">
