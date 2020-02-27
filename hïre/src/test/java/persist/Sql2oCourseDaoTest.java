@@ -41,9 +41,9 @@ public class Sql2oCourseDaoTest {
     @Before
     public void setUp() {
         // below method drops all dependent tables and creates new ones
-        courseDao = (Sql2oCourseDao) DaoFactory.getCourseDao();
         applicantDao = (Sql2oApplicantDao) DaoFactory.getApplicantDao();
         staffMemberDao = (Sql2oStaffMemberDao) DaoFactory.getStaffMemberDao();
+        courseDao = (Sql2oCourseDao) DaoFactory.getCourseDao();
     }
 
     @Test
@@ -148,6 +148,7 @@ public class Sql2oCourseDaoTest {
         List<Applicant> checkQualifiedList = c2.getQualifiedApplicants();
         List<Applicant> checkHiredList = c2.getHiredApplicants();
         List<StaffMember> checkInstructor = c2.getInstructors();
+
         assertNotEquals(0, checkQualifiedList.size());
         assertNotEquals(0, checkHiredList.size());
         assertNotEquals(0, checkInstructor.size());
@@ -196,7 +197,7 @@ public class Sql2oCourseDaoTest {
         assertEquals(0, a2.getEligibleCourses().size());
         assertNull(a2.getHiredCourse());
         //make sure deleted course does not show up on instructor's course list
-        assertEquals(0, sm2.getCourses());
+        assertEquals(0, sm2.getCourses().size());
     }
 
     @Test (expected = DaoException.class)
@@ -302,4 +303,3 @@ public class Sql2oCourseDaoTest {
     }
 
 }
-

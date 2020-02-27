@@ -72,7 +72,7 @@ public final class DaoFactory {
                 "name VARCHAR(100) NOT NULL, " +
                 "courseNumber VARCHAR(100) NOT NULL, " +
                 "semester VARCHAR(100) NOT NULL," +
-                "hiringComplete BOOLEAN" +
+                "hiringComplete INTEGER" +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
