@@ -88,10 +88,10 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
             // Get corresponding courses according to joining table
             sql = "SELECT Courses.* " +
-                    "FROM StaffMember_Courses " +
+                    "FROM StaffMembers_Courses " +
                   "INNER JOIN Courses " +
-                    "ON StaffMember_Courses.courseId = Courses.id " +
-                  "WHERE StaffMember_Courses.staffId = :staffId";
+                    "ON StaffMembers_Courses.courseId = Courses.id " +
+                  "WHERE StaffMembers_Courses.staffId = :staffId";
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("staffId", id)
                     .executeAndFetch(Course.class);
