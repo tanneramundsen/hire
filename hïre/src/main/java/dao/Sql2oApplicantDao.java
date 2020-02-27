@@ -17,15 +17,13 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public void add(Applicant applicant) throws DaoException {
 
-        try (Connection conn = sql2o.open()) {
+        //check for duplicates
+        if (read(applicant.getId()) != null) {
+            update(applicant);
+        } else {
+            try (Connection conn = sql2o.open()) {
 
-            //check for duplicates
-            String sql = "SELECT id FROM Applicants WHERE id = :id AND name = :name;";
-            List<Applicant> duplicates = conn.createQuery(sql)
-                    .addParameter("id", applicant.getId())
-                    .addParameter("name", applicant.getName())
-                    .executeAndFetch(Applicant.class);
-            if(duplicates == null) {
+                String sql;
                 //no duplicates --> insert
                 sql = "INSERT INTO Applicants(name, email, jhed)" +
                         "VALUES(:name, :email, :jhed);";
@@ -66,13 +64,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             .addParameter("courseId", course.getId())
                             .executeUpdate();
                 }
-            } else {
-                //yes duplicates --> update
-                this.update(applicant);
+            } catch (Sql2oException ex) {
+                throw new DaoException("Unable to add the applicant", ex);
             }
-
-        } catch (Sql2oException ex) {
-            throw new DaoException("Unable to add the applicant", ex);
         }
     }
 
