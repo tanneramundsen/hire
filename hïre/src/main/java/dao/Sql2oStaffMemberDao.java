@@ -1,5 +1,6 @@
 package dao;
 
+import exception.DaoException;
 import model.Course;
 import model.StaffMember;
 import org.sql2o.Connection;
@@ -17,61 +18,134 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
     }
 
     @Override
-    public void create(StaffMember staffMember) {
+    public void add(StaffMember staffMember) throws DaoException {
         try(Connection conn = sql2o.open()) {
-            for (Course course: staffMember.getCourses()) {
-                String sql = "INSERT INTO StaffMembers(name, jhed, courseId) VALUES(:name, :url, :courseId);";
-                int id = (int) conn.createQuery(sql)
+            String sql;
+            int staffId = staffMember.getId();
+
+            if (staffId == 0) {
+                // Normal insert
+                sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed);";
+                staffId = (int) conn.createQuery(sql)
                         .addParameter("name", staffMember.getName())
                         .addParameter("jhed", staffMember.getJhed())
-                        .addParameter("courseId", course.getId())
                         .executeUpdate()
                         .getKey();
+                staffMember.setId(staffId);
 
-                staffMember.setId(id);
+                // Add courses
+                for (Course course: staffMember.getCourses()) {
+                    int courseId = course.getId();
+                    if (courseId == 0) {
+                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
+                                "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                        courseId = (int) conn.createQuery(sql)
+                                .addParameter("name", course.getName())
+                                .addParameter("courseNumber", course.getCourseNumber())
+                                .addParameter("semester", course.getSemester())
+                                .addParameter("hiringComplete", course.isHiringComplete())
+                                .executeUpdate()
+                                .getKey();
+
+                        course.setId(courseId);
+                    }
+
+                    // Insert into joining table
+                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
+                    conn.createQuery(sql)
+                            .addParameter("staffId", staffId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
+            else {
+                // Staff member already exists, just update
+                this.update(staffMember);
+                staffId = staffMember.getId();
+            }
+
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to add staff member", e);
+            throw new DaoException("Unable to add staff member", e);
         }
     }
 
     @Override
-    public StaffMember read(int id) {
+    public StaffMember read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Reviews WHERE id = :id";
-            return conn.createQuery(sql).executeAndFetch(StaffMember.class).get(0);
+            // Populate non-list attributes of StaffMember object
+            String sql = "SELECT * FROM StaffMembers WHERE id = :id";
+            StaffMember staffMember = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(StaffMember.class)
+                    .get(0);
+
+            // Get corresponding courses according to joining table
+            sql = "SELECT Courses.* " +
+                    "FROM StaffMember_Courses " +
+                  "INNER JOIN Courses " +
+                    "ON StaffMember_Courses.courseId = Courses.id " +
+                  "WHERE StaffMember_Courses.staffId = :staffId";
+            List<Course> courses = conn.createQuery(sql)
+                    .addParameter("staffId", id)
+                    .executeAndFetch(Course.class);
+            staffMember.setCourses(courses);
+
+            return staffMember;
+
+        } catch (Sql2oException e) {
+            throw new DaoException("Unable to read staff member", e);
         }
     }
 
     @Override
-    public void update(StaffMember staffMember) {
+    public void update(StaffMember staffMember) throws DaoException {
         try(Connection conn = sql2o.open()) {
-            String sql = "UPDATE StaffMembers SET name = :name, jhed = :jhed, courseId = :courseId WHERE id = :id;";
+            String sql = "UPDATE StaffMembers SET name = :name, jhed = :jhed WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", staffMember.getName())
                     .addParameter("jhed", staffMember.getJhed())
-                    .addParameter("courseId", staffMember.getCourses())
                     .addParameter("id", staffMember.getId())
                     .executeUpdate();
+
+            // Delete existing entries with this staff member in joining table
+            sql = "DELETE FROM StaffMembers_Courses WHERE staffId = :staffId;";
+            conn.createQuery(sql)
+                    .addParameter("staffId", staffMember.getId())
+                    .executeUpdate();
+
+            // Fresh update to joining table
+            int staffId = staffMember.getId();
+            for (Course course: staffMember.getCourses()) {
+                int courseId = course.getId();
+                sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
+                conn.createQuery(sql)
+                        .addParameter("staffId", staffId)
+                        .addParameter("courseId", courseId)
+                        .executeUpdate();
+            }
         } catch (Sql2oException e) {
-            throw new RuntimeException("Unable to update staff member", e);
+            throw new DaoException("Unable to update staff member", e);
         }
     }
 
     @Override
-    public void delete(StaffMember staffMember) {
+    public void delete(StaffMember staffMember) throws DaoException {
         try(Connection conn = sql2o.open()) {
-            String sql = "DELETE FROM StaffMembers where id = :id";
+            int staffId = staffMember.getId();
+
+            // Delete from joining table
+            String sql = "DELETE FROM StaffMembers_Courses WHERE staffId = :staffId;";
             conn.createQuery(sql)
-                    .addParameter("id", staffMember.getId())
+                    .addParameter("staffId", staffId)
+                    .executeUpdate();
+
+            // Delete from StaffMembers
+            sql = "DELETE FROM StaffMembers WHERE id = :id";
+            conn.createQuery(sql)
+                    .addParameter("id", staffId)
                     .executeUpdate();
         } catch(Sql2oException e) {
-            throw new RuntimeException("Unable to delete staff member", e);
+            throw new DaoException("Unable to delete staff member", e);
         }
-    }
-
-    @Override
-    public List<Course> getCoursesByStaff(StaffMember staffMember) {
-        return staffMember.getCourses();
     }
 }

@@ -1,22 +1,15 @@
 package dao;
 
-import model.Course;
+import exception.DaoException;
 import model.StaffMember;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
-import org.sql2o.Sql2oException;
-
-import java.util.List;
 
 public interface StaffMemberDao {
 
-    void create(StaffMember staffMember);
+    void add(StaffMember staffMember) throws DaoException;
 
-    StaffMember read(int id);
+    StaffMember read(int id) throws DaoException;
 
-    void update(StaffMember staffMember);
+    void update(StaffMember staffMember) throws DaoException;
 
-    void delete(StaffMember staffMember);
-
-    List<Course> getCoursesByStaff(StaffMember staffMember);
+    void delete(StaffMember staffMember) throws DaoException;
 }

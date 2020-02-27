@@ -6,6 +6,7 @@ public class Applicant extends User {
     String name;
     String email;
     String jhed;
+    Course hiredCourse;
     List<Course> eligibleCourses;
 
     @Override
@@ -63,6 +64,14 @@ public class Applicant extends User {
 
     public void setEligibleCourses(List<Course> eligibleCourses) {
         this.eligibleCourses = eligibleCourses;
+    }
+
+    public Course getHiredCourse() {
+        return hiredCourse;
+    }
+
+    public void setHiredCourse(Course hiredCourse) {
+        this.hiredCourse = hiredCourse;
     }
 
     @Override

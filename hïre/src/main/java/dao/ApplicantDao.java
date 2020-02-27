@@ -1,14 +1,20 @@
 package dao;
 
+import exception.DaoException;
 import model.Applicant;
-//import exception.DaoException;
 import java.util.List;
 
 public interface ApplicantDao {
 
-    void add(Applicant applicant) throws RuntimeException;
+    void add(Applicant applicant) throws DaoException;
 
-    List<Applicant> findAll();
+    void update(Applicant applicant) throws DaoException;
 
-    List<Applicant> findByCourseId(int courseId);
+    void delete(Applicant applicant) throws DaoException;
+
+    Applicant read(int id) throws DaoException;
+
+    List<Applicant> findAll() throws DaoException;
+
+    List<Applicant> findByCourseId(int courseId) throws DaoException;
 }

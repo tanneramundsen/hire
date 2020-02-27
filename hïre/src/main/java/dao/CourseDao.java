@@ -1,16 +1,18 @@
 package dao;
 
+import exception.DaoException;
 import model.Course;
-import model.StaffMember;
 
 import java.util.List;
 
 public interface CourseDao {
-    void add(Course course) throws RuntimeException;
+    void add(Course course) throws DaoException;
 
-    void update(Course course) throws RuntimeException;
+    Course read(int id) throws DaoException;
 
-    void delete(Course course) throws RuntimeException;
+    void update(Course course) throws DaoException;
 
-    List<Course> findAll();
+    void delete(Course course) throws DaoException;
+
+    List<Course> findAll() throws DaoException;
 }
