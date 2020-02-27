@@ -14,11 +14,15 @@ import io.javalin.plugin.json.JavalinJson;
 import model.Course;
 import model.StaffMember;
 import model.Applicant;
+import spark.ModelAndView;
+import spark.template.handlebars.HandlebarsTemplateEngine;
 
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static spark.Spark.*;
 
 public final class ApiServer {
 
@@ -73,7 +77,9 @@ public final class ApiServer {
             // run after all requests
             ctx.contentType("application/json");
         });
+
     }
+
     private static void postCourses(CourseDao courseDao) {
         // client adds a course through HTTP POST request
         app.post("/courses", ctx -> {
@@ -179,8 +185,5 @@ public final class ApiServer {
     public static void stop() {
         app.stop();
     }
-
-
-
 
 }
