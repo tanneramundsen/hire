@@ -34,34 +34,40 @@ public class Sql2oCourseDao implements CourseDao {
                     .getKey();
             course.setId(id);
 
-            for (StaffMember staffMember: course.getInstructors()) {
-                int staffId = staffMember.getId();
-                int courseId = course.getId();
-                sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) Values(:staffId, :courseId)";
-                conn.createQuery(sql)
-                        .addParameter("staffId", staffId)
-                        .addParameter("courseId", courseId)
-                        .executeUpdate();
+            if (course.getInstructors() != null) {
+                for (StaffMember staffMember : course.getInstructors()) {
+                    int staffId = staffMember.getId();
+                    int courseId = course.getId();
+                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) Values(:staffId, :courseId)";
+                    conn.createQuery(sql)
+                            .addParameter("staffId", staffId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
 
-            for (Applicant hired: course.getHiredApplicants()) {
-                int applicantId = hired.getId();
-                int courseId = course.getId();
-                sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
-                conn.createQuery(sql)
-                        .addParameter("applicantId", applicantId)
-                        .addParameter("courseId", courseId)
-                        .executeUpdate();
+            if (course.getHiredApplicants() != null) {
+                for (Applicant hired : course.getHiredApplicants()) {
+                    int applicantId = hired.getId();
+                    int courseId = course.getId();
+                    sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", applicantId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
 
-            for (Applicant qualified: course.getQualifiedApplicants()) {
-                int applicantId = qualified.getId();
-                int courseId = course.getId();
-                sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
-                conn.createQuery(sql)
-                        .addParameter("applicantId", applicantId)
-                        .addParameter("courseId", courseId)
-                        .executeUpdate();
+            if(course.getQualifiedApplicants() != null) {
+                for (Applicant qualified : course.getQualifiedApplicants()) {
+                    int applicantId = qualified.getId();
+                    int courseId = course.getId();
+                    sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) Values(:applicantId, :courseId)";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", applicantId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
 
         } catch (Sql2oException e) {
@@ -134,34 +140,40 @@ public class Sql2oCourseDao implements CourseDao {
                     .addParameter("id", course.getId())
                     .executeUpdate();
 
-            for (StaffMember staffMember: course.getInstructors()) {
-                int staffId = staffMember.getId();
-                int courseId = course.getId();
-                sql = "UPDATE StaffMembers_Courses SET staffId = :staffId, courseId = :courseId";
-                conn.createQuery(sql)
-                        .addParameter("staffId", staffId)
-                        .addParameter("courseId", courseId)
-                        .executeUpdate();
+            if (course.getInstructors() != null) {
+                for (StaffMember staffMember : course.getInstructors()) {
+                    int staffId = staffMember.getId();
+                    int courseId = course.getId();
+                    sql = "UPDATE StaffMembers_Courses SET staffId = :staffId, courseId = :courseId";
+                    conn.createQuery(sql)
+                            .addParameter("staffId", staffId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
 
-            for (Applicant hired: course.getHiredApplicants()) {
-                int applicantId = hired.getId();
-                int courseId = course.getId();
-                sql = "UPDATE HiredApplicants_Courses SET applicantId = :applicantId, courseId = :courseId";
-                conn.createQuery(sql)
-                        .addParameter("applicantId", applicantId)
-                        .addParameter("courseId", courseId)
-                        .executeUpdate();
+            if (course.getHiredApplicants() != null) {
+                for (Applicant hired : course.getHiredApplicants()) {
+                    int applicantId = hired.getId();
+                    int courseId = course.getId();
+                    sql = "UPDATE HiredApplicants_Courses SET applicantId = :applicantId, courseId = :courseId";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", applicantId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
 
-            for (Applicant qualified: course.getQualifiedApplicants()) {
-                int applicantId = qualified.getId();
-                int courseId = course.getId();
-                sql = "UPDATE QualifiedApplicants_Courses SET applicantId = :applicantId, courseId = :courseId";
-                conn.createQuery(sql)
-                        .addParameter("applicantId", applicantId)
-                        .addParameter("courseId", courseId)
-                        .executeUpdate();
+            if(course.getQualifiedApplicants() != null) {
+                for (Applicant qualified : course.getQualifiedApplicants()) {
+                    int applicantId = qualified.getId();
+                    int courseId = course.getId();
+                    sql = "UPDATE QualifiedApplicants_Courses SET applicantId = :applicantId, courseId = :courseId";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", applicantId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
             }
 
         } catch (Sql2oException e) {
