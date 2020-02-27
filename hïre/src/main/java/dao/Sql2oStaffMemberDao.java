@@ -25,9 +25,10 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
             if (staffId == 0) {
                 // Normal insert
-                sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :url);";
+                sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed);";
                 staffId = (int) conn.createQuery(sql)
-                        .bind(staffMember)
+                        .addParameter("name", staffMember.getName())
+                        .addParameter("jhed", staffMember.getJhed())
                         .executeUpdate()
                         .getKey();
                 staffMember.setId(staffId);
@@ -45,7 +46,10 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                     sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
                             "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
                     courseId = (int) conn.createQuery(sql)
-                            .bind(course)
+                            .addParameter("name", course.getName())
+                            .addParameter("courseNumber", course.getCourseNumber())
+                            .addParameter("semester", course.getSemester())
+                            .addParameter("hiringComplete", course.isHiringComplete())
                             .executeUpdate()
                             .getKey();
 

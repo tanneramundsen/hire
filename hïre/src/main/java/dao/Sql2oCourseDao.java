@@ -25,7 +25,11 @@ public class Sql2oCourseDao implements CourseDao {
             String sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
                     "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
             int id = (int) conn.createQuery(sql)
-                    .bind(course)
+                    //.bind(course)
+                    .addParameter("name", course.getName())
+                    .addParameter("courseNumber", course.getCourseNumber())
+                    .addParameter("semester", course.getSemester())
+                    .addParameter("hiringComplete", course.isHiringComplete())
                     .executeUpdate()
                     .getKey();
             course.setId(id);
@@ -109,7 +113,10 @@ public class Sql2oCourseDao implements CourseDao {
             String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, semester = :semester, " +
                     "hiringComplete = :hiringComplete";
             conn.createQuery(sql)
-                    .bind(course)
+                    .addParameter("name", course.getName())
+                    .addParameter("courseNumber", course.getCourseNumber())
+                    .addParameter("semester", course.getSemester())
+                    .addParameter("hiringComplete", course.isHiringComplete())
                     .executeUpdate();
 
             List<StaffMember> instructors = course.getInstructors();
