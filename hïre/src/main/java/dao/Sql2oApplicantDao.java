@@ -8,6 +8,7 @@ import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
 import java.util.List;
+import java.util.Map;
 
 public class Sql2oApplicantDao implements ApplicantDao {
 
@@ -179,6 +180,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 return null;
             }
 
+            // TODO: Figure out why executeAndFetch does not fill in name
+            sql = "SELECT name FROM Applicants WHERE id = :id";
+            List<Map<String, Object>> names = conn.createQuery(sql)
+                    .addParameter("id", id).executeAndFetchTable().asList();
+            applicant.setName((String) names.get(0).get("name"));
+
             //get corresponding eligibleCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
@@ -217,6 +224,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
             if (applicant == null) {
                 return null;
             }
+
+            // TODO: Figure out why executeAndFetch does not fill in name
+            sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
+            List<Map<String, Object>> names = conn.createQuery(sql)
+                    .addParameter("jhed", jhed).executeAndFetchTable().asList();
+            applicant.setName((String) names.get(0).get("name"));
 
             //get corresponding eligibleCourses according to joining table
             sql = "SELECT Courses.* " +

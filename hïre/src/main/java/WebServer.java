@@ -54,7 +54,7 @@ public class WebServer {
                 name = staffMemberDao.read(jhed).getName();
                 courseList = staffMemberDao.read(jhed).getCourses();
             } else {
-                name = staffMemberDao.read(jhed).getName();
+                name = applicantDao.read(jhed).getName();
                 courseList = applicantDao.read(jhed).getEligibleCourses();
             }
             model.put("name", name);
