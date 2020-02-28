@@ -207,6 +207,45 @@ public class Sql2oApplicantDao implements ApplicantDao {
         }
     }
 
+    public Applicant read(String jhed) throws DaoException {
+        try (Connection conn = sql2o.open()) {
+            String sql = "SELECT * FROM Applicants WHERE jhed = :jhed;";
+            Applicant applicant = conn.createQuery(sql)
+                    .addParameter("jhed", jhed)
+                    .executeAndFetchFirst(Applicant.class);
+
+            if (applicant == null) {
+                return null;
+            }
+
+            //get corresponding eligibleCourses according to joining table
+            sql = "SELECT Courses.* " +
+                    "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
+                    "ON QualifiedApplicants_Courses.courseId = Courses.id " +
+                    "WHERE QualifiedApplicants_Courses.applicantId = :applicantId;";
+            List<Course> courses = conn.createQuery(sql)
+                    .addParameter("applicantId", applicant.getId())
+                    .executeAndFetch(Course.class);
+            applicant.setEligibleCourses(courses);
+
+            sql = "SELECT Courses.* " +
+                    "FROM HiredApplicants_Courses INNER JOIN Courses " +
+                    "ON HiredApplicants_Courses.courseId = Courses.id " +
+                    "WHERE HiredApplicants_Courses.applicantId = :applicantId;";
+            List<Course> hiredCourses = (conn.createQuery(sql)
+                    .addParameter("applicantId", applicant.getId())
+                    .executeAndFetch(Course.class));
+            if (!hiredCourses.isEmpty()) {
+                applicant.setHiredCourse(hiredCourses.get(0));
+                //should only be one
+            }
+            return applicant;
+
+        } catch (Sql2oException e) {
+            throw new DaoException("Unable to read applicant", e);
+        }
+    }
+
     @Override
     public List<Applicant> findAll() throws DaoException {
         try (Connection conn = sql2o.open()) {

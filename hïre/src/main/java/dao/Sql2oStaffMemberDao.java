@@ -72,7 +72,6 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
         }
     }
 
-    @Override
     public StaffMember read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             // Populate non-list attributes of StaffMember object
@@ -99,6 +98,42 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                     "WHERE StaffMembers_Courses.staffId = :staffId";
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("staffId", id)
+                    .executeAndFetch(Course.class);
+            staffMember.setCourses(courses);
+
+            return staffMember;
+
+        } catch (Sql2oException e) {
+            throw new DaoException("Unable to read staff member", e);
+        }
+    }
+
+    public StaffMember read(String jhed) throws DaoException {
+        try (Connection conn = sql2o.open()) {
+            // Populate non-list attributes of StaffMember object
+            String sql = "SELECT * FROM StaffMembers WHERE jhed = :jhed";
+            StaffMember staffMember = conn.createQuery(sql)
+                    .addParameter("jhed", jhed)
+                    .executeAndFetchFirst(StaffMember.class);
+
+            if (staffMember == null) {
+                return null;
+            }
+
+            // TODO: Figure out why executeAndFetch does not fill in name
+            sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
+            List<Map<String, Object>> names = conn.createQuery(sql)
+                    .addParameter("jhed", jhed).executeAndFetchTable().asList();
+            staffMember.setName((String) names.get(0).get("name"));
+
+            // Get corresponding courses according to joining table
+            sql = "SELECT Courses.* " +
+                    "FROM StaffMembers_Courses " +
+                    "INNER JOIN Courses " +
+                    "ON StaffMembers_Courses.courseId = Courses.id " +
+                    "WHERE StaffMembers_Courses.staffId = :staffId";
+            List<Course> courses = conn.createQuery(sql)
+                    .addParameter("staffId", staffMember.getId())
                     .executeAndFetch(Course.class);
             staffMember.setCourses(courses);
 
