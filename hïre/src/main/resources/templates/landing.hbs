@@ -58,7 +58,7 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <!-- add profile html-->
-                        <li class="scroll-to-section"><a href="">My Profile</a></li>
+                        <li class="scroll-to-section"><a href="/student-profile">My Profile</a></li>
                         <li class="scroll-to-section"><a href="/">Sign Out</a></li>
                     </ul>
                     <!-- ***** Menu End ***** -->
@@ -78,10 +78,20 @@
                     <h2>Welcome Back {{ name }}!</h2>
                     <h2></h2>
                     {{#if isStaffMember}}
+                        <a href="" class="text-button-icon">
+                            Complete CA Job Description  <i class="fa fa-arrow-right"></i>
+                        </a>
+                    {{else}}
+                        <a href="/student-profile" class="text-button-icon">
+                            Complete Application Process <i class="fa fa-arrow-right"></i>
+                        </a>
+                    {{/if}}
+                    {{#if isStaffMember}}
                         <h6>Manage your courses below</h6>
                     {{else}}
                         <h6>See your courses below</h6>
                     {{/if}}
+
                 </div>
             </div>
         </div>
