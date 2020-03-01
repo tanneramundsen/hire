@@ -82,9 +82,9 @@ It does not need to be exhaustive.
 
     * Display all potential applicants for each course
 
-Retrospective
+# Retrospective
 
-**Accomplishments from iteration 1: **
+**Accomplishments from iteration 1:**
 
 * Login Page created
 
@@ -102,7 +102,7 @@ Retrospective
 
 * Implemented DaoFactory and DaoUtil to aid in database setup and testing.
 
-**Features we did not deliver: **
+**Features we did not deliver:**
 
 * We were unable to finish database integration into our frontend (WebServer) before the deadline for iteration 1. This meant that users were able to view the home page, login, and create a profile, but none of the data was persisted or displayed in a meaningful way.
 
