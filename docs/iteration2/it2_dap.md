@@ -25,8 +25,6 @@ List the User Stories that you will implement in this iteration.
 - As a staff member, I want to view the names of the potential CA applicants so that I can keep track of who is interested in assisting my course.
 - As a staff member, I want to see the full application of CA applicants that have applied to a given course that If am teaching so that I can compare applicants.
 
-
-
 # Tasks
 A tentative list of the "to do" in order to sucessfully complete this iteration. 
 This list will change and it is good to keep it updated. 
@@ -34,17 +32,24 @@ It does not need to be exhustive.
 
 - Login
     - Login page (frontend)
-- Create classes (backend)
+    - Check box for: staff member or student
+    - Send jhed and profileType to landing page
+- SignUp
+    - Make everything required fields
+    - For each course selected, find course object from Courses database and add to list of eligible courses
+    - Create new Applicant object and add to Applicants database
+    - Send jhed and profileType to landing page
+- Courses database
     - Hardcode CS classes into DB each semester
-    - Course, Staff Member, Applicant, User (abstract class)
-    - Create CRUD/persistence, Sql2o for above courses
-- Profile creation
-    - Get information for user profiles
-        - Students: Name, email, eligible courses to CA (model off CA application)
-        - Staff: Name, courses teaching 
-    - Create onboarding pages (frontend)
-        - Display profile to students/staff members after finishing
-- Visualization from database
-    - Display all hired applicants for each course
-    - Display all potential applicants for each course
+- After user signs up as a staff member or student, then they must complete their profile page
+- For staff member:
+    - Course page:
+        - Enter course details (enter “job” description) to be visible to student
+        - Display all applicants for the course
+        - Display all hired applicants for the course
+        - Allow professors to see if the candidate is also desired by other staff members
+- For students:
+    - For each course they want to apply to CA for:
+        - enter course details (if they have taken the course before + if so, then what grade, and if they have CAd for the course before) to submit the full application
+    - Allow student to rank their course preferences
 
