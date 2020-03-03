@@ -51,5 +51,4 @@ It does not need to be exhustive.
 - For students:
     - For each course they want to apply to CA for:
         - enter course details (if they have taken the course before + if so, then what grade, and if they have CAd for the course before) to submit the full application
-    - Allow student to rank their course preferences
 
