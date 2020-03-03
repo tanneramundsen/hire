@@ -32,17 +32,25 @@ It does not need to be exhustive.
 
 - Login
     - Login page (frontend)
-- Create classes (backend)
-    - Hardcode CS classes into DB each semester
-    - Course, Staff Member, Applicant, User (abstract class)
-    - Create CRUD/persistence, Sql2o for above courses
-- Profile creation
-    - Get information for user profiles
-        - Students: Name, email, eligible courses to CA (model off CA application)
-        - Staff: Name, courses teaching 
-    - Create onboarding pages (frontend)
-        - Display profile to students/staff members after finishing
-- Visualization from database
-    - Display all hired applicants for each course
-    - Display all potential applicants for each course
+    - Check box to select either staff member or student
+    - Send JHED and profileType to landing page
+- SignUp
+    - Make everything required fields
+    - For each course selected, find course object from Courses database and add to list of eligible courses
+    - Create new Applicant object and add to Applicants database
+    - Send JHED and profileType to landing page
+- After user signs up as a staff member or student, they must complete their profile page
+- Courses database
+    - Hardcode CS classes into DB for each semester
+- For staff member:
+    - Course page:
+        - Enter course details (enter “job” description) to be visible to student
+        - Display all applicants for the course
+        - Display all hired applicants for the course
+        - Allow professors to see if the candidate is also desired by other staff members
+- For students:
+    - For each course they want to apply to CA for:
+        - Enter course details (if they have taken the course before + if so, then what grade, and if they have CAd for the course before) to submit the full application 
+<!-- Allow student to rank their course preferences -->
+
 
