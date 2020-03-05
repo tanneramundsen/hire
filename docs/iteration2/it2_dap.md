@@ -25,6 +25,7 @@ List the User Stories that you will implement in this iteration.
 - As a staff member, I want to view the names of the potential CA applicants so that I can keep track of who is interested in assisting my course.
 - As a staff member, I want to see the full application of CA applicants that have applied to a given course that If am teaching so that I can compare applicants.
 
+
 # Tasks
 A tentative list of the "to do" in order to sucessfully complete this iteration. 
 This list will change and it is good to keep it updated. 
@@ -47,8 +48,10 @@ It does not need to be exhustive.
         - Enter course details (enter “job” description) to be visible to student
         - Display all applicants for the course
         - Display all hired applicants for the course
-        - Allow professors to see if the candidate is also desired by other staff members
+        - Click on an applicant to see their profile - grades and course preferences
 - For students:
     - For each course they want to apply to CA for:
-        - enter course details (if they have taken the course before + if so, then what grade, and if they have CAd for the course before) to submit the full application
+        - enter course details (if they have taken the course before + if so, then what grade, and if they have CAd for the course before) to submit the full application 
+    - Allow student to rank their course preferences (top three choices)
+
 
