@@ -9,7 +9,7 @@ public class Course {
     String semester;
     boolean hiringComplete;
     List<Applicant> hiredApplicants;
-    List<Applicant> qualifiedApplicants;
+    List<Applicant> interestedApplicants;
 
     public Course(String name, String courseNumber, List<StaffMember> instructors, String semester,
                   boolean hiringComplete, List<Applicant> cas, List<Applicant> qualifiedStudents) {
@@ -19,7 +19,7 @@ public class Course {
         this.semester = semester;
         this.hiringComplete = hiringComplete;
         this.hiredApplicants = cas;
-        this.qualifiedApplicants = qualifiedStudents;
+        this.interestedApplicants = qualifiedStudents;
     }
 
     public int getId() {
@@ -78,12 +78,12 @@ public class Course {
         this.hiredApplicants = hiredApplicants;
     }
 
-    public List<Applicant> getQualifiedApplicants() {
-        return qualifiedApplicants;
+    public List<Applicant> getInterestedApplicants() {
+        return interestedApplicants;
     }
 
     public void setQualifiedApplicants(List<Applicant> qualifiedApplicants) {
-        this.qualifiedApplicants = qualifiedApplicants;
+        this.interestedApplicants = qualifiedApplicants;
     }
 
     @Override
