@@ -91,7 +91,7 @@ public class Sql2oCourseDaoTest {
 
         Course c2 = courseDao.read(c1.getId());
         assertEquals(c1, c2);
-        List<Applicant> checkQualifiedList = c2.getQualifiedApplicants();
+        List<Applicant> checkQualifiedList = c2.getInterestedApplicants();
         List<Applicant> checkHiredList = c2.getHiredApplicants();
         List<StaffMember> checkInstructor = c2.getInstructors();
         assertNotEquals(0, checkQualifiedList.size());
@@ -145,7 +145,7 @@ public class Sql2oCourseDaoTest {
         assertEquals(c1, c2);
         assertTrue(c2.getCourseNumber().equals("500.500"));
 
-        List<Applicant> checkQualifiedList = c2.getQualifiedApplicants();
+        List<Applicant> checkQualifiedList = c2.getInterestedApplicants();
         List<Applicant> checkHiredList = c2.getHiredApplicants();
         List<StaffMember> checkInstructor = c2.getInstructors();
 
@@ -280,7 +280,7 @@ public class Sql2oCourseDaoTest {
         assertTrue(results.contains(c2));
         assertFalse(results.contains(c3));
         for (Course course : results) {
-            List<Applicant> qualifiedApplicantsCheck = course.getQualifiedApplicants();
+            List<Applicant> qualifiedApplicantsCheck = course.getInterestedApplicants();
             assertNotEquals(0, qualifiedApplicantsCheck.size());
             assertTrue(qualifiedApplicantsCheck.contains(applicant1));
             assertTrue(qualifiedApplicantsCheck.contains(applicant2));

@@ -165,7 +165,7 @@ public class Sql2oApplicantDaoTest {
         //make sure deleted applicant does not show up on course's hiredApplicant or
         //qualified applicant lists
         assertEquals(0, c2.getHiredApplicants().size());
-        assertEquals(0, c2.getQualifiedApplicants().size());
+        assertEquals(0, c2.getInterestedApplicants().size());
     }
 
     @Test (expected = DaoException.class)
