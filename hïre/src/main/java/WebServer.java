@@ -63,6 +63,22 @@ public class WebServer {
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
+        get("/:name/courseinfo", (request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+            String courseName = request.cookie("name");
+            int courseId = Integer.parseInt(request.cookie("id"));
+            List<Applicant> interestedApplicants = new ArrayList<>();
+            List<Applicant> hiredApplicants = new ArrayList<>();
+            List<StaffMember> instructors = new ArrayList<>();
+            String courseNumber = courseDao.read(courseId).getCourseNumber();
+            /* will be changing qualified to interested*/
+            interestedApplicants = courseDao.read(courseId).getQualifiedApplicants();
+            hiredApplicants = courseDao.read(courseId).getHiredApplicants();
+            instructors = courseDao.read(courseId).getInstructors();
+            /* later can put in semester */
+            return new ModelAndView(new HashMap(), "courseinfo.hbs");
+        }, new HandlebarsTemplateEngine());
+
         get("/student-profile", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.cookie("jhed");

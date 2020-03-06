@@ -177,3 +177,4 @@ Temporary Items
 build/
 build/*
 src/test/resources/db/*.db
+src/main/resources/db/*.db

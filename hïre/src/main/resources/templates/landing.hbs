@@ -78,15 +78,6 @@
                     <h2>Welcome Back {{ name }}!</h2>
                     <h2></h2>
                     {{#if isStaffMember}}
-                        <a href="" class="text-button-icon">
-                            Complete CA Job Description  <i class="fa fa-arrow-right"></i>
-                        </a>
-                    {{else}}
-                        <a href="/student-profile" class="text-button-icon">
-                            Complete Application Process <i class="fa fa-arrow-right"></i>
-                        </a>
-                    {{/if}}
-                    {{#if isStaffMember}}
                         <h6>Manage your courses below</h6>
                     {{else}}
                         <h6>See your courses below</h6>
@@ -113,7 +104,7 @@
                             <h4>{{name}}</h4>
                             <p>Course Number: {{courseNumber}}</p>
                             {{#if isStaffMember}}
-                                <a href="" class="text-button-icon">
+                                <a href="/:name/courseinfo" class="text-button-icon">
                                     Manage Course <i class="fa fa-arrow-right"></i>
                                 </a>
                             {{else}}

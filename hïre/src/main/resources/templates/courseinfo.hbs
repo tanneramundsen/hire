@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Student Profile Page</title>
+    <title>Course Info Page</title>
 
     <!--
 
@@ -58,7 +58,7 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <!-- add profile html-->
-                        <li class="scroll-to-section"><a href="">My Profile</a></li>
+                        <li class="scroll-to-section"><a href="/landing">My Profile</a></li>
                         <li class="scroll-to-section"><a href="/">Sign Out</a></li>
                     </ul>
                     <!-- ***** Menu End ***** -->
@@ -70,35 +70,35 @@
 <!-- ***** Header Area End ***** -->
 
 <!-- ***** Course Info Starts ***** -->
-<section class="section" id="projects">
+<section class="section" id="about">
     <div class="container">
-        <h2 class="title"> Your Courses</h2>
-            <div class="col-lg-6">
-                <div class="section-heading">
-                    <h6> Complete Applications </h6>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-xs-12">
+                <div class="left-text-content">
+                    <div class="section-heading">
+                        <h2>Interested Applicants</h2>
+                    </div>
+                    <div class="row">
+                        {{#each interestedApplicants}}
+                        <div class="col-md-6 col-sm-6">
+                            <h4> {{name}} </h4>
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                        <div class="right-text-content">
+                            <div class="section-heading">
+                                <h2>Interested Applicants</h2>
+                            </div>
+                            {{#each hiredApplicants}}
+                                <div class="col-md-6 col-sm-6">
+                                    <h4> {{name}} </h4>
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-            {{#each courseList}}
-                <h2 {{name}} </h2>
-                    <form action="/student-profile" method="post">
-                        <h5> <label class="label"> {{name}} </h5>
-                        <div class="row">
-                            <div class="col-md-3 col-sm-8">
-                                <div class="input-group">
-                                    <label class="label"><h3>Letter Grade</h3></label>
-                                    <input class="input--style-4" type="text" name="grade">
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-8">
-                                <div class="input-group">
-                                    <label class="label"> <h3> Previous {{course}} CA?</h3> </label>
-                                    <input class="input--style-4" type="text" name="prevCA">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-            {{/each}}
         </div>
     </div>
 </section>
