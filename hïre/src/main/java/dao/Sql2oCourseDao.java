@@ -84,8 +84,8 @@ public class Sql2oCourseDao implements CourseDao {
                     }
                 }
 
-                if(course.getQualifiedApplicants() != null) {
-                    for (Applicant qualified : course.getQualifiedApplicants()) {
+                if(course.getInterestedApplicants() != null) {
+                    for (Applicant qualified : course.getInterestedApplicants()) {
                         int qualifiedId = qualified.getId();
                         if (qualifiedId == 0) {
                             sql = "INSERT INTO Applicants(name, email, jhed) " +
@@ -239,8 +239,8 @@ public class Sql2oCourseDao implements CourseDao {
                 }
             }
 
-            if(course.getQualifiedApplicants() != null) {
-                for (Applicant qualified : course.getQualifiedApplicants()) {
+            if(course.getInterestedApplicants() != null) {
+                for (Applicant qualified : course.getInterestedApplicants()) {
                     int applicantId = qualified.getId();
                     if (applicantId == 0) {
                         sql = "INSERT INTO Applicants(name, email, jhed) " +

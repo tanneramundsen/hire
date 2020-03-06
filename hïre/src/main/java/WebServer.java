@@ -84,12 +84,12 @@ public class WebServer {
             List<StaffMember> instructors = new ArrayList<>();
             String courseNumber = courseDao.read(courseId).getCourseNumber();
             /* will be changing qualified to interested*/
-            interestedApplicants = courseDao.read(courseId).getQualifiedApplicants();
+            interestedApplicants = courseDao.read(courseId).getInterestedApplicants();
             hiredApplicants = courseDao.read(courseId).getHiredApplicants();
             instructors = courseDao.read(courseId).getInstructors();
             /* later can put in semester */
             model.put("name", courseName);
-            model.put("courseId", courseId)
+            model.put("courseId", courseId);
             model.put("interestedApplicants", interestedApplicants);
             model.put("hiredApplicants", hiredApplicants);
             return new ModelAndView(new HashMap(), "courseinfo.hbs");
