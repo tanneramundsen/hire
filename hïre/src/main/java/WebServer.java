@@ -63,10 +63,22 @@ public class WebServer {
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
+        /*
+        get("/courses/:id/reviews", (req, res) -> {
+      Map<String, Object> model = new HashMap<>();
+      model.put("reviewList", reviewDao.findByCourseId(Integer.parseInt(req.params(":id"))));
+      model.put("courseNum", req.params(":id"));
+      return new ModelAndView(model, "reviews.hbs");
+    }, new HandlebarsTemplateEngine());
+
+         */
+
+
+
         get("/:name/courseinfo", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
-            String courseName = request.cookie("name");
             int courseId = Integer.parseInt(request.cookie("id"));
+            String courseName = request.cookie("name");
             List<Applicant> interestedApplicants = new ArrayList<>();
             List<Applicant> hiredApplicants = new ArrayList<>();
             List<StaffMember> instructors = new ArrayList<>();
@@ -76,6 +88,10 @@ public class WebServer {
             hiredApplicants = courseDao.read(courseId).getHiredApplicants();
             instructors = courseDao.read(courseId).getInstructors();
             /* later can put in semester */
+            model.put("name", courseName);
+            model.put("courseId", courseId)
+            model.put("interestedApplicants", interestedApplicants);
+            model.put("hiredApplicants", hiredApplicants);
             return new ModelAndView(new HashMap(), "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());
 
