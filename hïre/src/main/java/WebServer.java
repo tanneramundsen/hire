@@ -1,14 +1,14 @@
 import api.ApiServer;
-import dao.*;
+import dao.DaoFactory;
+import dao.Sql2oApplicantDao;
+import dao.Sql2oCourseDao;
+import dao.Sql2oStaffMemberDao;
 import model.Applicant;
 import model.Course;
 import model.StaffMember;
-import org.sql2o.Sql2o;
 import spark.ModelAndView;
-import spark.Redirect;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
-import java.io.Console;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +61,43 @@ public class WebServer {
             model.put("courseList", courseList);
             model.put("isStaffMember", isStaffMember);
             return new ModelAndView(model, "landing.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/:name/courseinfo", (request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+            String courseName = request.cookie("name");
+            int courseId = Integer.parseInt(request.cookie("id"));
+            List<Applicant> interestedApplicants = new ArrayList<>();
+            List<Applicant> hiredApplicants = new ArrayList<>();
+            List<StaffMember> instructors = new ArrayList<>();
+            String courseNumber = courseDao.read(courseId).getCourseNumber();
+            /* will be changing qualified to interested*/
+            interestedApplicants = courseDao.read(courseId).getQualifiedApplicants();
+            hiredApplicants = courseDao.read(courseId).getHiredApplicants();
+            instructors = courseDao.read(courseId).getInstructors();
+            /* later can put in semester */
+            return new ModelAndView(new HashMap(), "courseinfo.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/student-profile", (request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+            String jhed = request.cookie("jhed");
+            String profileType = request.cookie("profileType");
+            String name;
+            List<Course> courseList = new ArrayList<Course>();
+            boolean isStaffMember = false;
+            if (profileType.equals("Professor")) {
+                isStaffMember = true;
+                name = staffMemberDao.read(jhed).getName();
+                courseList = staffMemberDao.read(jhed).getCourses();
+            } else {
+                name = applicantDao.read(jhed).getName();
+                courseList = applicantDao.read(jhed).getEligibleCourses();
+            }
+            model.put("name", name);
+            model.put("courseList", courseList);
+            model.put("isStaffMember", isStaffMember);
+            return new ModelAndView(model, "student-profile.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/login", (request, response) -> {
