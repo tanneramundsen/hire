@@ -73,14 +73,14 @@ public class Sql2oApplicantDaoTest {
         List<Course> courses = Collections.singletonList(c1);
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        a1.setEligibleCourses(courses);
+        a1.setInterestedCourses(courses);
         a1.setHiredCourse(c1);
 
         courseDao.add(c1);
         applicantDao.add(a1);
 
         Applicant a2 = applicantDao.read(a1.getId());
-        List<Course> courses2 = a2.getEligibleCourses();
+        List<Course> courses2 = a2.getInterestedCourses();
         assertEquals(a1, a2);
         assertNotEquals(0, courses2.size());
         assertEquals(c1, courses2.get(0));
@@ -113,20 +113,20 @@ public class Sql2oApplicantDaoTest {
         List<Course> courses2 = Collections.singletonList(c2);
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        a1.setEligibleCourses(courses1);
+        a1.setInterestedCourses(courses1);
         a1.setHiredCourse(c1);
 
         courseDao.add(c1);
         applicantDao.add(a1);
 
         a1.setEmail("NOTtamunds1@jhu.edu");
-        a1.setEligibleCourses(courses2);
+        a1.setInterestedCourses(courses2);
         a1.setHiredCourse(c2);
 
         applicantDao.update(a1);
 
         Applicant a2 = applicantDao.read(a1.getId());
-        List<Course> courses2Check = a2.getEligibleCourses();
+        List<Course> courses2Check = a2.getInterestedCourses();
         assertEquals(a1, a2);
         assertTrue(a2.getEmail().equals("NOTtamunds1@jhu.edu"));
         assertNotEquals(0, courses2Check.size());
@@ -150,7 +150,7 @@ public class Sql2oApplicantDaoTest {
         List<Course> courses = Collections.singletonList(c1);
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        a1.setEligibleCourses(courses);
+        a1.setInterestedCourses(courses);
 
         courseDao.add(c1);
         applicantDao.add(a1);
@@ -192,9 +192,9 @@ public class Sql2oApplicantDaoTest {
         List<Course> courses = Collections.singletonList(c1);
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        applicant1.setEligibleCourses(courses);
-        applicant2.setEligibleCourses(courses);
-        applicant3.setEligibleCourses(courses);
+        applicant1.setInterestedCourses(courses);
+        applicant2.setInterestedCourses(courses);
+        applicant3.setInterestedCourses(courses);
 
         courseDao.add(c1);
         applicantDao.add(applicant1);
@@ -206,7 +206,7 @@ public class Sql2oApplicantDaoTest {
         assertTrue(results.contains(applicant2));
         assertTrue(results.contains(applicant3));
         for (Applicant applicant : results) {
-            List<Course> courses2 = applicant.getEligibleCourses();
+            List<Course> courses2 = applicant.getInterestedCourses();
             assertNotEquals(0, courses2.size());
             assertEquals(c1, courses2.get(0));
         }
@@ -243,9 +243,9 @@ public class Sql2oApplicantDaoTest {
         c1.setHiredApplicants(applicants_c1);
         c2.setQualifiedApplicants(applicants_c2);
         c2.setHiredApplicants(applicants_c2);
-        applicant1.setEligibleCourses(courses_c1_and_c2);
-        applicant2.setEligibleCourses(courses_c1_and_c2);
-        applicant3.setEligibleCourses(courses_just_c1);
+        applicant1.setInterestedCourses(courses_c1_and_c2);
+        applicant2.setInterestedCourses(courses_c1_and_c2);
+        applicant3.setInterestedCourses(courses_just_c1);
 
         courseDao.add(c1);
         courseDao.add(c2);

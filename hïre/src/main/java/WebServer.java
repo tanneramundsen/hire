@@ -55,7 +55,7 @@ public class WebServer {
                 courseList = staffMemberDao.read(jhed).getCourses();
             } else {
                 name = applicantDao.read(jhed).getName();
-                courseList = applicantDao.read(jhed).getEligibleCourses();
+                courseList = applicantDao.read(jhed).getInterestedCourses();
             }
             model.put("name", name);
             model.put("courseList", courseList);
@@ -108,7 +108,7 @@ public class WebServer {
                 courseList = staffMemberDao.read(jhed).getCourses();
             } else {
                 name = applicantDao.read(jhed).getName();
-                courseList = applicantDao.read(jhed).getEligibleCourses();
+                courseList = applicantDao.read(jhed).getInterestedCourses();
             }
             model.put("name", name);
             model.put("courseList", courseList);

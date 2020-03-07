@@ -7,7 +7,7 @@ public class Applicant extends User {
     String email;
     String jhed;
     Course hiredCourse;
-    List<Course> eligibleCourses;
+    List<Course> interestedCourses;
 
     @Override
     public void updateCourses() {
@@ -19,11 +19,11 @@ public class Applicant extends User {
         return null;
     }
 
-    public Applicant(String name, String email, String jhed, List<Course> eligibleCourses) {
+    public Applicant(String name, String email, String jhed, List<Course> interestedCourses) {
         this.name = name;
         this.email = email;
         this.jhed = jhed;
-        this.eligibleCourses = eligibleCourses;
+        this.interestedCourses = interestedCourses;
     }
 
     public int getId() {
@@ -58,12 +58,12 @@ public class Applicant extends User {
         this.jhed = jhed;
     }
 
-    public List<Course> getEligibleCourses() {
-        return eligibleCourses;
+    public List<Course> getInterestedCourses() {
+        return interestedCourses;
     }
 
-    public void setEligibleCourses(List<Course> eligibleCourses) {
-        this.eligibleCourses = eligibleCourses;
+    public void setInterestedCourses(List<Course> interestedCourses) {
+        this.interestedCourses = interestedCourses;
     }
 
     public Course getHiredCourse() {

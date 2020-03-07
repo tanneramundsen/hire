@@ -81,7 +81,7 @@ public class Sql2oCourseDaoTest {
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
         c1.setInstructors(instructors);
-        a1.setEligibleCourses(courses);
+        a1.setInterestedCourses(courses);
         a1.setHiredCourse(c1);
         sm1.setCourses(courses);
 
@@ -125,7 +125,7 @@ public class Sql2oCourseDaoTest {
         c1.setQualifiedApplicants(applicants1);
         c1.setHiredApplicants(applicants1);
         c1.setInstructors(instructors1);
-        a1.setEligibleCourses(courses);
+        a1.setInterestedCourses(courses);
         a1.setHiredCourse(c1);
         sm1.setCourses(courses);
 
@@ -176,7 +176,7 @@ public class Sql2oCourseDaoTest {
         c1.setQualifiedApplicants(applicants);
         c1.setHiredApplicants(applicants);
         c1.setInstructors(instructors);
-        a1.setEligibleCourses(courses);
+        a1.setInterestedCourses(courses);
         a1.setHiredCourse(c1);
         sm1.setCourses(courses);
 
@@ -194,7 +194,7 @@ public class Sql2oCourseDaoTest {
         assertNotNull(a2);
         assertNotNull(sm2);
         //make sure deleted course does not show up on applicants's eligibleCourses list or hiredCourse field
-        assertEquals(0, a2.getEligibleCourses().size());
+        assertEquals(0, a2.getInterestedCourses().size());
         assertNull(a2.getHiredCourse());
         //make sure deleted course does not show up on instructor's course list
         assertEquals(0, sm2.getCourses().size());
@@ -258,9 +258,9 @@ public class Sql2oCourseDaoTest {
         c1.setInstructors(instructors);
         c2.setQualifiedApplicants(applicants);
         c2.setInstructors(instructors);
-        applicant1.setEligibleCourses(courses);
-        applicant2.setEligibleCourses(courses);
-        applicant3.setEligibleCourses(courses);
+        applicant1.setInterestedCourses(courses);
+        applicant2.setInterestedCourses(courses);
+        applicant3.setInterestedCourses(courses);
         applicant1.setHiredCourse(c1);
         applicant2.setHiredCourse(c1);
         applicant3.setHiredCourse(c1);

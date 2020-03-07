@@ -35,8 +35,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .executeUpdate()
                         .getKey();
                 applicant.setId(id);
-                if (applicant.getEligibleCourses() != null) {
-                    for (Course course : applicant.getEligibleCourses()) {
+                if (applicant.getInterestedCourses() != null) {
+                    for (Course course : applicant.getInterestedCourses()) {
                         int courseId = course.getId();
                         if (courseId == 0) {
                             sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
@@ -94,8 +94,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeUpdate();
 
             // Fresh update to joining tables
-            if (applicant.getEligibleCourses() != null) {
-                for (Course course : applicant.getEligibleCourses()) {
+            if (applicant.getInterestedCourses() != null) {
+                for (Course course : applicant.getInterestedCourses()) {
                     int courseId = course.getId();
                     if (course.getId() == 0) {
                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
@@ -186,7 +186,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("id", id).executeAndFetchTable().asList();
             applicant.setName((String) names.get(0).get("name"));
 
-            //get corresponding eligibleCourses according to joining table
+            //get corresponding interestedCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
                     "ON QualifiedApplicants_Courses.courseId = Courses.id " +
@@ -194,7 +194,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("applicantId", id)
                     .executeAndFetch(Course.class);
-            applicant.setEligibleCourses(courses);
+            applicant.setInterestedCourses(courses);
 
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
@@ -231,7 +231,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("jhed", jhed).executeAndFetchTable().asList();
             applicant.setName((String) names.get(0).get("name"));
 
-            //get corresponding eligibleCourses according to joining table
+            //get corresponding interestedCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
                     "ON QualifiedApplicants_Courses.courseId = Courses.id " +
@@ -239,7 +239,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("applicantId", applicant.getId())
                     .executeAndFetch(Course.class);
-            applicant.setEligibleCourses(courses);
+            applicant.setInterestedCourses(courses);
 
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
@@ -274,7 +274,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 List<Course> courses = conn.createQuery(sql)
                         .addParameter("id", applicantId)
                         .executeAndFetch(Course.class);
-                applicant.setEligibleCourses(courses);
+                applicant.setInterestedCourses(courses);
 
                 sql = "SELECT Courses.* " +
                         "FROM HiredApplicants_Courses INNER JOIN Courses " +
