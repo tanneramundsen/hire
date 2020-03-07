@@ -60,41 +60,40 @@ public class WebServer {
             model.put("name", name);
             model.put("courseList", courseList);
             model.put("isStaffMember", isStaffMember);
+
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
-        /*
-        get("/courses/:id/reviews", (req, res) -> {
-      Map<String, Object> model = new HashMap<>();
-      model.put("reviewList", reviewDao.findByCourseId(Integer.parseInt(req.params(":id"))));
-      model.put("courseNum", req.params(":id"));
-      return new ModelAndView(model, "reviews.hbs");
-    }, new HandlebarsTemplateEngine());
 
-         */
-
-
-
-        get("/:name/courseinfo", (request, response) -> {
+        get("/:id/courseinfo", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
-            int courseId = Integer.parseInt(request.cookie("id"));
+
+            String jhed = request.cookie("jhed");
+            int courseId = Integer.parseInt(request.params(":id"));
+            model.put("courseID", courseId);
             String courseName = request.cookie("name");
+
             List<Applicant> interestedApplicants = new ArrayList<>();
             List<Applicant> hiredApplicants = new ArrayList<>();
             List<StaffMember> instructors = new ArrayList<>();
+
             String courseNumber = courseDao.read(courseId).getCourseNumber();
-            /* will be changing qualified to interested*/
             interestedApplicants = courseDao.read(courseId).getInterestedApplicants();
             hiredApplicants = courseDao.read(courseId).getHiredApplicants();
             instructors = courseDao.read(courseId).getInstructors();
+
+
             /* later can put in semester */
             model.put("name", courseName);
-            model.put("courseId", courseId);
+            model.put("courseNumber", courseNumber);
             model.put("interestedApplicants", interestedApplicants);
             model.put("hiredApplicants", hiredApplicants);
-            return new ModelAndView(new HashMap(), "courseinfo.hbs");
+            model.put("instructors", instructors);
+
+            return new ModelAndView(model, "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());
 
+        /*
         get("/student-profile", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.cookie("jhed");
@@ -114,7 +113,7 @@ public class WebServer {
             model.put("courseList", courseList);
             model.put("isStaffMember", isStaffMember);
             return new ModelAndView(model, "student-profile.hbs");
-        }, new HandlebarsTemplateEngine());
+        }, new HandlebarsTemplateEngine());*/
 
         post("/login", (request, response) -> {
             String jhed = request.queryParams("jhed");

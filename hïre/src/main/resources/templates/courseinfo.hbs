@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Course Info Page</title>
+    <title>CourseInfo Page</title>
 
     <!--
 
@@ -52,13 +52,13 @@
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
                     <a href="/" class="logo">
-                        HÏRE
+                        HIRE
                     </a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <!-- add profile html-->
-                        <li class="scroll-to-section"><a href="/landing">My Profile</a></li>
+                        <li class="scroll-to-section"><a href="">My Profile</a></li>
                         <li class="scroll-to-section"><a href="/">Sign Out</a></li>
                     </ul>
                     <!-- ***** Menu End ***** -->
@@ -69,7 +69,7 @@
 </header>
 <!-- ***** Header Area End ***** -->
 
-<!-- ***** Course Info Starts ***** -->
+
 <section class="section" id="about">
     <div class="container">
         <div class="row">
@@ -79,22 +79,66 @@
                         <h2>Interested Applicants</h2>
                     </div>
                     <div class="row">
-                        {{#each interestedApplicants}}
-                        <div class="col-md-6 col-sm-6">
-                            <h4> {{name}} </h4>
-                        </div>
-                        {{/each}}
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-xs-12">
-                        <div class="right-text-content">
-                            <div class="section-heading">
-                                <h2>Interested Applicants</h2>
+
+                        {{#each hiredApplicants}}
+                            <div class="col-md-12 col-sm-6">
+                                <h4> {{name}} </h4>
                             </div>
-                            {{#each hiredApplicants}}
-                                <div class="col-md-6 col-sm-6">
-                                    <h4> {{name}} </h4>
-                                </div>
-                            {{/each}}
+                        {{/each}}
+
+                        <div class="col-md-12 col-sm-6">
+                            <div class="service-item">
+                                <h4>Daniela Torres</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-6">
+                            <div class="service-item">
+                                <h4>Madhu R</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-6">
+                            <div class="service-item">
+                                <h4>Chester X</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <a href="#" class="main-button-icon">
+                                End <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-12">
+                <div class="right-text-content">
+                    <div class="section-heading">
+                        <h2>Hired Applicants</h2>
+                    </div>
+                    <div class="row">
+                        {{#each hiredApplicants}}
+                            <div class="col-md-12 col-sm-6">
+                                <h4> {{name}} </h4>
+                            </div>
+                        {{/each}}
+                        <div class="col-md-12 col-sm-6">
+                            <div class="service-item">
+                                <h4>Daniela Torres</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-6">
+                            <div class="service-item">
+                                <h4>Madhu R</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-6">
+                            <div class="service-item">
+                                <h4>Chester X</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <a href="#" class="main-button-icon">
+                                End <i class="fa fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -102,8 +146,6 @@
         </div>
     </div>
 </section>
-
-
 <!-- ***** Course Info Ends ***** -->
 
 
