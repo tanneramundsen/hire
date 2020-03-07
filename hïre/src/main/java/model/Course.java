@@ -1,7 +1,9 @@
 package model;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
-public class Course {
+public class Course implements Comparable<Course> {
     int id;
     String name;
     String courseNumber;
@@ -108,5 +110,10 @@ public class Course {
                 ", semester='" + semester + '\'' +
                 ", hiringComplete=" + hiringComplete +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NotNull Course o) {
+        return name.compareTo(o.name);
     }
 }

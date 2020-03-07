@@ -30,20 +30,26 @@ public final class ApiServer {
     public static int PORT = 7000;
     private static Javalin app;
 
+    public static String school = "whiting school of engineering".replace(" ", "%20");;
+    public static String dept = "EN computer science".replace(" ", "%20");;
+    public static String key = "R6HJMT7GFtXsTjRcjp4zrypfpNpq4108";
+    private static String url = "https://sis.jhu.edu/api/classes/" + school + "/" + dept + "/current?key=" + key;
+
     private ApiServer() {
         // This class is not meant to be instantiated!
     }
 
     public static void start() {
-        /**CourseDao courseDao = DaoFactory.getCourseDao();
         ApplicantDao applicantDao = DaoFactory.getApplicantDao();
         StaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
+        CourseDao courseDao = DaoFactory.getCourseDao();
 
         if (INITIALIZE_WITH_SAMPLE_DATA) {
-            DaoUtil.addSampleCourses(courseDao);
-            DaoUtil.addSampleApplicants(courseDao, applicantDao);
-            DaoUtil.addSampleStaffMembers(courseDao, staffMemberDao);
-        }*/
+            DaoUtil.addSISCourses(courseDao, url);
+            //  DaoUtil.addSampleCourses(courseDao);
+            // DaoUtil.addSampleApplicants(courseDao, applicantDao);
+            // DaoUtil.addSampleStaffMembers(courseDao, staffMemberDao);
+        }
 
         Gson gson = new Gson();
         JavalinJson.setFromJsonMapper(gson::fromJson);

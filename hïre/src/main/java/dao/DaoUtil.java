@@ -3,10 +3,14 @@ package dao;
 import model.Applicant;
 import model.Course;
 import model.StaffMember;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public final class DaoUtil {
 
@@ -113,6 +117,59 @@ public final class DaoUtil {
         for (Course course: courseList) {
             course.setQualifiedApplicants(applicantList);
             courseDao.update(course);
+        }
+    }
+
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
+    }
+
+    public static JSONArray readJsonFromUrl(String url) throws IOException, JSONException {
+        InputStream is = new URL(url).openStream();
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            String jsonText = readAll(rd);
+            JSONArray json = new JSONArray(jsonText);
+            return json;
+        } finally {
+            is.close();
+        }
+    }
+
+    public static void addSISCourses(CourseDao courseDao, String url) {
+        JSONArray coursesJSON;
+        try {
+            coursesJSON = readJsonFromUrl(url);
+
+            Set<Course> courses = new TreeSet<Course>();
+
+            for (Object o : coursesJSON) {
+                if (o instanceof JSONObject) {
+                    JSONObject courseJSON = (JSONObject) o;
+                    String name = courseJSON.getString("Title");
+                    String courseNumber = courseJSON.getString("OfferingName");
+                    String semester = courseJSON.getString("Term");
+
+                    Course course = new Course(name, courseNumber, null, semester, false, null, null);
+                    courses.add(course);
+                }
+            }
+
+            // Add only unique courses
+            for (Course course: courses) {
+                courseDao.add(course);
+            }
+
+
+        } catch (IOException e) {
+            System.err.println("Could access URL");
+        } catch (JSONException e) {
+            System.err.println("Could not convert fetched data to JSON");
         }
     }
 }
