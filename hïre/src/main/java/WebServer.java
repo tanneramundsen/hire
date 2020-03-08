@@ -1,8 +1,5 @@
 import api.ApiServer;
-import dao.DaoFactory;
-import dao.Sql2oApplicantDao;
-import dao.Sql2oCourseDao;
-import dao.Sql2oStaffMemberDao;
+import dao.*;
 import model.Applicant;
 import model.Course;
 import model.StaffMember;
@@ -28,9 +25,16 @@ public class WebServer {
         Sql2oApplicantDao applicantDao = DaoFactory.getApplicantDao();
         Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
 
+        // Add in all courses from SIS API to Courses database
+        String school = "whiting school of engineering".replace(" ", "%20");;
+        String dept = "EN computer science".replace(" ", "%20");;
+        String key = "R6HJMT7GFtXsTjRcjp4zrypfpNpq4108";
+        String url = "https://sis.jhu.edu/api/classes/" + school + "/" + dept + "/current?key=" + key;
+        DaoUtil.addSISCourses(courseDao,url);
+
         staticFileLocation("/templates");
         get("/", (request, response) -> {
-            // remove cookie username
+            // TODO: remove cookie username?
             return new ModelAndView(new HashMap(), "index.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -38,8 +42,44 @@ public class WebServer {
             return new ModelAndView(new HashMap(), "login.hbs");
         }, new HandlebarsTemplateEngine());
 
+        post("/login", (request, response) -> {
+            String jhed = request.queryParams("jhed");
+            response.cookie("jhed", jhed);
+            String profileType = request.queryParams("profileType");
+            response.cookie("profileType", profileType);
+            response.redirect("/landing");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
         get("/signup", (request, response) -> {
-            return new ModelAndView(new HashMap(), "signup.hbs");
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("allCourses", courseDao.findAll());
+            return new ModelAndView(model, "signup.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        post("/signup", (request, response) -> {
+            String name = request.queryParams("firstName")+" "+request.queryParams("lastName");
+            String jhed = request.queryParams("jhed");
+            String email = jhed + "@jhu.edu";
+            String profileType = request.queryParams("profileType");
+            String[] courses = request.queryParamsValues("courses");
+            List<Course> courseList = new ArrayList<Course>();
+            HashMap<Course, String> coursesHashMap = new HashMap<Course, String>();
+            for (String course:courses) {
+                Course newCourse = courseDao.read(course);
+                courseList.add(newCourse);
+                coursesHashMap.put(newCourse, null);
+            }
+            if (profileType.equals("Professor")) {
+                staffMemberDao.add(new StaffMember(name,jhed,courseList));
+            } else {
+                applicantDao.add(new Applicant(name,email,jhed,coursesHashMap));
+            }
+            // use information to create either an applicant or staff member
+            response.cookie("jhed", jhed);
+            response.cookie("profileType", profileType);
+            response.redirect("/landing");
+            return null;
         }, new HandlebarsTemplateEngine());
 
         get("/landing", (request, response) -> {
@@ -63,7 +103,6 @@ public class WebServer {
 
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
-
 
         get("/:id/courseinfo", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
@@ -93,63 +132,20 @@ public class WebServer {
             return new ModelAndView(model, "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());
 
-        /*
-        get("/student-profile", (request, response) -> {
+        get("/studentprofile", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.cookie("jhed");
-            String profileType = request.cookie("profileType");
-            String name;
-            List<Course> courseList = new ArrayList<Course>();
-            boolean isStaffMember = false;
-            if (profileType.equals("Professor")) {
-                isStaffMember = true;
-                name = staffMemberDao.read(jhed).getName();
-                courseList = staffMemberDao.read(jhed).getCourses();
-            } else {
-                name = applicantDao.read(jhed).getName();
-                courseList = applicantDao.read(jhed).getInterestedCourses();
-            }
+            Applicant student = applicantDao.read(jhed);
+            String name = student.getName();
+            String email = student.getEmail();
+            List<Course> courseList = applicantDao.read(jhed).getCoursesList();
             model.put("name", name);
+            model.put("email", email);
             model.put("courseList", courseList);
-            model.put("isStaffMember", isStaffMember);
-            return new ModelAndView(model, "student-profile.hbs");
-        }, new HandlebarsTemplateEngine());*/
-
-        post("/login", (request, response) -> {
-            String jhed = request.queryParams("jhed");
-            response.cookie("jhed", jhed);
-            String profileType = request.queryParams("profileType");
-            response.cookie("profileType", profileType);
-            response.redirect("/landing");
-            return null;
+            return new ModelAndView(model, "studentprofile.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/signup", (request, response) -> {
-            String name = request.queryParams("firstName")+" "+request.queryParams("lastName");
-            String jhed = request.queryParams("jhed");
-            String email = jhed + "@jhu.edu";
-            String profileType = request.queryParams("profileType");
-            String[] courses = request.queryParamsValues("courses");
-            List<Course> courseList = new ArrayList<Course>();
-            HashMap<Course, String> coursesHashMap = new HashMap<Course, String>();
-            for (String course:courses) {
-                // TODO: find courses using name instead of creating new ones
-                Course newCourse = new Course(course,"123",null,"Spring2020",false,null,null);
-                courseDao.add(newCourse);
-                courseList.add(newCourse);
-                coursesHashMap.put(newCourse, null);
-            }
-            if (profileType.equals("Professor")) {
-                staffMemberDao.add(new StaffMember(name,jhed,courseList));
-            } else {
-                applicantDao.add(new Applicant(name,email,jhed,coursesHashMap));
-            }
-            // use information to create either an applicant or staff member
-            response.cookie("jhed", jhed);
-            response.cookie("profileType", profileType);
-            response.redirect("/landing");
-            return null;
-        }, new HandlebarsTemplateEngine());
+
     }
 
 }

@@ -166,6 +166,57 @@ public class Sql2oCourseDao implements CourseDao {
         }
     }
 
+    public Course read(String name) throws DaoException {
+        try (Connection conn = sql2o.open()) {
+            String sql = "SELECT * FROM Courses WHERE name = :name";
+            Course course = conn.createQuery(sql)
+                    .addParameter("name", name)
+                    .executeAndFetchFirst(Course.class);
+
+            if (course == null) {
+                return null;
+            }
+
+            //get corresponding staff members
+            sql = "SELECT StaffMembers.* " +
+                    "FROM StaffMembers_Courses " +
+                    "INNER JOIN StaffMembers " +
+                    "ON StaffMembers_Courses.staffId = StaffMembers.id " +
+                    "WHERE StaffMembers_Courses.courseId = :courseId";
+            List<StaffMember> staff = conn.createQuery(sql)
+                    .addParameter("courseId", course.getId())
+                    .executeAndFetch(StaffMember.class);
+            course.setInstructors(staff);
+
+            //get corresponding hired applicants
+            sql = "SELECT Applicants.* " +
+                    "FROM HiredApplicants_Courses " +
+                    "INNER JOIN Applicants " +
+                    "ON HiredApplicants_Courses.applicantId = Applicants.id " +
+                    "WHERE HiredApplicants_Courses.courseId = :courseId";
+            List<Applicant> hiredApps = conn.createQuery(sql)
+                    .addParameter("courseId", course.getId())
+                    .executeAndFetch(Applicant.class);
+            course.setHiredApplicants(hiredApps);
+
+            //get corresponding interested applicants
+            sql = "SELECT Applicants.* " +
+                    "FROM InterestedApplicants_Courses " +
+                    "INNER JOIN Applicants " +
+                    "ON InterestedApplicants_Courses.applicantId = Applicants.id " +
+                    "WHERE InterestedApplicants_Courses.courseId = :courseId";
+            List<Applicant> interestedApps = conn.createQuery(sql)
+                    .addParameter("courseId", course.getId())
+                    .executeAndFetch(Applicant.class);
+            course.setInterestedApplicants(interestedApps);
+
+            return course;
+
+        } catch (Sql2oException e) {
+            throw new DaoException("Unable to read course", e);
+        }
+    }
+
     public void update(Course course) throws DaoException {
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, " +

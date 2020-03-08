@@ -152,12 +152,10 @@
                                     <label class="label">Choose courses:</label>
                                     <div class="rs-select2 js-select-simple select--no-search">
                                         <select name="courses" multiple="multiple">
-                                            <option selected="selected">Gateway Java</option>
-                                            <option>Intermediate Programming</option>
-                                            <option>Data Structures</option>
-                                            <option>Computer Systems Fundamentals</option>
-                                            <option>Intro Algorithms</option>
-                                            <option>Automata</option>
+                                            <option disabled="disabled" selected="selected">select courses</option>
+                                            {{#each allCourses}}
+                                                <option>{{name}}</option>
+                                            {{/each}}
                                         </select>
                                         <div class="select-dropdown"></div>
                                     </div>

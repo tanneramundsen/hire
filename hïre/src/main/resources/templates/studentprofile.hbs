@@ -97,7 +97,7 @@
         <div class="card card-4">
             <div class="card-body">
                 <h2 class="title">Update Profile</h2>
-                <form action="/updateProfile" method="post">
+                <form action="/studentprofile" method="post">
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
@@ -120,6 +120,7 @@
                                 <label class="label">Rank your top 3 classes:</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="rank1">
+                                        <option disabled="disabled" selected="selected">Rank 1</option>
                                         {{#each courseList}}
                                             <option>
                                                 {{name}}
@@ -128,8 +129,15 @@
                                     </select>
                                     <div class="select-dropdown"></div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="rank2">
+                                        <option disabled="disabled" selected="selected">Rank 2</option>
                                         {{#each courseList}}
                                             <option>
                                                 {{name}}
@@ -138,8 +146,15 @@
                                     </select>
                                     <div class="select-dropdown"></div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="rank3">
+                                        <option disabled="disabled" selected="selected">Rank 3</option>
                                         {{#each courseList}}
                                             <option>
                                                 {{name}}
@@ -152,7 +167,7 @@
                         </div>
                     </div>
                     <div class="p-t-15">
-                        <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+                        <button class="btn btn--radius-2 btn--blue" type="submit">Update</button>
                     </div>
                 </form>
             </div>
