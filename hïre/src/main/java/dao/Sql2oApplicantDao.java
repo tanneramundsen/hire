@@ -207,7 +207,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             // Initialize HashMap and append (Course, grade) pairs one by one
             HashMap<Course, String> interestedCourses = new HashMap<Course, String>();
             for (Course course : courses) {
-                sql = "SELECT grades " +
+                sql = "SELECT grade " +
                         "FROM InterestedApplicants_Courses " +
                         "WHERE applicantId = :applicantId " +
                         "AND courseId = :courseId;";
@@ -268,12 +268,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
             // Initialize HashMap and append (Course, grade) pairs one by one
             HashMap<Course, String> interestedCourses = new HashMap<Course, String>();
             for (Course course : courses) {
-                sql = "SELECT grades " +
+                sql = "SELECT grade " +
                         "FROM InterestedApplicants_Courses " +
-                        "WHERE jhed = :jhed " +
+                        "WHERE applicantId = :applicantId " +
                         "AND courseId = :courseId;";
                 List<Map<String, Object>> grades = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
+                        .addParameter("applicantId", applicant.getId())
                         .addParameter("courseId", course.getId())
                         .executeAndFetchTable()
                         .asList();
@@ -319,7 +319,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 // Initialize HashMap and append (Course, grade) pairs one by one
                 HashMap<Course, String> interestedCourses = new HashMap<Course, String>();
                 for (Course course : courses) {
-                    sql = "SELECT grades " +
+                    sql = "SELECT grade " +
                             "FROM InterestedApplicants_Courses " +
                             "WHERE applicantId = :applicantId " +
                             "AND courseId = :courseId;";
