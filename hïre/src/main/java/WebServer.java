@@ -55,7 +55,7 @@ public class WebServer {
                 courseList = staffMemberDao.read(jhed).getCourses();
             } else {
                 name = applicantDao.read(jhed).getName();
-                courseList = applicantDao.read(jhed).getInterestedCourses();
+                courseList = applicantDao.read(jhed).getCoursesList();
             }
             model.put("name", name);
             model.put("courseList", courseList);
@@ -131,16 +131,17 @@ public class WebServer {
             String profileType = request.queryParams("profileType");
             String[] courses = request.queryParamsValues("courses");
             List<Course> courseList = new ArrayList<Course>();
+            HashMap<Course, String> coursesHashMap = new HashMap<Course, String>();
             for (String course:courses) {
                 // TODO: find courses using name instead of creating new ones
                 Course newCourse = new Course(course,"123",null,"Spring2020",false,null,null);
                 courseDao.add(newCourse);
-                courseList.add(newCourse);
+                coursesHashMap.put(newCourse, null);
             }
             if (profileType.equals("Professor")) {
                 staffMemberDao.add(new StaffMember(name,jhed,courseList));
             } else {
-                applicantDao.add(new Applicant(name,email,jhed,courseList,null));
+                applicantDao.add(new Applicant(name,email,jhed,coursesHashMap));
             }
             // use information to create either an applicant or staff member
             response.cookie("jhed", jhed);

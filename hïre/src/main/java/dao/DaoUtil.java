@@ -79,14 +79,18 @@ public final class DaoUtil {
 
     public static void addSampleApplicants(CourseDao courseDao, ApplicantDao applicantDao) {
         List<Course> courseList = courseDao.findAll();
+        HashMap<Course, String> courseHashMap = new HashMap<Course, String>();
+        for (Course course: courseList) {
+            courseHashMap.put(course, null);
+        }
         if (courseList.size() == 0) addSampleCourses(courseDao);
 
         // Initialize sample applicants
-        Applicant applicant1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", courseList, null);
-        Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", courseList,null);
-        Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", courseList, null);
-        Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", courseList, null);
-        Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", courseList, null);
+        Applicant applicant1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", courseHashMap);
+        Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", courseHashMap);
+        Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", courseHashMap);
+        Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", courseHashMap);
+        Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", courseHashMap);
         List<Applicant> applicantList = Arrays.asList(new Applicant[] {applicant1, applicant2, applicant3, applicant4, applicant5});
 
         Random random = new Random();
