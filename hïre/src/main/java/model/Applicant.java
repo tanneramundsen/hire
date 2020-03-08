@@ -60,7 +60,9 @@ public class Applicant extends User {
 
     // TODO: return list of keys from hashmap
     public List<Course> getCoursesList() {
-        return null;
+        List<Course> courseList = new ArrayList<Course>();
+        courseList.addAll(interestedCourses.keySet());
+        return courseList;
     }
 
     public HashMap<Course, String> getInterestedCourses() {

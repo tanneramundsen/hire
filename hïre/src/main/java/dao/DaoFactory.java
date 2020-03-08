@@ -169,6 +169,8 @@ public final class DaoFactory {
         String sql = "DROP TABLE IF EXISTS InterestedApplicants_Courses;";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
+            sql = "DROP TABLE IF EXISTS QualifiedApplicants_Courses;";
+            conn.createQuery(sql).executeUpdate();
         }
     }
 
