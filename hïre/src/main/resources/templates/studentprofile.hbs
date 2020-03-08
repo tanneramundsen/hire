@@ -78,9 +78,6 @@
 <meta name="author" content="Colorlib">
 <meta name="keywords" content="Colorlib Templates">
 
-<!-- Title Page-->
-<title>Sign Up Page</title>
-
 <!-- Icons font CSS-->
 <link href="assets/vendor2/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 <link href="assets/vendor2/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
@@ -99,65 +96,55 @@
     <div class="wrapper wrapper--w680">
         <div class="card card-4">
             <div class="card-body">
-                <h2 class="title">Sign Up Form</h2>
-                <form action="/signup" method="post">
+                <h2 class="title">Update Profile</h2>
+                <form action="/updateProfile" method="post">
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">First Name</label>
-                                <input class="input--style-4" type="text" name="firstName">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="input-group">
-                                <label class="label">Last Name</label>
-                                <input class="input--style-4" type="text" name="lastName">
+                                <label class="label">Name</label>
+                                <input class="input--style-4" type="text" name="name" value = {{name}}>
                             </div>
                         </div>
                     </div>
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">JHED</label>
-                                <input class="input--style-4" type="text" name="jhed">
+                                <label class="label">Email</label>
+                                <input class="input--style-4" type="text" name="email" value = {{email}}>
                             </div>
                         </div>
+                    </div>
+                    <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">Choose account type:</label>
+                                <label class="label">Rank your top 3 classes:</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
-                                    <select name="profileType">
-                                        <option disabled="disabled" selected="selected">I am a..</option>
-                                        <option>Student</option>
-                                        <option>Professor</option>
+                                    <select name="rank1">
+                                        {{#each courseList}}
+                                            <option>
+                                                {{name}}
+                                            </option>
+                                        {{/each}}
                                     </select>
                                     <div class="select-dropdown"></div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--
-                    <div class="row row-space">
-                        <div class="col-2">
-                            <div class="input-group">
-                                <label class="label">Set Password</label>
-                                <input class="input--style-4" type="password" name="password">
-                            </div>
-                        </div>
-                    </div>
-                    -->
-                    <div class="row row-space">
-                        <div class="col-md-6 col-sm-12">
-                            <div class="input-group">
-                                <label class="label">Choose courses:</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
-                                    <select name="courses" multiple="multiple">
-                                        <option selected="selected">Gateway Java</option>
-                                        <option>Intermediate Programming</option>
-                                        <option>Data Structures</option>
-                                        <option>Computer Systems Fundamentals</option>
-                                        <option>Intro Algorithms</option>
-                                        <option>Automata</option>
+                                    <select name="rank2">
+                                        {{#each courseList}}
+                                            <option>
+                                                {{name}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="rank3">
+                                        {{#each courseList}}
+                                            <option>
+                                                {{name}}
+                                            </option>
+                                        {{/each}}
                                     </select>
                                     <div class="select-dropdown"></div>
                                 </div>
