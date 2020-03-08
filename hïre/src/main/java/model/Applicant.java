@@ -7,7 +7,7 @@ public class Applicant extends User {
     String email;
     String jhed;
     Course hiredCourse;
-    List<Course> interestedCourses;
+    HashMap<Course, String> interestedCourses;
 
     @Override
     public void updateCourses() {
@@ -19,7 +19,7 @@ public class Applicant extends User {
         return null;
     }
 
-    public Applicant(String name, String email, String jhed, List<Course> interestedCourses) {
+    public Applicant(String name, String email, String jhed, HashMap<Course, String> interestedCourses) {
         this.name = name;
         this.email = email;
         this.jhed = jhed;
@@ -58,11 +58,11 @@ public class Applicant extends User {
         this.jhed = jhed;
     }
 
-    public List<Course> getInterestedCourses() {
+    public HashMap<Course, String> getInterestedCourses() {
         return interestedCourses;
     }
 
-    public void setInterestedCourses(List<Course> interestedCourses) {
+    public void setInterestedCourses(HashMap<Course, String> interestedCourses) {
         this.interestedCourses = interestedCourses;
     }
 

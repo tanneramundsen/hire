@@ -36,7 +36,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .getKey();
                 applicant.setId(id);
                 if (applicant.getInterestedCourses() != null) {
-                    for (Course course : applicant.getInterestedCourses()) {
+                    for (Map.Entry<Course,String> entry : applicant.getInterestedCourses().entrySet()) {
+                        Course course = entry.getKey();
+                        String grade = entry.getValue();
                         int courseId = course.getId();
                         if (courseId == 0) {
                             sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
@@ -50,11 +52,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
                                     .getKey();
                             course.setId(sId);
                         }
-                        sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
-                                "VALUES(:applicantId, :courseId);";
+                        sql = "INSERT INTO InterestedApplicants_Courses(applicantId, courseId, grade) " +
+                                "VALUES(:applicantId, :courseId, :grade);";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", applicant.getId())
                                 .addParameter("courseId", course.getId())
+                                .addParameter("grade", grade)
                                 .executeUpdate();
                     }
                 }
@@ -84,7 +87,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeUpdate();
 
             // Delete existing entries with this applicant in joining tables
-            sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :applicantId;";
+            sql = "DELETE FROM InterestedApplicants_Courses WHERE applicantId = :applicantId;";
             conn.createQuery(sql)
                     .addParameter("applicantId", applicant.getId())
                     .executeUpdate();
@@ -95,7 +98,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
             // Fresh update to joining tables
             if (applicant.getInterestedCourses() != null) {
-                for (Course course : applicant.getInterestedCourses()) {
+                for (Map.Entry<Course,String> entry : applicant.getInterestedCourses().entrySet()) {
+                    Course course = entry.getKey();
+                    String grade = entry.getValue();
                     int courseId = course.getId();
                     if (course.getId() == 0) {
                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
@@ -111,11 +116,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         course.setId(courseId);
                     }
 
-                    sql = "INSERT INTO QualifiedApplicants_Courses(applicantId, courseId) " +
-                            "VALUES(:applicantId, :courseId);";
+                    sql = "INSERT INTO InterestedApplicants_Courses(applicantId, courseId, grade) " +
+                            "VALUES(:applicantId, :courseId, :grade);";
                     conn.createQuery(sql)
                             .addParameter("applicantId", applicant.getId())
                             .addParameter("courseId", courseId)
+                            .addParameter("grade", grade)
                             .executeUpdate();
                 }
             }
@@ -152,7 +158,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
     public void delete(Applicant applicant) throws DaoException {
         try(Connection conn = sql2o.open()) {
             int id = applicant.getId();
-            String sql = "DELETE FROM QualifiedApplicants_Courses WHERE applicantId = :applicantId;";
+            String sql = "DELETE FROM InterestedApplicants_Courses WHERE applicantId = :applicantId;";
             conn.createQuery(sql)
                     .addParameter("applicantId", id)
                     .executeUpdate();
@@ -183,18 +189,36 @@ public class Sql2oApplicantDao implements ApplicantDao {
             // TODO: Figure out why executeAndFetch does not fill in name
             sql = "SELECT name FROM Applicants WHERE id = :id";
             List<Map<String, Object>> names = conn.createQuery(sql)
-                    .addParameter("id", id).executeAndFetchTable().asList();
+                    .addParameter("id", id)
+                    .executeAndFetchTable()
+                    .asList();
             applicant.setName((String) names.get(0).get("name"));
 
             //get corresponding interestedCourses according to joining table
             sql = "SELECT Courses.* " +
-                    "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
-                    "ON QualifiedApplicants_Courses.courseId = Courses.id " +
-                    "WHERE QualifiedApplicants_Courses.applicantId = :applicantId;";
+                    "FROM InterestedApplicants_Courses INNER JOIN Courses " +
+                    "ON InterestedApplicants_Courses.courseId = Courses.id " +
+                    "WHERE InterestedApplicants_Courses.applicantId = :applicantId;";
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("applicantId", id)
                     .executeAndFetch(Course.class);
-            applicant.setInterestedCourses(courses);
+            // TODO maybe make more efficient?
+            // Initialize HashMap and append (Course, grade) pairs one by one
+            HashMap<Course, String> interestedCourses;
+            for (Course course : courses) {
+                sql = "SELECT grades " +
+                        "FROM InterestedApplicants_Courses " +
+                        "WHERE applicantId = :applicantId " +
+                        "AND courseId = :courseId;";
+                List<Map<String, Object>> grades = conn.createQuery(sql)
+                        .addParameter("applicantId", id)
+                        .addParameter("courseId", course.getId())
+                        .executeAndFetchTable()
+                        .asList();
+                String grade = grades.get(0).get("grade");
+                interestedCourses.put(course, grade);
+            }
+            applicant.setInterestedCourses(interestedCourses);
 
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
@@ -233,13 +257,29 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
             //get corresponding interestedCourses according to joining table
             sql = "SELECT Courses.* " +
-                    "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
-                    "ON QualifiedApplicants_Courses.courseId = Courses.id " +
-                    "WHERE QualifiedApplicants_Courses.applicantId = :applicantId;";
+                    "FROM InterestedApplicants_Courses INNER JOIN Courses " +
+                    "ON InterestedApplicants_Courses.courseId = Courses.id " +
+                    "WHERE InterestedApplicants_Courses.applicantId = :applicantId;";
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("applicantId", applicant.getId())
                     .executeAndFetch(Course.class);
-            applicant.setInterestedCourses(courses);
+            // TODO maybe make more efficient?
+            // Initialize HashMap and append (Course, grade) pairs one by one
+            HashMap<Course, String> interestedCourses;
+            for (Course course : courses) {
+                sql = "SELECT grades " +
+                        "FROM InterestedApplicants_Courses " +
+                        "WHERE applicantId = :applicantId " +
+                        "AND courseId = :courseId;";
+                List<Map<String, Object>> grades = conn.createQuery(sql)
+                        .addParameter("applicantId", id)
+                        .addParameter("courseId", course.getId())
+                        .executeAndFetchTable()
+                        .asList();
+                String grade = grades.get(0).get("grade");
+                interestedCourses.put(course, grade);
+            }
+            applicant.setInterestedCourses(interestedCourses);
 
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
@@ -268,13 +308,29 @@ public class Sql2oApplicantDao implements ApplicantDao {
             for (Applicant applicant : applicants) {
                 int applicantId = applicant.getId();
                 sql = "SELECT Courses.* " +
-                        "FROM QualifiedApplicants_Courses INNER JOIN Courses " +
-                        "ON QualifiedApplicants_Courses.courseId = Courses.id " +
-                        "WHERE QualifiedApplicants_Courses.applicantId = :id;";
+                        "FROM InterestedApplicants_Courses INNER JOIN Courses " +
+                        "ON InterestedApplicants_Courses.courseId = Courses.id " +
+                        "WHERE InterestedApplicants_Courses.applicantId = :id;";
                 List<Course> courses = conn.createQuery(sql)
                         .addParameter("id", applicantId)
                         .executeAndFetch(Course.class);
-                applicant.setInterestedCourses(courses);
+                // TODO maybe make more efficient?
+                // Initialize HashMap and append (Course, grade) pairs one by one
+                HashMap<Course, String> interestedCourses;
+                for (Course course : courses) {
+                    sql = "SELECT grades " +
+                            "FROM InterestedApplicants_Courses " +
+                            "WHERE applicantId = :applicantId " +
+                            "AND courseId = :courseId;";
+                    List<Map<String, Object>> grades = conn.createQuery(sql)
+                            .addParameter("applicantId", id)
+                            .addParameter("courseId", course.getId())
+                            .executeAndFetchTable()
+                            .asList();
+                    String grade = grades.get(0).get("grade");
+                    interestedCourses.put(course, grade);
+                }
+                applicant.setInterestedCourses(interestedCourses);
 
                 sql = "SELECT Courses.* " +
                         "FROM HiredApplicants_Courses INNER JOIN Courses " +
@@ -298,9 +354,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
         try(Connection conn = sql2o.open()) {
             String sql = "SELECT Applicants.* " +
                     "FROM Applicants " +
-                    "INNER JOIN QualifiedApplicants_Courses " +
-                    "ON Applicants.id = QualifiedApplicants_Courses.applicantId " +
-                    "WHERE QualifiedApplicants_Courses.courseId = :courseId";
+                    "INNER JOIN InterestedApplicants_Courses " +
+                    "ON Applicants.id = InterestedApplicants_Courses.applicantId " +
+                    "WHERE InterestedApplicants_Courses.courseId = :courseId";
             return conn.createQuery(sql)
                     .addParameter("courseId", courseId)
                     .executeAndFetch(Applicant.class);

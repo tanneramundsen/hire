@@ -115,7 +115,7 @@ public final class DaoUtil {
         }
 
         for (Course course: courseList) {
-            course.setQualifiedApplicants(applicantList);
+            course.setInterestedApplicants(applicantList);
             courseDao.update(course);
         }
     }
