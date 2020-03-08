@@ -82,11 +82,11 @@ public final class DaoUtil {
         if (courseList.size() == 0) addSampleCourses(courseDao);
 
         // Initialize sample applicants
-        Applicant applicant1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", courseList);
-        Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", courseList);
-        Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", courseList);
-        Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", courseList);
-        Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", courseList);
+        Applicant applicant1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", courseList, null);
+        Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", courseList,null);
+        Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", courseList, null);
+        Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", courseList, null);
+        Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", courseList, null);
         List<Applicant> applicantList = Arrays.asList(new Applicant[] {applicant1, applicant2, applicant3, applicant4, applicant5});
 
         Random random = new Random();

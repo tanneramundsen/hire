@@ -14,14 +14,14 @@ public class Course implements Comparable<Course> {
     List<Applicant> interestedApplicants;
 
     public Course(String name, String courseNumber, List<StaffMember> instructors, String semester,
-                  boolean hiringComplete, List<Applicant> cas, List<Applicant> qualifiedStudents) {
+                  boolean hiringComplete, List<Applicant> cas, List<Applicant> interestedApplicants) {
         this.name = name;
         this.courseNumber = courseNumber;
         this.instructors = instructors;
         this.semester = semester;
         this.hiringComplete = hiringComplete;
         this.hiredApplicants = cas;
-        this.interestedApplicants = qualifiedStudents;
+        this.interestedApplicants = interestedApplicants;
     }
 
     public int getId() {
@@ -84,8 +84,8 @@ public class Course implements Comparable<Course> {
         return interestedApplicants;
     }
 
-    public void setQualifiedApplicants(List<Applicant> qualifiedApplicants) {
-        this.interestedApplicants = qualifiedApplicants;
+    public void setInterestedApplicants(List<Applicant> interestedApplicants) {
+        this.interestedApplicants = interestedApplicants;
     }
 
     @Override

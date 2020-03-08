@@ -7,6 +7,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +36,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .executeUpdate()
                         .getKey();
                 applicant.setId(id);
-                if (applicant.getInterestedCourses() != null) {
-                    for (Map.Entry<Course,String> entry : applicant.getInterestedCourses().entrySet()) {
+                if (applicant.getCoursesTakenGrades() != null) {
+                    for (Map.Entry<Course,String> entry : applicant.getCoursesTakenGrades().entrySet()) {
                         Course course = entry.getKey();
                         String grade = entry.getValue();
                         int courseId = course.getId();
@@ -97,8 +98,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeUpdate();
 
             // Fresh update to joining tables
-            if (applicant.getInterestedCourses() != null) {
-                for (Map.Entry<Course,String> entry : applicant.getInterestedCourses().entrySet()) {
+            if (applicant.getCoursesTakenGrades() != null) {
+                for (Map.Entry<Course,String> entry : applicant.getCoursesTakenGrades().entrySet()) {
                     Course course = entry.getKey();
                     String grade = entry.getValue();
                     int courseId = course.getId();
@@ -204,7 +205,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeAndFetch(Course.class);
             // TODO maybe make more efficient?
             // Initialize HashMap and append (Course, grade) pairs one by one
-            HashMap<Course, String> interestedCourses;
+            HashMap<Course, String> coursesTakenGrades = new HashMap<Course, String>();
             for (Course course : courses) {
                 sql = "SELECT grades " +
                         "FROM InterestedApplicants_Courses " +
@@ -215,10 +216,10 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .addParameter("courseId", course.getId())
                         .executeAndFetchTable()
                         .asList();
-                String grade = grades.get(0).get("grade");
-                interestedCourses.put(course, grade);
+                String grade = (String) grades.get(0).get("grade");
+                coursesTakenGrades.put(course, grade);
             }
-            applicant.setInterestedCourses(interestedCourses);
+            applicant.setCoursesTakenGrades(coursesTakenGrades);
 
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
@@ -265,21 +266,21 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeAndFetch(Course.class);
             // TODO maybe make more efficient?
             // Initialize HashMap and append (Course, grade) pairs one by one
-            HashMap<Course, String> interestedCourses;
+            HashMap<Course, String> coursesTakenGrades = new HashMap<Course, String>();
             for (Course course : courses) {
                 sql = "SELECT grades " +
                         "FROM InterestedApplicants_Courses " +
-                        "WHERE applicantId = :applicantId " +
+                        "WHERE jhed = :jhed " +
                         "AND courseId = :courseId;";
                 List<Map<String, Object>> grades = conn.createQuery(sql)
-                        .addParameter("applicantId", id)
+                        .addParameter("jhed", jhed)
                         .addParameter("courseId", course.getId())
                         .executeAndFetchTable()
                         .asList();
-                String grade = grades.get(0).get("grade");
-                interestedCourses.put(course, grade);
+                String grade = (String) grades.get(0).get("grade");
+                coursesTakenGrades.put(course, grade);
             }
-            applicant.setInterestedCourses(interestedCourses);
+            applicant.setCoursesTakenGrades(coursesTakenGrades);
 
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
@@ -316,21 +317,21 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .executeAndFetch(Course.class);
                 // TODO maybe make more efficient?
                 // Initialize HashMap and append (Course, grade) pairs one by one
-                HashMap<Course, String> interestedCourses;
+                HashMap<Course, String> coursesTakenGrades = new HashMap<Course, String>();
                 for (Course course : courses) {
                     sql = "SELECT grades " +
                             "FROM InterestedApplicants_Courses " +
                             "WHERE applicantId = :applicantId " +
                             "AND courseId = :courseId;";
                     List<Map<String, Object>> grades = conn.createQuery(sql)
-                            .addParameter("applicantId", id)
+                            .addParameter("applicantId", applicantId)
                             .addParameter("courseId", course.getId())
                             .executeAndFetchTable()
                             .asList();
-                    String grade = grades.get(0).get("grade");
-                    interestedCourses.put(course, grade);
+                    String grade = (String) grades.get(0).get("grade");
+                    coursesTakenGrades.put(course, grade);
                 }
-                applicant.setInterestedCourses(interestedCourses);
+                applicant.setCoursesTakenGrades(coursesTakenGrades);
 
                 sql = "SELECT Courses.* " +
                         "FROM HiredApplicants_Courses INNER JOIN Courses " +

@@ -104,7 +104,7 @@ public class Sql2oCourseDao implements CourseDao {
                         conn.createQuery(sql)
                                 .addParameter("applicantId", interested.getId())
                                 .addParameter("courseId", courseId)
-                                .addParameter("grade", interested.getInterestedCourses.get(course))
+                                .addParameter("grade", interested.getCoursesTakenGrades().get(course))
                                 .executeUpdate();
                     }
                 }
@@ -261,7 +261,7 @@ public class Sql2oCourseDao implements CourseDao {
                     conn.createQuery(sql)
                             .addParameter("applicantId", applicantId)
                             .addParameter("courseId", courseId)
-                            .addParameter("grade", interested.getInterestedCourses.get(course))
+                            .addParameter("grade", interested.getCoursesTakenGrades().get(course))
                             .executeUpdate();
                 }
             }

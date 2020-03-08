@@ -140,7 +140,7 @@ public class WebServer {
             if (profileType.equals("Professor")) {
                 staffMemberDao.add(new StaffMember(name,jhed,courseList));
             } else {
-                applicantDao.add(new Applicant(name,email,jhed,courseList));
+                applicantDao.add(new Applicant(name,email,jhed,courseList,null));
             }
             // use information to create either an applicant or staff member
             response.cookie("jhed", jhed);
