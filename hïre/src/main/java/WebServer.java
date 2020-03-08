@@ -136,6 +136,7 @@ public class WebServer {
                 // TODO: find courses using name instead of creating new ones
                 Course newCourse = new Course(course,"123",null,"Spring2020",false,null,null);
                 courseDao.add(newCourse);
+                courseList.add(newCourse);
                 coursesHashMap.put(newCourse, null);
             }
             if (profileType.equals("Professor")) {
