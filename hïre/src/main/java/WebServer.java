@@ -112,16 +112,11 @@ public class WebServer {
             model.put("courseID", courseId);
             String courseName = request.cookie("name");
 
-            List<Applicant> interestedApplicants = new ArrayList<>();
-            List<Applicant> hiredApplicants = new ArrayList<>();
-            List<StaffMember> instructors = new ArrayList<>();
-
             String courseNumber = courseDao.read(courseId).getCourseNumber();
-            interestedApplicants = courseDao.read(courseId).getInterestedApplicants();
-            hiredApplicants = courseDao.read(courseId).getHiredApplicants();
-            instructors = courseDao.read(courseId).getInstructors();
-
-
+            List<Applicant> interestedApplicants = courseDao.read(courseId).getInterestedApplicants();
+            List<Applicant> hiredApplicants = courseDao.read(courseId).getHiredApplicants();
+            List<StaffMember> instructors = courseDao.read(courseId).getInstructors();
+            
             /* later can put in semester */
             model.put("name", courseName);
             model.put("courseNumber", courseNumber);
