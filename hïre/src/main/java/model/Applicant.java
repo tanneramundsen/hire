@@ -8,9 +8,9 @@ public class Applicant extends User {
     String jhed;
     Course hiredCourse;
     HashMap<Course, String> interestedCourses;
-    Course rankOne;
-    Course rankTwo;
-    Course rankThree;
+    Course rankOne = null;
+    Course rankTwo = null;
+    Course rankThree = null;
 
     @Override
     public void updateCourses() {

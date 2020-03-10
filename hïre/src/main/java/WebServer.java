@@ -133,14 +133,42 @@ public class WebServer {
             Applicant student = applicantDao.read(jhed);
             String name = student.getName();
             String email = student.getEmail();
-            List<Course> courseList = applicantDao.read(jhed).getCoursesList();
+            List<Course> courseList = student.getCoursesList();
             model.put("name", name);
             model.put("email", email);
+            if (student.getRankOne() != null) {
+                model.put("rank1", student.getRankOne().getName());
+            } else {
+                model.put("rank1", null);
+            }
+            if (student.getRankTwo() != null) {
+                model.put("rank2", student.getRankTwo().getName());
+            } else {
+                model.put("rank2", null);
+            }
+            if (student.getRankThree() != null) {
+                model.put("rank3", student.getRankThree().getName());
+            } else {
+                model.put("rank3", null);
+            }
             model.put("courseList", courseList);
             return new ModelAndView(model, "studentprofile.hbs");
         }, new HandlebarsTemplateEngine());
 
-
+        post("/studentprofile", (request, response) -> {
+            String rank1 = request.queryParams("rank1");
+            String rank2 = request.queryParams("rank2");
+            String rank3 = request.queryParams("rank3");
+            String jhed = request.cookie("jhed");
+            Applicant student = applicantDao.read(jhed);
+            student.setRankOne(courseDao.read(rank1));
+            student.setRankTwo(courseDao.read(rank2));
+            student.setRankThree(courseDao.read(rank3));
+            response.cookie("jhed", jhed);
+            response.cookie("profileType", "Applicant");
+            response.redirect("/landing");
+            return null;
+        }, new HandlebarsTemplateEngine());
     }
 
 }
