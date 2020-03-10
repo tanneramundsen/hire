@@ -111,11 +111,14 @@ public final class DaoUtil {
                 hiredApplicants.add(applicant);
             }
 
+            // Add applicant to Applicants table
+            applicantDao.add(applicant);
+
             // Update hiredApplicants list for Course POJO
             course.setHiredApplicants(hiredApplicants);
 
-            // Add applicant to Applicants table
-            applicantDao.add(applicant);
+            // Update course with newly hired applicant
+            courseDao.update(course);
         }
 
         for (Course course: courseList) {
