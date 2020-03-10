@@ -8,6 +8,9 @@ public class Applicant extends User {
     String jhed;
     Course hiredCourse;
     HashMap<Course, String> interestedCourses;
+    Course rankOne;
+    Course rankTwo;
+    Course rankThree;
 
     @Override
     public void updateCourses() {
@@ -57,6 +60,18 @@ public class Applicant extends User {
     public void setJhed(String jhed) {
         this.jhed = jhed;
     }
+
+    public Course getRankOne() { return rankOne; }
+
+    public void setRankOne(Course rankOne) { this.rankOne = rankOne; }
+
+    public Course getRankTwo() { return rankTwo; }
+
+    public void setRankTwo(Course rankTwo) { this.rankTwo = rankTwo; }
+
+    public Course getRankThree() { return rankThree; }
+
+    public void setRankThree(Course rankThree) { this.rankThree = rankThree; }
 
     // TODO: return list of keys from hashmap
     public List<Course> getCoursesList() {
