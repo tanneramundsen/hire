@@ -33,6 +33,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .addParameter("name", applicant.getName())
                         .addParameter("email", applicant.getEmail())
                         .addParameter("jhed", applicant.getJhed())
+                        // TODO: handle when these are null - not supposed to put in course
                         .addParameter("rankOne", applicant.getRankOne())
                         .addParameter("rankTwo", applicant.getRankTwo())
                         .addParameter("rankThree", applicant.getRankThree())
@@ -83,18 +84,44 @@ public class Sql2oApplicantDao implements ApplicantDao {
     public void update(Applicant applicant) throws DaoException {
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Applicants SET " +
-                    "name = :name, email = :email, jhed = :jhed," +
-                    "rankOne = :rankOne, rankTwo = :rankTwo, rankThree = :rankThree" +
+                    "name = :name, email = :email, jhed = :jhed " +
                     "WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", applicant.getName())
                     .addParameter("email", applicant.getEmail())
                     .addParameter("jhed", applicant.getJhed())
-                    .addParameter("rankOne", applicant.getRankOne())
-                    .addParameter("rankTwo", applicant.getRankTwo())
-                    .addParameter("rankThree", applicant.getRankThree())
                     .addParameter("id", applicant.getId())
                     .executeUpdate();
+
+            if (applicant.getRankOne() != null) {
+                sql = "UPDATE Applicants SET " +
+                        "rankOne = :rankOne " +
+                        "WHERE id = :id;";
+                conn.createQuery(sql)
+                        .addParameter("rankOne", applicant.getRankOne().getId())
+                        .addParameter("id", applicant.getId())
+                        .executeUpdate();
+            }
+
+            if (applicant.getRankTwo() != null) {
+                sql = "UPDATE Applicants SET " +
+                        "rankTwo = :rankTwo " +
+                        "WHERE id = :id;";
+                conn.createQuery(sql)
+                        .addParameter("rankTwo", applicant.getRankTwo().getId())
+                        .addParameter("id", applicant.getId())
+                        .executeUpdate();
+            }
+
+            if (applicant.getRankThree() != null) {
+                sql = "UPDATE Applicants SET " +
+                        "rankThree = :rankThree " +
+                        "WHERE id = :id;";
+                conn.createQuery(sql)
+                        .addParameter("rankThree", applicant.getRankThree().getId())
+                        .addParameter("id", applicant.getId())
+                        .executeUpdate();
+            }
 
             // Delete existing entries with this applicant in joining tables
             sql = "DELETE FROM InterestedApplicants_Courses WHERE applicantId = :applicantId;";
@@ -187,7 +214,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public Applicant read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Applicants WHERE id = :id;";
+            String sql = "SELECT id, name, email, jhed FROM Applicants WHERE id = :id;";
             Applicant applicant = conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetchFirst(Applicant.class);
@@ -208,7 +235,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             Course[] rankedCourses = new Course[3];
             sql = "SELECT Courses.* " +
                     "FROM Courses INNER JOIN Applicants " +
-                    "ON Courses.courseId = Applicants.rankOne" +
+                    "ON Courses.id = Applicants.rankOne " +
                     "WHERE Applicants.id = :id";
             List<Course> coursesRankOne = conn.createQuery(sql)
                     .addParameter("id", id)
@@ -218,7 +245,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             sql = "SELECT Courses.* " +
                     "FROM Courses INNER JOIN Applicants " +
-                    "ON Courses.courseId = Applicants.rankTwo" +
+                    "ON Courses.id = Applicants.rankTwo " +
                     "WHERE Applicants.id = :id";
             List<Course> coursesRankTwo = conn.createQuery(sql)
                     .addParameter("id", id)
@@ -228,7 +255,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             sql = "SELECT Courses.* " +
                     "FROM Courses INNER JOIN Applicants " +
-                    "ON Courses.courseId = Applicants.rankThree" +
+                    "ON Courses.id = Applicants.rankThree " +
                     "WHERE Applicants.id = :id";
             List<Course> coursesRankThree = conn.createQuery(sql)
                     .addParameter("id", id)
@@ -288,7 +315,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public Applicant read(String jhed) throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Applicants WHERE jhed = :jhed;";
+            String sql = "SELECT id, name, email, jhed FROM Applicants WHERE jhed = :jhed;";
             Applicant applicant = conn.createQuery(sql)
                     .addParameter("jhed", jhed)
                     .executeAndFetchFirst(Applicant.class);
@@ -308,7 +335,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             Course[] rankedCourses = new Course[3];
             sql = "SELECT Courses.* " +
                     "FROM Courses INNER JOIN Applicants " +
-                    "ON Courses.courseId = Applicants.rankOne" +
+                    "ON Courses.id = Applicants.rankOne " +
                     "WHERE Applicants.id = :id";
             List<Course> coursesRankOne = conn.createQuery(sql)
                     .addParameter("id", id)
@@ -318,7 +345,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             sql = "SELECT Courses.* " +
                     "FROM Courses INNER JOIN Applicants " +
-                    "ON Courses.courseId = Applicants.rankTwo" +
+                    "ON Courses.id = Applicants.rankTwo " +
                     "WHERE Applicants.id = :id";
             List<Course> coursesRankTwo = conn.createQuery(sql)
                     .addParameter("id", id)
@@ -328,7 +355,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             sql = "SELECT Courses.* " +
                     "FROM Courses INNER JOIN Applicants " +
-                    "ON Courses.courseId = Applicants.rankThree" +
+                    "ON Courses.id = Applicants.rankThree " +
                     "WHERE Applicants.id = :id";
             List<Course> coursesRankThree = conn.createQuery(sql)
                     .addParameter("id", id)
@@ -404,7 +431,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 Course[] rankedCourses = new Course[3];
                 sql = "SELECT Courses.* " +
                         "FROM Courses INNER JOIN Applicants " +
-                        "ON Courses.courseId = Applicants.rankOne" +
+                        "ON Courses.id = Applicants.rankOne " +
                         "WHERE Applicants.id = :id";
                 List<Course> coursesRankOne = conn.createQuery(sql)
                         .addParameter("id", applicantId)
@@ -414,7 +441,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 }
                 sql = "SELECT Courses.* " +
                         "FROM Courses INNER JOIN Applicants " +
-                        "ON Courses.courseId = Applicants.rankTwo" +
+                        "ON Courses.id = Applicants.rankTwo " +
                         "WHERE Applicants.id = :id";
                 List<Course> coursesRankTwo = conn.createQuery(sql)
                         .addParameter("id", applicantId)
@@ -424,7 +451,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 }
                 sql = "SELECT Courses.* " +
                         "FROM Courses INNER JOIN Applicants " +
-                        "ON Courses.courseId = Applicants.rankThree" +
+                        "ON Courses.id = Applicants.rankThree " +
                         "WHERE Applicants.id = :id";
                 List<Course> coursesRankThree = conn.createQuery(sql)
                         .addParameter("id", applicantId)
