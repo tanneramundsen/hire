@@ -27,12 +27,15 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
                 String sql;
                 //no duplicates --> insert
-                sql = "INSERT INTO Applicants(name, email, jhed) " +
-                        "VALUES(:name, :email, :jhed);";
+                sql = "INSERT INTO Applicants(name, email, jhed, rankOne, rankTwo, rankThree) " +
+                        "VALUES(:name, :email, :jhed, :rankOne, :rankTwo, :rankThree);";
                 int id = (int) conn.createQuery(sql)
                         .addParameter("name", applicant.getName())
                         .addParameter("email", applicant.getEmail())
                         .addParameter("jhed", applicant.getJhed())
+                        .addParameter("rankOne", applicant.getRankOne())
+                        .addParameter("rankTwo", applicant.getRankTwo())
+                        .addParameter("rankThree", applicant.getRankThree())
                         .executeUpdate()
                         .getKey();
                 applicant.setId(id);
@@ -79,11 +82,17 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public void update(Applicant applicant) throws DaoException {
         try(Connection conn = sql2o.open()) {
-            String sql = "UPDATE Applicants SET name = :name, email = :email, jhed = :jhed WHERE id = :id;";
+            String sql = "UPDATE Applicants SET " +
+                    "name = :name, email = :email, jhed = :jhed," +
+                    "rankOne = :rankOne, rankTwo = :rankTwo, rankThree = :rankThree" +
+                    "WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", applicant.getName())
                     .addParameter("email", applicant.getEmail())
                     .addParameter("jhed", applicant.getJhed())
+                    .addParameter("rankOne", applicant.getRankOne())
+                    .addParameter("rankTwo", applicant.getRankTwo())
+                    .addParameter("rankThree", applicant.getRankThree())
                     .addParameter("id", applicant.getId())
                     .executeUpdate();
 
@@ -195,6 +204,43 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .asList();
             applicant.setName((String) names.get(0).get("name"));
 
+            //get rankOne, rankTwo, and rankThree
+            Course[] rankedCourses = new Course[3];
+            sql = "SELECT Courses.* " +
+                    "FROM Courses INNER JOIN Applicants " +
+                    "ON Courses.courseId = Applicants.rankOne" +
+                    "WHERE Applicants.id = :id";
+            List<Course> coursesRankOne = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Course.class);
+            if (!coursesRankOne.isEmpty()) {
+                rankedCourses[0] = coursesRankOne.get(0);
+            }
+            sql = "SELECT Courses.* " +
+                    "FROM Courses INNER JOIN Applicants " +
+                    "ON Courses.courseId = Applicants.rankTwo" +
+                    "WHERE Applicants.id = :id";
+            List<Course> coursesRankTwo = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Course.class);
+            if (!coursesRankTwo.isEmpty()) {
+                rankedCourses[1] = coursesRankTwo.get(0);
+            }
+            sql = "SELECT Courses.* " +
+                    "FROM Courses INNER JOIN Applicants " +
+                    "ON Courses.courseId = Applicants.rankThree" +
+                    "WHERE Applicants.id = :id";
+            List<Course> coursesRankThree = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Course.class);
+            if (!coursesRankThree.isEmpty()) {
+                rankedCourses[2] = coursesRankThree.get(0);
+            }
+
+            applicant.setRankOne(rankedCourses[0]);
+            applicant.setRankTwo(rankedCourses[1]);
+            applicant.setRankThree(rankedCourses[2]);
+
             //get corresponding interestedCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM InterestedApplicants_Courses INNER JOIN Courses " +
@@ -203,7 +249,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("applicantId", id)
                     .executeAndFetch(Course.class);
-            // TODO maybe make more efficient?
+
             // Initialize HashMap and append (Course, grade) pairs one by one
             HashMap<Course, String> interestedCourses = new HashMap<Course, String>();
             for (Course course : courses) {
@@ -221,6 +267,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             applicant.setInterestedCourses(interestedCourses);
 
+            //get HiredCourse
             sql = "SELECT Courses.* " +
                     "FROM HiredApplicants_Courses INNER JOIN Courses " +
                     "ON HiredApplicants_Courses.courseId = Courses.id " +
@@ -256,6 +303,43 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("jhed", jhed).executeAndFetchTable().asList();
             applicant.setName((String) names.get(0).get("name"));
 
+            int id = applicant.getId();
+            //get rankOne, rankTwo, and rankThree
+            Course[] rankedCourses = new Course[3];
+            sql = "SELECT Courses.* " +
+                    "FROM Courses INNER JOIN Applicants " +
+                    "ON Courses.courseId = Applicants.rankOne" +
+                    "WHERE Applicants.id = :id";
+            List<Course> coursesRankOne = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Course.class);
+            if (!coursesRankOne.isEmpty()) {
+                rankedCourses[0] = coursesRankOne.get(0);
+            }
+            sql = "SELECT Courses.* " +
+                    "FROM Courses INNER JOIN Applicants " +
+                    "ON Courses.courseId = Applicants.rankTwo" +
+                    "WHERE Applicants.id = :id";
+            List<Course> coursesRankTwo = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Course.class);
+            if (!coursesRankTwo.isEmpty()) {
+                rankedCourses[1] = coursesRankTwo.get(0);
+            }
+            sql = "SELECT Courses.* " +
+                    "FROM Courses INNER JOIN Applicants " +
+                    "ON Courses.courseId = Applicants.rankThree" +
+                    "WHERE Applicants.id = :id";
+            List<Course> coursesRankThree = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Course.class);
+            if (!coursesRankThree.isEmpty()) {
+                rankedCourses[2] = coursesRankThree.get(0);
+            }
+            applicant.setRankOne(rankedCourses[0]);
+            applicant.setRankTwo(rankedCourses[1]);
+            applicant.setRankThree(rankedCourses[2]);
+
             //get corresponding interestedCourses according to joining table
             sql = "SELECT Courses.* " +
                     "FROM InterestedApplicants_Courses INNER JOIN Courses " +
@@ -264,7 +348,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("applicantId", applicant.getId())
                     .executeAndFetch(Course.class);
-            // TODO maybe make more efficient?
+
             // Initialize HashMap and append (Course, grade) pairs one by one
             HashMap<Course, String> interestedCourses = new HashMap<Course, String>();
             for (Course course : courses) {
@@ -315,7 +399,44 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 List<Course> courses = conn.createQuery(sql)
                         .addParameter("id", applicantId)
                         .executeAndFetch(Course.class);
-                // TODO maybe make more efficient?
+
+                //get rankOne, rankTwo, and rankThree
+                Course[] rankedCourses = new Course[3];
+                sql = "SELECT Courses.* " +
+                        "FROM Courses INNER JOIN Applicants " +
+                        "ON Courses.courseId = Applicants.rankOne" +
+                        "WHERE Applicants.id = :id";
+                List<Course> coursesRankOne = conn.createQuery(sql)
+                        .addParameter("id", applicantId)
+                        .executeAndFetch(Course.class);
+                if (!coursesRankOne.isEmpty()) {
+                    rankedCourses[0] = coursesRankOne.get(0);
+                }
+                sql = "SELECT Courses.* " +
+                        "FROM Courses INNER JOIN Applicants " +
+                        "ON Courses.courseId = Applicants.rankTwo" +
+                        "WHERE Applicants.id = :id";
+                List<Course> coursesRankTwo = conn.createQuery(sql)
+                        .addParameter("id", applicantId)
+                        .executeAndFetch(Course.class);
+                if (!coursesRankTwo.isEmpty()) {
+                    rankedCourses[1] = coursesRankTwo.get(0);
+                }
+                sql = "SELECT Courses.* " +
+                        "FROM Courses INNER JOIN Applicants " +
+                        "ON Courses.courseId = Applicants.rankThree" +
+                        "WHERE Applicants.id = :id";
+                List<Course> coursesRankThree = conn.createQuery(sql)
+                        .addParameter("id", applicantId)
+                        .executeAndFetch(Course.class);
+                if (!coursesRankThree.isEmpty()) {
+                    rankedCourses[2] = coursesRankThree.get(0);
+                }
+
+                applicant.setRankOne(rankedCourses[0]);
+                applicant.setRankTwo(rankedCourses[1]);
+                applicant.setRankThree(rankedCourses[2]);
+
                 // Initialize HashMap and append (Course, grade) pairs one by one
                 HashMap<Course, String> interestedCourses = new HashMap<Course, String>();
                 for (Course course : courses) {

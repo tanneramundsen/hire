@@ -120,7 +120,13 @@
                                 <label class="label">Rank your top 3 classes:</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="rank1">
-                                        <option disabled="disabled" selected="selected">Rank 1</option>
+                                        {{#if rank1}}
+                                            <option selected="selected">
+                                                {{rank1}}
+                                            </option>
+                                        {{else}}
+                                            <option disabled="disabled" selected="selected">Choose Rank 1</option>
+                                        {{/if}}
                                         {{#each courseList}}
                                             <option>
                                                 {{name}}
@@ -137,7 +143,13 @@
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="rank2">
-                                        <option disabled="disabled" selected="selected">Rank 2</option>
+                                        {{#if rank1}}
+                                            <option selected="selected">
+                                                {{rank1}}
+                                            </option>
+                                        {{else}}
+                                            <option disabled="disabled" selected="selected">Choose Rank 2</option>
+                                        {{/if}}
                                         {{#each courseList}}
                                             <option>
                                                 {{name}}
@@ -154,7 +166,13 @@
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="rank3">
-                                        <option disabled="disabled" selected="selected">Rank 3</option>
+                                        {{#if rank1}}
+                                            <option selected="selected">
+                                                {{rank1}}
+                                            </option>
+                                        {{else}}
+                                            <option disabled="disabled" selected="selected">Choose Rank 3</option>
+                                        {{/if}}
                                         {{#each courseList}}
                                             <option>
                                                 {{name}}
