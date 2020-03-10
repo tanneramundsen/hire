@@ -60,7 +60,13 @@ public final class DaoFactory {
                 "email VARCHAR(100) NOT NULL," +
                 "jhed VARCHAR(100) NOT NULL, " +
                 "hiredCourse INTEGER," +
+                "rankOne INTEGER," +
+                "rankTwo INTEGER," +
+                "rankThree INTEGER," +
                 "FOREIGN KEY(hiredCourse) REFERENCES Courses(id)" +
+                "FOREIGN KEY(rankOne) REFERENCES Courses(id)" +
+                "FOREIGN KEY(rankTwo) REFERENCES Courses(id)" +
+                "FOREIGN KEY(rankThree) REFERENCES Courses(id)" +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
