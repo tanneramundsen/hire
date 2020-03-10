@@ -137,6 +137,16 @@ public class Sql2oCourseDao implements CourseDao {
                     .executeAndFetch(StaffMember.class);
             course.setInstructors(staff);
 
+            for (StaffMember sm: staff) {
+                String jhed = sm.getJhed();
+
+                // TODO: Figure out why executeAndFetch does not fill in name
+                sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
+                List<Map<String, Object>> names = conn.createQuery(sql)
+                        .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                sm.setName((String) names.get(0).get("name"));
+            }
+
             //get corresponding hired applicants
             sql = "SELECT Applicants.* " +
                     "FROM HiredApplicants_Courses " +
@@ -146,6 +156,17 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> hiredApps = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(Applicant.class);
+
+            for (Applicant app: hiredApps) {
+                String jhed = app.getJhed();
+
+                // TODO: Figure out why executeAndFetch does not fill in name
+                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
+                List<Map<String, Object>> names = conn.createQuery(sql)
+                        .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                app.setName((String) names.get(0).get("name"));
+            }
+
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
@@ -157,6 +178,17 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> interestedApps = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(Applicant.class);
+
+            for (Applicant app: interestedApps) {
+                String jhed = app.getJhed();
+
+                // TODO: Figure out why executeAndFetch does not fill in name
+                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
+                List<Map<String, Object>> names = conn.createQuery(sql)
+                        .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                app.setName((String) names.get(0).get("name"));
+            }
+
             course.setInterestedApplicants(interestedApps);
 
             return course;
@@ -186,6 +218,17 @@ public class Sql2oCourseDao implements CourseDao {
             List<StaffMember> staff = conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
                     .executeAndFetch(StaffMember.class);
+
+            for (StaffMember sm: staff) {
+                String jhed = sm.getJhed();
+
+                // TODO: Figure out why executeAndFetch does not fill in name
+                sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
+                List<Map<String, Object>> names = conn.createQuery(sql)
+                        .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                sm.setName((String) names.get(0).get("name"));
+            }
+
             course.setInstructors(staff);
 
             //get corresponding hired applicants
@@ -197,6 +240,17 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> hiredApps = conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
                     .executeAndFetch(Applicant.class);
+
+            for (Applicant app: hiredApps) {
+                String jhed = app.getJhed();
+
+                // TODO: Figure out why executeAndFetch does not fill in name
+                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
+                List<Map<String, Object>> names = conn.createQuery(sql)
+                        .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                app.setName((String) names.get(0).get("name"));
+            }
+
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
@@ -208,6 +262,17 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> interestedApps = conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
                     .executeAndFetch(Applicant.class);
+
+            for (Applicant app: interestedApps) {
+                String jhed = app.getJhed();
+
+                // TODO: Figure out why executeAndFetch does not fill in name
+                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
+                List<Map<String, Object>> names = conn.createQuery(sql)
+                        .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                app.setName((String) names.get(0).get("name"));
+            }
+
             course.setInterestedApplicants(interestedApps);
 
             return course;
@@ -363,6 +428,17 @@ public class Sql2oCourseDao implements CourseDao {
                 List<StaffMember> staff = conn.createQuery(sql)
                         .addParameter("courseId", c.getId())
                         .executeAndFetch(StaffMember.class);
+
+                for (StaffMember sm: staff) {
+                    String jhed = sm.getJhed();
+
+                    // TODO: Figure out why executeAndFetch does not fill in name
+                    sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
+                    List<Map<String, Object>> names = conn.createQuery(sql)
+                            .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                    sm.setName((String) names.get(0).get("name"));
+                }
+
                 c.setInstructors(staff);
 
                 //get corresponding hired applicants
@@ -374,6 +450,17 @@ public class Sql2oCourseDao implements CourseDao {
                 List<Applicant> hiredApps = conn.createQuery(sql)
                         .addParameter("courseId", c.getId())
                         .executeAndFetch(Applicant.class);
+
+                for (Applicant app: hiredApps) {
+                    String jhed = app.getJhed();
+
+                    // TODO: Figure out why executeAndFetch does not fill in name
+                    sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
+                    List<Map<String, Object>> names = conn.createQuery(sql)
+                            .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                    app.setName((String) names.get(0).get("name"));
+                }
+
                 c.setHiredApplicants(hiredApps);
 
                 // get corresponding interested applicants
@@ -385,6 +472,17 @@ public class Sql2oCourseDao implements CourseDao {
                 List<Applicant> interestedApps = conn.createQuery(sql)
                         .addParameter("courseId", c.getId())
                         .executeAndFetch(Applicant.class);
+
+                for (Applicant app: interestedApps) {
+                    String jhed = app.getJhed();
+
+                    // TODO: Figure out why executeAndFetch does not fill in name
+                    sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
+                    List<Map<String, Object>> names = conn.createQuery(sql)
+                            .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                    app.setName((String) names.get(0).get("name"));
+                }
+
                 c.setInterestedApplicants(interestedApps);
             }
 

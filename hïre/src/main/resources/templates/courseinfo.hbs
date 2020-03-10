@@ -75,8 +75,8 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="section-heading">
-                    <h2> {{name}} </h2>
-                    <h6> {{courseNumber}} </h6>
+<!--                    <h2> {{name}} </h2>-->
+                    <h6> {{courseNumber}}: {{courseName}} </h6>
                 </div>
             </div>
         <div class="col-lg-5 col-md-5 col-xs-10">
@@ -87,24 +87,11 @@
                     <div class="row">
                         {{#each interestedApplicants}}
                             <div class="col-md-10 col-sm-5">
-                                <h4> {{name}} </h4>
+                                <div class="service-item">
+                                    <h4> {{name}} </h4>
+                                </div>
                             </div>
                         {{/each}}
-                        <div class="col-md-10 col-sm-5">
-                            <div class="service-item">
-                                <h4>Daniela Torres</h4>
-                            </div>
-                        </div>
-                        <div class="col-md-10 col-sm-5">
-                            <div class="service-item">
-                                <h4>This is </h4>
-                            </div>
-                        </div>
-                        <div class="col-md-10 col-sm-5">
-                            <div class="service-item">
-                                <h4>hard-coded in </h4>
-                            </div>
-                        </div>
                         <!-- ***** button that isn't necessary rn
                         <div class="col-md-12">
                             <a href="#" class="main-button-icon">
@@ -123,24 +110,11 @@
                     <div class="row">
                         {{#each hiredApplicants}}
                             <div class="col-md-10 col-sm-5">
-                                <h4> {{name}} </h4>
+                                <div class="service-item">
+                                    <h4> {{name}} </h4>
+                                </div>
                             </div>
                         {{/each}}
-                        <div class="col-md-10 col-sm-5">
-                            <div class="service-item">
-                                <h4>Daniela Torres</h4>
-                            </div>
-                        </div>
-                        <div class="col-md-10 col-sm-5">
-                            <div class="service-item">
-                                <h4>These are also </h4>
-                            </div>
-                        </div>
-                        <div class="col-md-10 col-sm-5">
-                            <div class="service-item">
-                                <h4>hard coded in</h4>
-                            </div>
-                        </div>
                         <!-- ***** button that isn't necessary rn
                         <div class="col-md-12">
                             <a href="#" class="main-button-icon">

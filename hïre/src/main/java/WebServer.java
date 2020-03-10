@@ -32,6 +32,8 @@ public class WebServer {
         String url = "https://sis.jhu.edu/api/classes/" + school + "/" + dept + "/current?key=" + key;
         DaoUtil.addSISCourses(courseDao,url);
 
+        DaoUtil.addSampleApplicants(courseDao, applicantDao);
+
         staticFileLocation("/templates");
         get("/", (request, response) -> {
             // TODO: remove cookie username?
@@ -107,18 +109,19 @@ public class WebServer {
         get("/:id/courseinfo", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
 
-            String jhed = request.cookie("jhed");
             int courseId = Integer.parseInt(request.params(":id"));
             model.put("courseID", courseId);
-            String courseName = request.cookie("name");
 
-            String courseNumber = courseDao.read(courseId).getCourseNumber();
-            List<Applicant> interestedApplicants = courseDao.read(courseId).getInterestedApplicants();
-            List<Applicant> hiredApplicants = courseDao.read(courseId).getHiredApplicants();
-            List<StaffMember> instructors = courseDao.read(courseId).getInstructors();
-            
+            // String courseName = request.cookie("name");
+            Course course = courseDao.read(courseId);
+            String courseName = course.getName();
+            String courseNumber = course.getCourseNumber();
+            List<Applicant> interestedApplicants = course.getInterestedApplicants();
+            List<Applicant> hiredApplicants = course.getHiredApplicants();
+            List<StaffMember> instructors = course.getInstructors();
+
             /* later can put in semester */
-            model.put("name", courseName);
+            model.put("courseName", courseName);
             model.put("courseNumber", courseNumber);
             model.put("interestedApplicants", interestedApplicants);
             model.put("hiredApplicants", hiredApplicants);
