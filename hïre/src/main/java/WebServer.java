@@ -1,5 +1,6 @@
 import api.ApiServer;
 import dao.*;
+import exception.DaoException;
 import model.Applicant;
 import model.Course;
 import model.StaffMember;
@@ -46,9 +47,13 @@ public class WebServer {
 
         post("/login", (request, response) -> {
             String jhed = request.queryParams("jhed");
-            response.cookie("jhed", jhed);
             String profileType = request.queryParams("profileType");
-            response.cookie("profileType", profileType);
+
+            // Store info as cookies
+            // response.cookie("jhed", jhed);
+            // response.cookie("profileType", profileType);
+
+            // Go to landing page
             response.redirect("/landing");
             return null;
         }, new HandlebarsTemplateEngine());
@@ -65,6 +70,7 @@ public class WebServer {
             String email = jhed + "@jhu.edu";
             String profileType = request.queryParams("profileType");
             String[] courses = request.queryParamsValues("courses");
+
             List<Course> courseList = new ArrayList<Course>();
             HashMap<Course, String> coursesHashMap = new HashMap<Course, String>();
             for (String course:courses) {
@@ -72,11 +78,13 @@ public class WebServer {
                 courseList.add(newCourse);
                 coursesHashMap.put(newCourse, null);
             }
+
             if (profileType.equals("Professor")) {
                 staffMemberDao.add(new StaffMember(name,jhed,courseList));
             } else {
                 applicantDao.add(new Applicant(name,email,jhed,coursesHashMap));
             }
+
             // use information to create either an applicant or staff member
             response.cookie("jhed", jhed);
             response.cookie("profileType", profileType);
@@ -88,16 +96,28 @@ public class WebServer {
             Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
-            String name;
+            String name = null;
             List<Course> courseList = new ArrayList<Course>();
             boolean isStaffMember = false;
+
+            // Redirect back to login if information not in database
             if (profileType.equals("Professor")) {
                 isStaffMember = true;
-                name = staffMemberDao.read(jhed).getName();
-                courseList = staffMemberDao.read(jhed).getCourses();
+                StaffMember sm = staffMemberDao.read(jhed);
+                if (sm == null) {
+                    response.redirect("/login");
+                } else {
+                    name = sm.getName();
+                    courseList = sm.getCourses();
+                }
             } else {
-                name = applicantDao.read(jhed).getName();
-                courseList = applicantDao.read(jhed).getCoursesList();
+                Applicant a = applicantDao.read(jhed);
+                if (a == null) {
+                    response.redirect("/login");
+                } else {
+                    name = a.getName();
+                    courseList = a.getCoursesList();
+                }
             }
             model.put("name", name);
             model.put("courseList", courseList);
@@ -172,6 +192,27 @@ public class WebServer {
             response.redirect("/landing");
             return null;
         }, new HandlebarsTemplateEngine());
+
+        get("/:jhed/studentview", (request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+            String jhed = request.cookie("jhed");
+            model.put("jhed", jhed);
+            String name;
+            //Applicant student = applicantDao.read(jhed);
+            /* later: get if they have taken the course, grade, etc */
+            name = applicantDao.read(jhed).getName();
+            Course courseOne = applicantDao.read(jhed).getRankOne();
+            Course courseTwo = applicantDao.read(jhed).getRankTwo();
+            Course courseThree = applicantDao.read(jhed).getRankThree();
+            model.put("name", name);
+            model.put("courseOne", courseOne);
+            model.put("courseTwo", courseTwo);
+            model.put("courseThree", courseThree);
+
+            return new ModelAndView(model, "studentview.hbs");
+        }, new HandlebarsTemplateEngine());
+
     }
+
 
 }
