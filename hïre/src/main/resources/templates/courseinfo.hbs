@@ -55,7 +55,7 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <!-- add profile html-->
-                        <li class="scroll-to-section"><a href="/studentprofile">My Profile</a></li>
+                        <li class="scroll-to-section"><a href="/landing">Home</a></li>
                         <li class="scroll-to-section"><a href="/">Sign Out</a></li>
                     </ul>
                     <!-- ***** Menu End ***** -->
@@ -64,33 +64,35 @@
         </div>
     </div>
 </header>
-<footer>
+<!-- ***** Course Heading Start ***** -->
+<section class="section" id="landing">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-xs-12">
-                <div class="left-text-content">
-                    <p style="font-size:25px">{{name}} - {{courseNumber}}</p>
+            <div class="col-lg-8 offset-lg-2">
+                <div class="section-heading">
+                    <h2>{{name}} - {{courseNumber}}</h2>
                 </div>
             </div>
         </div>
     </div>
-</footer>
+</section>
+<!-- ***** Course Heading End ***** -->
 
 <section class="section" id="about">
     <div class="container">
         <div class="row">
             <div class="col">
-                <h2>Interested Applicants</h2>
+                <h2>Hired Applicants</h2>
                 <ul>
-                    {{#each interestedApplicants}}
+                    {{#each hiredApplicants}}
                         <li>{{name}}</li>
                     {{/each}}
                 </ul>
             </div>
             <div class="col">
-                <h2>Hired Applicants</h2>
+                <h2>Interested Applicants</h2>
                 <ul>
-                    {{#each hiredApplicants}}
+                    {{#each interestedApplicants}}
                         <li><a href = "/{{jhed}}/studentview">{{name}}</a></li>
                     {{/each}}
                 </ul>
