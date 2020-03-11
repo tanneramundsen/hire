@@ -42,9 +42,6 @@
     </div>
 </div>
 <!-- ***** Preloader End ***** -->
-
-
-<!-- ***** Header Area Start ***** -->
 <header class="header-area header-sticky">
     <div class="container">
         <div class="row">
@@ -58,7 +55,7 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <!-- add profile html-->
-                        <li class="scroll-to-section"><a href="">My Profile</a></li>
+                        <li class="scroll-to-section"><a href="/studentprofile">My Profile</a></li>
                         <li class="scroll-to-section"><a href="/">Sign Out</a></li>
                     </ul>
                     <!-- ***** Menu End ***** -->
@@ -67,96 +64,42 @@
         </div>
     </div>
 </header>
-<!-- ***** Header Area End ***** -->
-
-
-<section class="section" id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="section-heading">
-<!--                    <h2> {{name}} </h2>-->
-                    <h6> {{courseNumber}}: {{courseName}} </h6>
-                </div>
-            </div>
-        <div class="col-lg-5 col-md-5 col-xs-10">
-                <div class="left-text-content">
-                    <div class="section-heading">
-                        <h2>Interested Applicants</h2>
-                    </div>
-                    <div class="row">
-                        {{#each interestedApplicants}}
-                            <div class="col-md-10 col-sm-5">
-                                <div class="service-item">
-                                    <h4> {{name}} </h4>
-                                </div>
-                            </div>
-                        {{/each}}
-                        <!-- ***** button that isn't necessary rn
-                        <div class="col-md-12">
-                            <a href="#" class="main-button-icon">
-                                End <i class="fa fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        ***** -->
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-xs-10">
-                <div class="right-text-content">
-                    <div class="section-heading">
-                        <h2>Hired Applicants</h2>
-                    </div>
-                    <div class="row">
-                        {{#each hiredApplicants}}
-                            <div class="col-md-10 col-sm-5">
-                                <div class="service-item">
-                                    <h4> {{name}} </h4>
-                                </div>
-                            </div>
-                        {{/each}}
-                        <!-- ***** button that isn't necessary rn
-                        <div class="col-md-12">
-                            <a href="#" class="main-button-icon">
-                                End <i class="fa fa-arrow-right"></i>
-                            </a>
-                        </div>
-                        ***** -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- ***** Course Info Ends ***** -->
-
-
-<!-- ***** Footer Start ***** -->
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-xs-12">
                 <div class="left-text-content">
-                    <p>Copyright &copy; 2020 Breezed Co., Ltd.
-
-                        - Design: <a rel="nofollow noopener" href="https://templatemo.com">TemplateMo</a></p>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xs-12">
-                <div class="right-text-content">
-                    <ul class="social-icons">
-                        <li><p>Follow Us</p></li>
-                        <li><a rel="nofollow" href="https://fb.com/templatemo"><i class="fa fa-facebook"></i></a></li>
-                        <li><a rel="nofollow" href="https://fb.com/templatemo"><i class="fa fa-twitter"></i></a></li>
-                        <li><a rel="nofollow" href="https://fb.com/templatemo"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a rel="nofollow" href="https://fb.com/templatemo"><i class="fa fa-dribbble"></i></a></li>
-                    </ul>
+                    <p style="font-size:25px">{{name}} - {{courseNumber}}</p>
                 </div>
             </div>
         </div>
     </div>
 </footer>
 
+<section class="section" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Interested Applicants</h2>
+                <ul>
+                    {{#each interestedApplicants}}
+                        <li>{{name}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="col">
+                <h2>Hired Applicants</h2>
+                <ul>
+                    {{#each hiredApplicants}}
+                        <li><a href = "/{{jhed}}/studentview">{{name}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+        </div>
+</section>
+<!-- ***** Course Info Ends ***** -->
 
 <!-- jQuery -->
 <script src="../assets/js/jquery-2.1.0.min.js"></script>
@@ -180,21 +123,22 @@
 
 <script>
 
-    $(function() {
-        var selectedClass = "";
-        $("p").click(function(){
-            selectedClass = $(this).attr("data-rel");
-            $("#portfolio").fadeTo(50, 0.1);
-            $("#portfolio div").not("."+selectedClass).fadeOut();
-            setTimeout(function() {
-                $("."+selectedClass).fadeIn();
-                $("#portfolio").fadeTo(50, 1);
-            }, 500);
+   $(function() {
+       var selectedClass = "";
+       $("p").click(function(){
+           selectedClass = $(this).attr("data-rel");
+           $("#portfolio").fadeTo(50, 0.1);
+           $("#portfolio div").not("."+selectedClass).fadeOut();
+           setTimeout(function() {
+               $("."+selectedClass).fadeIn();
+               $("#portfolio").fadeTo(50, 1);
+           }, 500);
 
-        });
-    });
+       });
+   });
 
 </script>
 
 </body>
 </html>
+
