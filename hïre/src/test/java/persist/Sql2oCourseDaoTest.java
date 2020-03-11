@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -77,13 +78,15 @@ public class Sql2oCourseDaoTest {
         StaffMember sm1 = new StaffMember("Ali Madooei", "madooei1", null);
         List<StaffMember> instructors = Collections.singletonList(sm1);
         List<Applicant> applicants = Collections.singletonList(a1);
-        List<Course> courses = Collections.singletonList(c1);
-        c1.setQualifiedApplicants(applicants);
+        HashMap<Course, String> courses = new HashMap();
+        courses.put(c1, "A");
+        c1.setInterestedApplicants(applicants);
         c1.setHiredApplicants(applicants);
         c1.setInstructors(instructors);
         a1.setInterestedCourses(courses);
         a1.setHiredCourse(c1);
-        sm1.setCourses(courses);
+        List<Course> courses1 = Collections.singletonList(c1);
+        sm1.setCourses(courses1);
 
         courseDao.add(c1);
         staffMemberDao.add(sm1);
@@ -122,10 +125,12 @@ public class Sql2oCourseDaoTest {
         List<StaffMember> instructors2 = Collections.singletonList(sm2);
         List<Applicant> applicants2 = Collections.singletonList(a2);
         List<Course> courses = Collections.singletonList(c1);
-        c1.setQualifiedApplicants(applicants1);
+        HashMap<Course, String> courses1 = new HashMap();
+        courses1.put(c1, "A");
+        c1.setInterestedApplicants(applicants1);
         c1.setHiredApplicants(applicants1);
         c1.setInstructors(instructors1);
-        a1.setInterestedCourses(courses);
+        a1.setInterestedCourses(courses1);
         a1.setHiredCourse(c1);
         sm1.setCourses(courses);
 
@@ -135,7 +140,7 @@ public class Sql2oCourseDaoTest {
 
 
         c1.setCourseNumber("500.500");
-        c1.setQualifiedApplicants(applicants2);
+        c1.setInterestedApplicants(applicants2);
         c1.setHiredApplicants(applicants2);
         c1.setInstructors(instructors2);
 
@@ -173,10 +178,12 @@ public class Sql2oCourseDaoTest {
         List<StaffMember> instructors = Collections.singletonList(sm1);
         List<Applicant> applicants = Collections.singletonList(a1);
         List<Course> courses = Collections.singletonList(c1);
-        c1.setQualifiedApplicants(applicants);
+        HashMap<Course, String> courses1 = new HashMap();
+        courses1.put(c1, "A");
+        c1.setInterestedApplicants(applicants);
         c1.setHiredApplicants(applicants);
         c1.setInstructors(instructors);
-        a1.setInterestedCourses(courses);
+        a1.setInterestedCourses(courses1);
         a1.setHiredCourse(c1);
         sm1.setCourses(courses);
 
@@ -249,18 +256,23 @@ public class Sql2oCourseDaoTest {
         StaffMember sm1 = new StaffMember("Ali Madooei", "madooei1", null);
         StaffMember sm2 = new StaffMember("Joanne Selinski", "jselinski1", null);
 
-        List<Course> courses = Arrays.asList(c1, c2);
+        List<Course> courses = Arrays.asList(c1, c2, c3);
         List<Applicant> applicants = Arrays.asList(applicant1, applicant2, applicant3);
         List<StaffMember> instructors = Arrays.asList(sm1, sm2);
+        HashMap<Course, String> courses1 = new HashMap();
+        courses1.put(c1, "A");
+        courses1.put(c2, "A+");
+        courses1.put(c3, "A-");
 
-        c1.setQualifiedApplicants(applicants);
+        c1.setInterestedApplicants(applicants);
         c1.setHiredApplicants(applicants);
         c1.setInstructors(instructors);
-        c2.setQualifiedApplicants(applicants);
+        c2.setInterestedApplicants(applicants);
         c2.setInstructors(instructors);
-        applicant1.setInterestedCourses(courses);
-        applicant2.setInterestedCourses(courses);
-        applicant3.setInterestedCourses(courses);
+        c3.setInstructors(instructors);
+        applicant1.setInterestedCourses(courses1);
+        applicant2.setInterestedCourses(courses1);
+        applicant3.setInterestedCourses(courses1);
         applicant1.setHiredCourse(c1);
         applicant2.setHiredCourse(c1);
         applicant3.setHiredCourse(c1);
@@ -278,13 +290,13 @@ public class Sql2oCourseDaoTest {
         List<Course> results = courseDao.findAll();
         assertTrue(results.contains(c1));
         assertTrue(results.contains(c2));
-        assertFalse(results.contains(c3));
+        assertTrue(results.contains(c3));
         for (Course course : results) {
-            List<Applicant> qualifiedApplicantsCheck = course.getInterestedApplicants();
-            assertNotEquals(0, qualifiedApplicantsCheck.size());
-            assertTrue(qualifiedApplicantsCheck.contains(applicant1));
-            assertTrue(qualifiedApplicantsCheck.contains(applicant2));
-            assertTrue(qualifiedApplicantsCheck.contains(applicant3));
+            List<Applicant> interestedApplicantsCheck = course.getInterestedApplicants();
+            assertNotEquals(0, interestedApplicantsCheck.size());
+            assertTrue(interestedApplicantsCheck.contains(applicant1));
+            assertTrue(interestedApplicantsCheck.contains(applicant2));
+            assertTrue(interestedApplicantsCheck.contains(applicant3));
             List<StaffMember> instructorsCheck = course.getInstructors();
             assertNotEquals(0, instructorsCheck.size());
             assertTrue(instructorsCheck.contains(sm1));

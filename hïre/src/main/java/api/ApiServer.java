@@ -55,7 +55,7 @@ public final class ApiServer {
         JavalinJson.setFromJsonMapper(gson::fromJson);
         JavalinJson.setToJsonMapper(gson::toJson);
         app = Javalin.create(config -> {
-            config.addStaticFiles("/public");
+            config.addStaticFiles("/templates");
         }).start(7000);
 
         // routing

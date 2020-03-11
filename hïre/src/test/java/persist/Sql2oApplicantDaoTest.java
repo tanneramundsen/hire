@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -70,20 +71,21 @@ public class Sql2oApplicantDaoTest {
         );
         Applicant a1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", null);
         List<Applicant> applicants = Collections.singletonList(a1);
-        List<Course> courses = Collections.singletonList(c1);
-        c1.setQualifiedApplicants(applicants);
+        HashMap<Course, String> interestedCourses = new HashMap();
+        interestedCourses.put(c1, "A");
+        c1.setInterestedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        a1.setInterestedCourses(courses);
+        a1.setInterestedCourses(interestedCourses);
         a1.setHiredCourse(c1);
 
         courseDao.add(c1);
         applicantDao.add(a1);
 
         Applicant a2 = applicantDao.read(a1.getId());
-        List<Course> courses2 = a2.getInterestedCourses();
+        HashMap<Course, String> interestedCourses2 = a2.getInterestedCourses();
         assertEquals(a1, a2);
-        assertNotEquals(0, courses2.size());
-        assertEquals(c1, courses2.get(0));
+        assertNotEquals(0, interestedCourses2.size());
+        assertEquals("A", interestedCourses2.get(c1));
         assertEquals(c1, a2.getHiredCourse());
     }
 
@@ -109,28 +111,28 @@ public class Sql2oApplicantDaoTest {
         );
         Applicant a1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", null);
         List<Applicant> applicants = Collections.singletonList(a1);
-        List<Course> courses1 = Collections.singletonList(c1);
-        List<Course> courses2 = Collections.singletonList(c2);
-        c1.setQualifiedApplicants(applicants);
+        HashMap<Course, String> interestedCourses = new HashMap();
+        interestedCourses.put(c1, "A");
+        c1.setInterestedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        a1.setInterestedCourses(courses1);
+        a1.setInterestedCourses(interestedCourses);
         a1.setHiredCourse(c1);
 
         courseDao.add(c1);
         applicantDao.add(a1);
 
         a1.setEmail("NOTtamunds1@jhu.edu");
-        a1.setInterestedCourses(courses2);
+        interestedCourses.put(c2, "B+");
         a1.setHiredCourse(c2);
 
         applicantDao.update(a1);
 
         Applicant a2 = applicantDao.read(a1.getId());
-        List<Course> courses2Check = a2.getInterestedCourses();
+        HashMap<Course, String> courses2Check = a2.getInterestedCourses();
         assertEquals(a1, a2);
         assertTrue(a2.getEmail().equals("NOTtamunds1@jhu.edu"));
-        assertNotEquals(0, courses2Check.size());
-        assertEquals(c2, courses2Check.get(0));
+        assertEquals(2, courses2Check.size());
+        assertEquals("B+", courses2Check.get(c2));
         assertEquals(c2, a2.getHiredCourse());
     }
 
@@ -147,10 +149,11 @@ public class Sql2oApplicantDaoTest {
         );
         Applicant a1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", null);
         List<Applicant> applicants = Collections.singletonList(a1);
-        List<Course> courses = Collections.singletonList(c1);
-        c1.setQualifiedApplicants(applicants);
+        HashMap<Course, String> interestedCourses = new HashMap();
+        interestedCourses.put(c1, "A");
+        c1.setInterestedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        a1.setInterestedCourses(courses);
+        a1.setInterestedCourses(interestedCourses);
 
         courseDao.add(c1);
         applicantDao.add(a1);
@@ -189,12 +192,13 @@ public class Sql2oApplicantDaoTest {
         Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", null);
         Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", null);
         List<Applicant> applicants = Arrays.asList(applicant1, applicant2, applicant3);
-        List<Course> courses = Collections.singletonList(c1);
-        c1.setQualifiedApplicants(applicants);
+        HashMap<Course, String> interestedCourses = new HashMap();
+        interestedCourses.put(c1, "A");
+        c1.setInterestedApplicants(applicants);
         c1.setHiredApplicants(applicants);
-        applicant1.setInterestedCourses(courses);
-        applicant2.setInterestedCourses(courses);
-        applicant3.setInterestedCourses(courses);
+        applicant1.setInterestedCourses(interestedCourses);
+        applicant2.setInterestedCourses(interestedCourses);
+        applicant3.setInterestedCourses(interestedCourses);
 
         courseDao.add(c1);
         applicantDao.add(applicant1);
@@ -206,9 +210,9 @@ public class Sql2oApplicantDaoTest {
         assertTrue(results.contains(applicant2));
         assertTrue(results.contains(applicant3));
         for (Applicant applicant : results) {
-            List<Course> courses2 = applicant.getInterestedCourses();
+            HashMap<Course, String> courses2 = applicant.getInterestedCourses();
             assertNotEquals(0, courses2.size());
-            assertEquals(c1, courses2.get(0));
+            assertEquals("A", courses2.get(c1));
         }
     }
 
@@ -237,15 +241,16 @@ public class Sql2oApplicantDaoTest {
         Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", null);
         List<Applicant> applicants_c1 = Arrays.asList(applicant1, applicant2, applicant3);
         List<Applicant> applicants_c2 = Arrays.asList(applicant1, applicant2);
-        List<Course> courses_just_c1 = Collections.singletonList(c1);
-        List<Course> courses_c1_and_c2 = Arrays.asList(c1, c2);
-        c1.setQualifiedApplicants(applicants_c1);
+        HashMap<Course, String> courses = new HashMap();
+        courses.put(c1, "A");
+        courses.put(c2, "A-");
+        c1.setInterestedApplicants(applicants_c1);
         c1.setHiredApplicants(applicants_c1);
-        c2.setQualifiedApplicants(applicants_c2);
+        c2.setInterestedApplicants(applicants_c2);
         c2.setHiredApplicants(applicants_c2);
-        applicant1.setInterestedCourses(courses_c1_and_c2);
-        applicant2.setInterestedCourses(courses_c1_and_c2);
-        applicant3.setInterestedCourses(courses_just_c1);
+        applicant1.setInterestedCourses(courses);
+        applicant2.setInterestedCourses(courses);
+        applicant3.setInterestedCourses(courses);
 
         courseDao.add(c1);
         courseDao.add(c2);
@@ -260,7 +265,6 @@ public class Sql2oApplicantDaoTest {
         List<Applicant> results_c2 = applicantDao.findByCourseId(c2.getId());
         assertTrue(results_c2.contains(applicant1));
         assertTrue(results_c2.contains(applicant2));
-        assertFalse(results_c2.contains(applicant3));
     }
 
     @AfterClass
