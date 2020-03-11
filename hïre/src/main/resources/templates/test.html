@@ -107,16 +107,15 @@
                 <div class="row row-space">
                     <div class="col-md-6 col-sm-12">
                         <div>
-                            <label class="label"> <h4>Email </h4></label>
+                            <label class="label"> <h6>email:</h6> email </label>
                         </div>
                     </div>
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
-                            <div>
-                                <label class="label">Student's Preferred classes:</label>
-                                {{#each courseList}}
-                                <h4>{{name}}</h4>
-                                {{/each}}
+                            <label class="label">Student's Preferred classes:</label>
+                            <div class="list-inline">
+                                <h4> course 2</h4>
+                                <h4> course 1</h4>
                             </div>
                         </div>
                     </div>
@@ -200,23 +199,3 @@
 
 </html>
 <!-- end document-->
-
-
-
-get("/:jhed/studentview", (request, response) -> {
-Map<String, Object> model = new HashMap<String, Object>();
-String jhed = request.cookie("jhed");
-String name;
-List<Course> preferredCourses = new ArrayList<Course>();
-    name = applicantDao.read(jhed).getName();
-    preferredCourses = applicantDao.read(jhed).getCourses();
-    } else {
-    name = applicantDao.read(jhed).getName();
-    courseList = applicantDao.read(jhed).getCoursesList();
-    }
-    model.put("name", name);
-    model.put("courseList", courseList);
-    model.put("isStaffMember", isStaffMember);
-
-    return new ModelAndView(model, "landing.hbs");
-    }, new HandlebarsTemplateEngine());
