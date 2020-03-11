@@ -134,6 +134,7 @@ public class WebServer {
             Applicant student = applicantDao.read(jhed);
             String name = student.getName();
             String email = student.getEmail();
+            System.out.println(student.toString());
             List<Course> courseList = student.getCoursesList();
             model.put("name", name);
             model.put("email", email);
@@ -165,6 +166,7 @@ public class WebServer {
             student.setRankOne(courseDao.read(rank1));
             student.setRankTwo(courseDao.read(rank2));
             student.setRankThree(courseDao.read(rank3));
+            applicantDao.update(student);
             response.cookie("jhed", jhed);
             response.cookie("profileType", "Applicant");
             response.redirect("/landing");
