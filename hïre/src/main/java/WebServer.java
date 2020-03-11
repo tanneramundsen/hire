@@ -172,6 +172,27 @@ public class WebServer {
             response.redirect("/landing");
             return null;
         }, new HandlebarsTemplateEngine());
+
+        get("/:jhed/studentview", (request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+            String jhed = request.cookie("jhed");
+            model.put("jhed", jhed);
+            String name;
+            //Applicant student = applicantDao.read(jhed);
+            /* later: get if they have taken the course, grade, etc */
+            name = applicantDao.read(jhed).getName();
+            Course courseOne = applicantDao.read(jhed).getRankOne();
+            Course courseTwo = applicantDao.read(jhed).getRankTwo();
+            Course courseThree = applicantDao.read(jhed).getRankThree();
+            model.put("name", name);
+            model.put("courseOne", courseOne);
+            model.put("courseTwo", courseTwo);
+            model.put("courseThree", courseThree);
+
+            return new ModelAndView(model, "studentview.hbs");
+        }, new HandlebarsTemplateEngine());
+
     }
+
 
 }
