@@ -184,33 +184,44 @@
                             </div>
                         </div>
                     </div>
-                    <label class="label">Update course info</label>
                     <div class="row row-space">
-                        <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <ul class="list-group">
+                                <table class="table-bordered table-responsive">
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Grade</th>
+                                    </tr>
                                     {{#each courseList}}
-                                        <li class ="list-group-item">
-                                            {{name}}
-                                        </li>
+                                    <tr>
+                                        <td>{{name}}</td>
+                                        <td>
+                                            <div class="rs-select2 js-select-simple select--no-search">
+                                                <select name="grade">
+                                                    <option> Not Taken </option>
+                                                    <option> A+ </option>
+                                                    <option> A </option>
+                                                    <option> A- </option>
+                                                    <option> B+ </option>
+                                                    <option> B </option>
+                                                    <option> B- </option>
+                                                    <option> C+ </option>
+                                                    <option> C </option>
+                                                    <option> C- </option>
+                                                    <option> D+ </option>
+                                                    <option> D </option>
+                                                    <option> D- </option>
+                                                    <option> F </option>
+                                                    <option> S </option>
+                                                    <option> U </option>
+                                                </select>
+                                                <div class="select-dropdown"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     {{/each}}
-                                </ul>
+                                </table>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="input-group">
-                                <div class="rs-select2 js-select-simple select--no-search">
-                                    {{#each courseList}}
-                                        <select name="grade">
-                                            <option>
-                                                Not Taken
-                                            </option>
-                                        </select>
-                                    {{/each}}
-                                    <div class="select-dropdown"></div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="p-t-15">
                         <button class="btn btn--radius-2 btn--blue" type="submit">Update</button>
