@@ -143,6 +143,7 @@ public class Sql2oCourseDaoTest {
         c1.setInterestedApplicants(applicants2);
         c1.setHiredApplicants(applicants2);
         c1.setInstructors(instructors2);
+        a2.setInterestedCourses(courses1);
 
         courseDao.update(c1);
 
