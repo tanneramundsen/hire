@@ -19,15 +19,21 @@
 
     -->
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
 
-    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
 
-    <link rel="stylesheet" href="assets/css/templatemo-breezed.css">
+    <link rel="stylesheet" href="../assets/css/templatemo-breezed.css">
 
-    <link rel="stylesheet" href="assets/css/owl-carousel.css">
+    <link rel="stylesheet" href="../assets/css/owl-carousel.css">
 
-    <link rel="stylesheet" href="assets/css/lightbox.css">
+    <link rel="stylesheet" href="../assets/css/lightbox.css">
+
+    <style>
+        p.ex1 {
+            padding: 20px 50px;
+        }
+    </style>
 
 </head>
 
@@ -79,45 +85,45 @@
 <meta name="keywords" content="Colorlib Templates">
 
 <!-- Icons font CSS-->
-<link href="assets/vendor2/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-<link href="assets/vendor2/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+<link href="../assets/vendor2/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+<link href="../assets/vendor2/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
 <!-- Font special for pages-->
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
 <!-- Vendor CSS-->
-<link href="assets/vendor2/select2/select2.min.css" rel="stylesheet" media="all">
-<link href="assets/vendor2/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+<link href="../assets/vendor2/select2/select2.min.css" rel="stylesheet" media="all">
+<link href="../assets/vendor2/datepicker/daterangepicker.css" rel="stylesheet" media="all">
 
 <!-- Main CSS-->
-<link href="assets/css/main2.css" rel="stylesheet" media="all">
+<link href="../assets/css/main2.css" rel="stylesheet" media="all">
 </head>
 
-<div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins" style="background-image: url('assets/images/slide-01.jpg');">
+<div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins" style="background-image: url('../assets/images/slide-01.jpg');">
     <div class="wrapper wrapper--w680">
         <div class="card card-4">
             <div class="card-body">
-                <h2 class="title"> {{jhed}} </h2>
+                <h2 class="title"> Name: </h2>
                 <div class="row row-space">
-                    <div class="col-md-6 col-sm-12">
+                    <div class="col-md-8 col-sm-12">
                         <div>
-                            <label class="label"><h4>Name </h4></label>
+                            <h2 class="ex1"> jhed: {{studentjhed}} </h2>
                         </div>
                     </div>
                 </div>
-                <div class="row row-space">
-                    <div class="col-md-6 col-sm-12">
-                        <div>
-                            <label class="label"> <h6>email:</h6> {{email}} </label>
+                <div class="row">
+                    <div class="col-md-8 col-sm-12">
+                        <div
+                            <h4 class="ex1">Email: </h4>
                         </div>
                     </div>
                 </div>
-                <div class="row row-space">
-                    <div class="col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-md-8 col-sm-12">
                         <label class="label">Student's Preferred classes:</label>
                         <div class="list-inline">
-                            <h4> course 1</h4>
-                            <h4> course 2</h4>
-                            <h4> course 3</h4>
+                            <h4> 1. Course {{courseOne}}</h4>
+                            <h4> 2. Course {{courseTwo}}</h4>
+                            <h4> 3. Course {{courseThree}}</h4>
                         </div>
                     </div>
                 </div>
@@ -145,24 +151,24 @@
 
 
 <!-- jQuery -->
-<script src="assets/js/jquery-2.1.0.min.js"></script>
+<script src="../assets/js/jquery-2.1.0.min.js"></script>
 
 <!-- Bootstrap -->
-<script src="assets/js/popper.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/popper.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
 
 <!-- Plugins -->
-<script src="assets/js/owl-carousel.js"></script>
-<script src="assets/js/scrollreveal.min.js"></script>
-<script src="assets/js/waypoints.min.js"></script>
-<script src="assets/js/jquery.counterup.min.js"></script>
-<script src="assets/js/imgfix.min.js"></script>
-<script src="assets/js/slick.js"></script>
-<script src="assets/js/lightbox.js"></script>
-<script src="assets/js/isotope.js"></script>
+<script src="../assets/js/owl-carousel.js"></script>
+<script src="../assets/js/scrollreveal.min.js"></script>
+<script src="../assets/js/waypoints.min.js"></script>
+<script src="../assets/js/jquery.counterup.min.js"></script>
+<script src="../assets/js/imgfix.min.js"></script>
+<script src="../assets/js/slick.js"></script>
+<script src="../assets/js/lightbox.js"></script>
+<script src="../assets/js/isotope.js"></script>
 
 <!-- Global Init -->
-<script src="assets/js/custom.js"></script>
+<script src="../assets/js/custom.js"></script>
 
 <script>
 
@@ -187,14 +193,14 @@
 </html>
 
 <!-- Jquery JS-->
-<script src="assets/vendor2/jquery/jquery.min.js"></script>
+<script src="../assets/vendor2/jquery/jquery.min.js"></script>
 <!-- Vendor JS-->
-<script src="assets/vendor2/select2/select2.min.js"></script>
-<script src="assets/vendor2/datepicker/moment.min.js"></script>
-<script src="assets/vendor2/datepicker/daterangepicker.js"></script>
+<script src="../assets/vendor2/select2/select2.min.js"></script>
+<script src="../assets/vendor2/datepicker/moment.min.js"></script>
+<script src="../assets/vendor2/datepicker/daterangepicker.js"></script>
 
 <!-- Main JS-->
-<script src="assets/js/global.js"></script>
+<script src="../assets/js/global.js"></script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
