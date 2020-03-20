@@ -50,8 +50,8 @@ public class WebServer {
             String profileType = request.queryParams("profileType");
 
             // Store info as cookies
-            // response.cookie("jhed", jhed);
-            // response.cookie("profileType", profileType);
+            response.cookie("jhed", jhed);
+            response.cookie("profileType", profileType);
 
             // Go to landing page
             response.redirect("/landing");
@@ -195,16 +195,18 @@ public class WebServer {
 
         get("/:jhed/studentview", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
-            String jhed = request.cookie("jhed");
-            model.put("jhed", jhed);
-            String name;
-            //Applicant student = applicantDao.read(jhed);
+            String studentjhed = request.params(":jhed");
+            model.put("jhed", studentjhed);
+            Applicant student = applicantDao.read(studentjhed);
             /* later: get if they have taken the course, grade, etc */
-            name = applicantDao.read(jhed).getName();
-            Course courseOne = applicantDao.read(jhed).getRankOne();
-            Course courseTwo = applicantDao.read(jhed).getRankTwo();
-            Course courseThree = applicantDao.read(jhed).getRankThree();
+            String name = student.getName();
+            String email = student.getEmail();
+            Course courseOne = student.getRankOne();
+            Course courseTwo = student.getRankTwo();
+            Course courseThree = student.getRankThree();
             model.put("name", name);
+            model.put("studentjhed", studentjhed);
+            model.put("email", email);
             model.put("courseOne", courseOne);
             model.put("courseTwo", courseTwo);
             model.put("courseThree", courseThree);
