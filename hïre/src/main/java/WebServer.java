@@ -37,9 +37,18 @@ public class WebServer {
         DaoUtil.addSampleApplicants(courseDao, applicantDao);
 
         staticFileLocation("/templates");
+
+        before(((request, response) -> {
+            if (request.cookie("jhed") != null) {
+                request.attribute("jhed", request.cookie("jhed"));
+            }
+        }));
+
         get("/", (request, response) -> {
             // TODO: remove cookie username?
-            return new ModelAndView(new HashMap(), "index.hbs");
+            Map<String, String> model = new HashMap<>();
+            model.put("jhed", request.attribute("jhed"));
+            return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/login", (request, response) -> {
@@ -58,6 +67,12 @@ public class WebServer {
             response.redirect("/landing");
             return null;
         }, new HandlebarsTemplateEngine());
+
+        get("/signout", ((request, response) -> {
+            response.removeCookie("jhed");
+            response.redirect("/");
+            return null;
+        }), new HandlebarsTemplateEngine());
 
         get("/signup", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
@@ -201,16 +216,24 @@ public class WebServer {
             /* later: get if they have taken the course, grade, etc */
             String name = student.getName();
             String email = student.getEmail();
-            Course courseOne = student.getRankOne();
-            Course courseTwo = student.getRankTwo();
-            Course courseThree = student.getRankThree();
             model.put("name", name);
             model.put("studentjhed", studentjhed);
             model.put("email", email);
-            model.put("courseOne", courseOne.getName());
-            model.put("courseTwo", courseTwo.getName());
-            model.put("courseThree", courseThree.getName());
-
+            if (student.getRankOne() != null) {
+                model.put("courseOne", student.getRankOne().getName());
+            } else {
+                model.put("courseOne", null);
+            }
+            if (student.getRankTwo() != null) {
+                model.put("courseTwo", student.getRankTwo().getName());
+            } else {
+                model.put("courseTwo", null);
+            }
+            if (student.getRankThree() != null) {
+                model.put("courseThree", student.getRankThree().getName());
+            } else {
+                model.put("courseThree", null);
+            }
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());
 

@@ -57,9 +57,12 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <!-- add profile html-->
-                        <li class="scroll-to-section"><a href="/studentprofile">My Profile</a></li>
-                        <li class="scroll-to-section"><a href="/">Sign Out</a></li>
+                        {{#if isStaffMember}}
+                            <li class="scroll-to-section"><a href="/signout">Sign Out</a></li>
+                        {{else}}
+                            <li class="scroll-to-section"><a href="/studentprofile">My Profile</a></li>
+                            <li class="scroll-to-section"><a href="/signout">Sign Out</a></li>
+                        {{/if}}
                     </ul>
                     <!-- ***** Menu End ***** -->
                 </nav>
