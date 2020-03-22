@@ -29,12 +29,6 @@
 
     <link rel="stylesheet" href="../assets/css/lightbox.css">
 
-    <style>
-        p.ex1 {
-            padding: 20px 50px;
-        }
-    </style>
-
 </head>
 
 <body>
@@ -102,28 +96,29 @@
     <div class="wrapper wrapper--w680">
         <div class="card card-4">
             <div class="card-body">
-                <h2 class="title"> Name: {{name}}</h2>
-                <div class="row row-space">
-                    <div class="col-md-8 col-sm-12">
-                        <div>
-                            <h2 class="ex1"> jhed: {{studentjhed}} </h2>
-                        </div>
-                    </div>
-                </div>
+                <h2> {{name}}</h2>
+                <h4> Jhed: {{studentjhed}}</h4>
+                <h4> Email: {{email}}</h4>
+                <br>
                 <div class="row">
                     <div class="col-md-8 col-sm-12">
-                        <div
-                            <h4 class="ex1">Email: {{email}}</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8 col-sm-12">
-                        <label class="label">Student's Preferred classes:</label>
+                        <h4> Student's Preferred classes: </h4>
                         <div class="list-inline">
-                            <h4> 1. Course {{courseOne}}</h4>
-                            <h4> 2. Course {{courseTwo}}</h4>
-                            <h4> 3. Course {{courseThree}}</h4>
+                            {{#if courseOne}}
+                                <h4> 1. {{courseOne}}</h4>
+                            {{else}}
+                                <h4> 1. Not ranked yet! </h4>
+                            {{/if}}
+                            {{#if courseTwo}}
+                                <h4> 2. {{courseTwo}}</h4>
+                            {{else}}
+                                <h4> 2. Not ranked yet! </h4>
+                            {{/if}}
+                            {{#if courseThree}}
+                                <h4> 3. {{courseThree}}</h4>
+                            {{else}}
+                                <h4> 3. Not ranked yet! </h4>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

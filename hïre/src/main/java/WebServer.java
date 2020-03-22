@@ -33,6 +33,7 @@ public class WebServer {
         String url = "https://sis.jhu.edu/api/classes/" + school + "/" + dept + "/current?key=" + key;
         DaoUtil.addSISCourses(courseDao,url);
 
+        // Add in sample applicants
         DaoUtil.addSampleApplicants(courseDao, applicantDao);
 
         staticFileLocation("/templates");
@@ -79,13 +80,13 @@ public class WebServer {
                 coursesHashMap.put(newCourse, null);
             }
 
+            // use information to create either an applicant or staff member
             if (profileType.equals("Professor")) {
                 staffMemberDao.add(new StaffMember(name,jhed,courseList));
             } else {
                 applicantDao.add(new Applicant(name,email,jhed,coursesHashMap));
             }
 
-            // use information to create either an applicant or staff member
             response.cookie("jhed", jhed);
             response.cookie("profileType", profileType);
             response.redirect("/landing");
@@ -154,7 +155,6 @@ public class WebServer {
             Applicant student = applicantDao.read(jhed);
             String name = student.getName();
             String email = student.getEmail();
-            System.out.println(student.toString());
             List<Course> courseList = student.getCoursesList();
             model.put("name", name);
             model.put("email", email);
