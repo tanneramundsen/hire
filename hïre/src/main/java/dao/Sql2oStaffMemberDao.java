@@ -54,7 +54,8 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                         }
 
                         // Insert into joining table
-                        sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
+                        sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) " +
+                                "VALUES(:staffId, :courseId);";
                         conn.createQuery(sql)
                                 .addParameter("staffId", staffId)
                                 .addParameter("courseId", courseId)
@@ -75,7 +76,8 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
     public StaffMember read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
             // Populate non-list attributes of StaffMember object
-            String sql = "SELECT * FROM StaffMembers WHERE id = :id";
+            String sql = "SELECT * FROM StaffMembers " +
+                    "WHERE id = :id";
             StaffMember staffMember = conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetchFirst(StaffMember.class);
@@ -87,14 +89,16 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             // TODO: Figure out why executeAndFetch does not fill in name
             sql = "SELECT name FROM StaffMembers WHERE id = :id";
             List<Map<String, Object>> names = conn.createQuery(sql)
-                    .addParameter("id", id).executeAndFetchTable().asList();
+                    .addParameter("id", id)
+                    .executeAndFetchTable()
+                    .asList();
             staffMember.setName((String) names.get(0).get("name"));
 
             // Get corresponding courses according to joining table
-            sql = "SELECT Courses.* " +
+            sql = "SELECT C.* " +
                     "FROM StaffMembers_Courses " +
-                    "INNER JOIN Courses " +
-                    "ON StaffMembers_Courses.courseId = Courses.id " +
+                    "INNER JOIN Courses C " +
+                    "ON StaffMembers_Courses.courseId = C.id " +
                     "WHERE StaffMembers_Courses.staffId = :staffId";
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("staffId", id)
@@ -111,7 +115,8 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
     public StaffMember read(String jhed) throws DaoException {
         try (Connection conn = sql2o.open()) {
             // Populate non-list attributes of StaffMember object
-            String sql = "SELECT * FROM StaffMembers WHERE jhed = :jhed";
+            String sql = "SELECT * FROM StaffMembers " +
+                    "WHERE jhed = :jhed";
             StaffMember staffMember = conn.createQuery(sql)
                     .addParameter("jhed", jhed)
                     .executeAndFetchFirst(StaffMember.class);
@@ -123,14 +128,16 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             // TODO: Figure out why executeAndFetch does not fill in name
             sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
             List<Map<String, Object>> names = conn.createQuery(sql)
-                    .addParameter("jhed", jhed).executeAndFetchTable().asList();
+                    .addParameter("jhed", jhed)
+                    .executeAndFetchTable()
+                    .asList();
             staffMember.setName((String) names.get(0).get("name"));
 
             // Get corresponding courses according to joining table
-            sql = "SELECT Courses.* " +
+            sql = "SELECT C.* " +
                     "FROM StaffMembers_Courses " +
-                    "INNER JOIN Courses " +
-                    "ON StaffMembers_Courses.courseId = Courses.id " +
+                    "INNER JOIN Courses C " +
+                    "ON StaffMembers_Courses.courseId = C.id " +
                     "WHERE StaffMembers_Courses.staffId = :staffId";
             List<Course> courses = conn.createQuery(sql)
                     .addParameter("staffId", staffMember.getId())
@@ -149,7 +156,9 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
         try(Connection conn = sql2o.open()) {
             int staffId = staffMember.getId();
 
-            String sql = "UPDATE StaffMembers SET name = :name, jhed = :jhed WHERE id = :id;";
+            String sql = "UPDATE StaffMembers " +
+                    "SET name = :name, jhed = :jhed " +
+                    "WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", staffMember.getName())
                     .addParameter("jhed", staffMember.getJhed())
@@ -157,7 +166,8 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                     .executeUpdate();
 
             // Delete existing entries with this staff member in joining table
-            sql = "DELETE FROM StaffMembers_Courses WHERE staffId = :staffId;";
+            sql = "DELETE FROM StaffMembers_Courses " +
+                    "WHERE staffId = :staffId;";
             conn.createQuery(sql)
                     .addParameter("staffId", staffId)
                     .executeUpdate();
@@ -181,7 +191,8 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                         course.setId(courseId);
                     }
 
-                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) VALUES(:staffId, :courseId);";
+                    sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) " +
+                            "VALUES(:staffId, :courseId);";
                     conn.createQuery(sql)
                             .addParameter("staffId", staffId)
                             .addParameter("courseId", courseId)
@@ -199,7 +210,8 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             int staffId = staffMember.getId();
 
             // Delete from joining table
-            String sql = "DELETE FROM StaffMembers_Courses WHERE staffId = :staffId;";
+            String sql = "DELETE FROM StaffMembers_Courses " +
+                    "WHERE staffId = :staffId;";
             conn.createQuery(sql)
                     .addParameter("staffId", staffId)
                     .executeUpdate();

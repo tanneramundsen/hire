@@ -207,9 +207,9 @@ public class WebServer {
             model.put("name", name);
             model.put("studentjhed", studentjhed);
             model.put("email", email);
-            model.put("courseOne", courseOne);
-            model.put("courseTwo", courseTwo);
-            model.put("courseThree", courseThree);
+            model.put("courseOne", courseOne.getName());
+            model.put("courseTwo", courseTwo.getName());
+            model.put("courseThree", courseThree.getName());
 
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());
