@@ -33,7 +33,6 @@ public class WebServer {
         String key = "R6HJMT7GFtXsTjRcjp4zrypfpNpq4108";
         String url = "https://sis.jhu.edu/api/classes/" + school + "/" + dept + "/current?key=" + key;
         List<Course> all_courses = DaoUtil.addSISCourses(courseDao,url);
-        System.out.println(all_courses.toString());
         // Add in sample applicants
         DaoUtil.addSampleApplicants(courseDao, applicantDao);
 
@@ -93,7 +92,7 @@ public class WebServer {
             for (String course:courses) {
                 Course newCourse = courseDao.read(course);
                 courseList.add(newCourse);
-                coursesHashMap.put(newCourse, null);
+                coursesHashMap.put(newCourse, "Not Taken");
             }
 
             // use information to create either an applicant or staff member
@@ -201,11 +200,10 @@ public class WebServer {
             String rank2 = request.queryParams("rank2");
             String rank3 = request.queryParams("rank3");
             String jhed = request.cookie("jhed");
+            // For every course, get updated grade ("Not taken" or letter)
             for (Course c : all_courses) {
-                String grade = request.queryParams(c.getName());
-                if (grade != null) {
-                    interested_courses.put(c, grade);
-                }
+                String grade = request.queryParams(String.valueOf(c.getId()));
+                interested_courses.put(c, grade);
             }
             Applicant student = applicantDao.read(jhed);
             student.setInterestedCourses(interested_courses);
