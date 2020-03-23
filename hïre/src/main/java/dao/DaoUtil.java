@@ -81,7 +81,7 @@ public final class DaoUtil {
         List<Course> courseList = courseDao.findAll();
         HashMap<Course, String> courseHashMap = new HashMap<Course, String>();
         for (Course course: courseList) {
-            courseHashMap.put(course, null);
+            courseHashMap.put(course, "Not Taken");
         }
         if (courseList.size() == 0) addSampleCourses(courseDao);
 
