@@ -1,8 +1,10 @@
 import api.ApiServer;
+import com.github.jknack.handlebars.Handlebars;
 import dao.*;
 import exception.DaoException;
 import model.Applicant;
 import model.Course;
+import model.Grade;
 import model.StaffMember;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -170,8 +172,6 @@ public class WebServer {
             Applicant student = applicantDao.read(jhed);
             String name = student.getName();
             String email = student.getEmail();
-            List<Course> courseList = student.getCoursesList();
-            HashMap<Course, String> interested_grades = student.getInterestedCourses();
             model.put("name", name);
             model.put("email", email);
             if (student.getRankOne() != null) {
@@ -189,8 +189,17 @@ public class WebServer {
             } else {
                 model.put("rank3", null);
             }
+            List<Course> courseList = student.getCoursesList();
             model.put("courseList", courseList);
-            model.put("interested_grades", interested_grades);
+            List<Grade> gradesList = new ArrayList<Grade>();
+            HashMap<Course, String> interested_grades = student.getInterestedCourses();
+            for (Map.Entry<Course, String> entry : interested_grades.entrySet()) {
+                String courseId = String.valueOf(entry.getKey().getId());
+                String courseName = entry.getKey().getName();
+                String grade = entry.getValue();
+                gradesList.add(new Grade(courseId,courseName,grade));
+            }
+            model.put("gradesList", gradesList);
             return new ModelAndView(model, "studentprofile.hbs");
         }, new HandlebarsTemplateEngine());
 

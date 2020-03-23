@@ -191,12 +191,13 @@
                                         <th>Course</th>
                                         <th>Grade</th>
                                     </tr>
-                                    {{#each courseList}}
+                                    {{#each gradesList}}
                                     <tr>
-                                        <td>{{name}}</td>
+                                        <td>{{courseName}}</td>
                                         <td>
                                             <div class="rs-select2 js-select-simple select--no-search">
-                                                <select name={{id}}>
+                                                <select name={{courseId}}>
+                                                    <option selected="selected" > {{grade}} </option>
                                                     <option> Not Taken </option>
                                                     <option> A+ </option>
                                                     <option> A </option>
