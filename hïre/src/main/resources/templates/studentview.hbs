@@ -102,7 +102,7 @@
                 <br>
                 <div class="row">
                     <div class="col-md-8 col-sm-12">
-                        <h4> Student's Preferred classes: </h4>
+                        <h3> Student's Preferred classes: </h3>
                         <div class="list-inline">
                             {{#if courseOne}}
                                 <h4> 1. {{courseOne}}</h4>
@@ -119,6 +119,19 @@
                             {{else}}
                                 <h4> 3. Not ranked yet! </h4>
                             {{/if}}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-8 col-sm-12">
+                        <h3> Student's Grades: </h3>
+                        <div class="list-inline">
+                            {{#each gradesList}}
+                                <h4> {{courseName}} : {{grade}} </h4>
+                            {{else}}
+                                <h4> No grades inputted yet! </h4>
+                            {{/each}}
                         </div>
                     </div>
                 </div>

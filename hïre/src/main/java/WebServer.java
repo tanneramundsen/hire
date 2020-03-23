@@ -252,6 +252,17 @@ public class WebServer {
             } else {
                 model.put("courseThree", null);
             }
+            List<Grade> gradesList = new ArrayList<Grade>();
+            HashMap<Course, String> interested_grades = student.getInterestedCourses();
+            for (Map.Entry<Course, String> entry : interested_grades.entrySet()) {
+                String grade = entry.getValue();
+                if (!grade.equals("Not Taken")) {
+                    String courseId = String.valueOf(entry.getKey().getId());
+                    String courseName = entry.getKey().getName();
+                    gradesList.add(new Grade(courseId,courseName,grade));
+                }
+            }
+            model.put("gradesList", gradesList);
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());
 
