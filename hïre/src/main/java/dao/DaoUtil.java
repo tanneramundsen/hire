@@ -148,12 +148,11 @@ public final class DaoUtil {
         }
     }
 
-    public static void addSISCourses(CourseDao courseDao, String url) {
+    public static List<Course> addSISCourses(CourseDao courseDao, String url) {
         JSONArray coursesJSON;
+        Set<Course> courses = new TreeSet<Course>();
         try {
             coursesJSON = readJsonFromUrl(url);
-
-            Set<Course> courses = new TreeSet<Course>();
 
             for (Object o : coursesJSON) {
                 if (o instanceof JSONObject) {
@@ -178,5 +177,7 @@ public final class DaoUtil {
         } catch (JSONException e) {
             System.err.println("Could not convert fetched data to JSON");
         }
+        List<Course> ret = new ArrayList(courses);
+        return ret;
     }
 }

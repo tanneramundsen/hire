@@ -10,6 +10,7 @@ import org.sql2o.Sql2oException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class Sql2oApplicantDao implements ApplicantDao {
 
@@ -82,6 +83,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
     }
 
     public void update(Applicant applicant) throws DaoException {
+        List<Course> interested_courses = new ArrayList();
+        List<String> grades_interested = new ArrayList();
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Applicants " +
                     "SET name = :name, email = :email, jhed = :jhed " +
@@ -155,12 +158,17 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         course.setId(courseId);
                     }
 
+                    interested_courses.add(course);
+                    grades_interested.add(grade);
+                }
+
+                for (int i = 0; i < interested_courses.size(); i++) {
                     sql = "INSERT INTO InterestedApplicants_Courses(applicantId, courseId, grade) " +
                             "VALUES(:applicantId, :courseId, :grade);";
                     conn.createQuery(sql)
                             .addParameter("applicantId", applicant.getId())
-                            .addParameter("courseId", courseId)
-                            .addParameter("grade", grade)
+                            .addParameter("courseId", interested_courses.get(i).getId())
+                            .addParameter("grade", grades_interested.get(i))
                             .executeUpdate();
                 }
             }

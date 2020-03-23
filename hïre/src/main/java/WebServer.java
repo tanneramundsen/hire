@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
+import java.util.*;
 
 public class WebServer {
     public static void main(String[] args) {
@@ -31,8 +32,8 @@ public class WebServer {
         String dept = "EN computer science".replace(" ", "%20");;
         String key = "R6HJMT7GFtXsTjRcjp4zrypfpNpq4108";
         String url = "https://sis.jhu.edu/api/classes/" + school + "/" + dept + "/current?key=" + key;
-        DaoUtil.addSISCourses(courseDao,url);
-
+        List<Course> all_courses = DaoUtil.addSISCourses(courseDao,url);
+        System.out.println(all_courses.toString());
         // Add in sample applicants
         DaoUtil.addSampleApplicants(courseDao, applicantDao);
 
@@ -171,6 +172,7 @@ public class WebServer {
             String name = student.getName();
             String email = student.getEmail();
             List<Course> courseList = student.getCoursesList();
+            HashMap<Course, String> interested_grades = student.getInterestedCourses();
             model.put("name", name);
             model.put("email", email);
             if (student.getRankOne() != null) {
@@ -189,15 +191,24 @@ public class WebServer {
                 model.put("rank3", null);
             }
             model.put("courseList", courseList);
+            model.put("interested_grades", interested_grades);
             return new ModelAndView(model, "studentprofile.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/studentprofile", (request, response) -> {
+            HashMap<Course, String> interested_courses = new HashMap();
             String rank1 = request.queryParams("rank1");
             String rank2 = request.queryParams("rank2");
             String rank3 = request.queryParams("rank3");
             String jhed = request.cookie("jhed");
+            for (Course c : all_courses) {
+                String grade = request.queryParams(c.getName());
+                if (grade != null) {
+                    interested_courses.put(c, grade);
+                }
+            }
             Applicant student = applicantDao.read(jhed);
+            student.setInterestedCourses(interested_courses);
             student.setRankOne(courseDao.read(rank1));
             student.setRankTwo(courseDao.read(rank2));
             student.setRankThree(courseDao.read(rank3));
