@@ -10,8 +10,11 @@ public class Course implements Comparable<Course> {
     List<StaffMember> instructors;
     String semester;
     boolean hiringComplete;
+    String courseDescription;
+    String interviewLink;
     List<Applicant> hiredApplicants;
     List<Applicant> interestedApplicants;
+    List<Applicant> shortlistedApplicants;
 
     public Course(String name, String courseNumber, List<StaffMember> instructors, String semester,
                   boolean hiringComplete, List<Applicant> cas, List<Applicant> interestedApplicants) {
@@ -72,6 +75,14 @@ public class Course implements Comparable<Course> {
         this.hiringComplete = hiringComplete;
     }
 
+    public String getCourseDescription() { return courseDescription; }
+
+    public void setCourseDescription(String courseDescription) { this.courseDescription = courseDescription; }
+
+    public String getInterviewLink() { return interviewLink; }
+
+    public void setInterviewLink(String interviewLink) { this.interviewLink = interviewLink; }
+
     public List<Applicant> getHiredApplicants() {
         return hiredApplicants;
     }
@@ -86,6 +97,14 @@ public class Course implements Comparable<Course> {
 
     public void setInterestedApplicants(List<Applicant> interestedApplicants) {
         this.interestedApplicants = interestedApplicants;
+    }
+
+    public List<Applicant> getShortlistedApplicants() {
+        return shortlistedApplicants;
+    }
+
+    public void setShortlistedApplicants(List<Applicant> shortlistedApplicants) {
+        this.shortlistedApplicants = shortlistedApplicants;
     }
 
     @Override
