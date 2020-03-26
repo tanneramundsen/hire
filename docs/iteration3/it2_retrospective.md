@@ -3,14 +3,14 @@ A UML class diagram reflecting the "model" for that iteration only.
 Use a software to draw this (e.g. draw.io) and save the diagram as an image. 
 Upload the image and link it in here using this syntax.
 
-![UML Diagram](./img/uml.png)
+![UML Diagram](../iteration2/img/uml.png)
 
 # Wireframe
 One (or a few) simple sketch of how the user interacts with the application. 
 This could be a sketch of your user interface. 
 You can draw it by hand and insert it here as an image.
 
-![Wireframe](./img/wireframe.png)
+![Wireframe](../iteration2/img/wireframe.png)
 
 # Iteration Backlog
 List the User Stories that you will implement in this iteration.
