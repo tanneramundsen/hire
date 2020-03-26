@@ -37,6 +37,7 @@ public final class DaoFactory {
         createInterestedApplicantsCoursesTable(sql2o);
         createHiredApplicantsCoursesTable(sql2o);
         createStaffMembersCoursesTable(sql2o);
+        createShortlistedApplicantsCoursesTable(sql2o);
         return new Sql2oCourseDao(sql2o);
     }
 
@@ -128,6 +129,20 @@ public final class DaoFactory {
         }
     }
 
+    private static void createShortlistedApplicantsCoursesTable(Sql2o sql2o) {
+        if (DROP_TABLES_IF_EXIST) dropShortlistedApplicantsCoursesTableIfExists(sql2o);
+        String sql = "CREATE TABLE IF NOT EXISTS ShortlistedApplicants_Courses(" +
+                "id INTEGER PRIMARY KEY," +
+                "applicantId INTEGER," +
+                "courseId INTEGER," +
+                "FOREIGN KEY (applicantId) REFERENCES Applicants(id)" +
+                "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
+                ");";
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
     private static void createHiredApplicantsCoursesTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropHiredApplicantsCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS HiredApplicants_Courses(" +
@@ -176,6 +191,13 @@ public final class DaoFactory {
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
             sql = "DROP TABLE IF EXISTS QualifiedApplicants_Courses;";
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
+    private static void dropShortlistedApplicantsCoursesTableIfExists(Sql2o sql2o) {
+        String sql = "DROP TABLE IF EXISTS ShortlistedApplicants_Courses;";
+        try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
         }
     }

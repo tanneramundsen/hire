@@ -215,6 +215,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
             conn.createQuery(sql)
                     .addParameter("applicantId", id)
                     .executeUpdate();
+            sql = "DELETE FROM ShortlistedApplicants_Courses " +
+                    "WHERE applicantId = :applicantId;";
+            conn.createQuery(sql)
+                    .addParameter("applicantId", id)
+                    .executeUpdate();
             sql = "DELETE FROM Applicants WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("id", id)
@@ -514,7 +519,6 @@ public class Sql2oApplicantDao implements ApplicantDao {
         }
     }
 
-    @Override
     public List<Applicant> findByCourseId(int courseId) throws DaoException{
         try(Connection conn = sql2o.open()) {
             String sql = "SELECT A.name, A.email, A.jhed " +
