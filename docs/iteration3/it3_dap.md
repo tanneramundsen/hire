@@ -36,16 +36,18 @@ It does not need to be exhustive.
     - Number of credits for a given semester: `Double`
     - Email of faculty/employer reference: `String`
     - Link to resume: `String`
-    - Updates to `InterestedCourses hashmap<Course>: ArrayList<String>`
-      - Experience: `String`
-      - Head CA interest: `String`
-      - Application status (Under Review, Interviewing, Hired): `String`
+    - Experience: `String`
+    - headCAInterest: List of Courses
   - Visible to `Admin` class (`Admin` class not implemented for iteration 3):
     - FWS eligibility: `bool`
     - Student status (Full-time US, Full-time Intl, Part-time Intl): `String`
     - Most recent semester of payroll: `String`
     - Other jobs: `String`
-    - How many hours available?: `int`
+    - How many hours available?: `int`  
+- New fields to `Course` class
+    - Description: `String`
+    - interviewLink: `String`
+    - shortlistedApplicants: List of Applicants
 - Interview scheduling
   - Update status for applicants to “interviewing”
   - Streamlined email generation
@@ -53,11 +55,12 @@ It does not need to be exhustive.
     - E.g. using Google scripts
   - Create course profile that applicants can view
     - Better descriptions of job responsibilities
-    - Professors can create shortlist and have “make link available” button
+    - Applicants can see application status
     - Shortlisted applicants can access scheduling link
 - Shortlisting
   - In course view, allow staff members select from interested applicants column
     - Create third “Shortlisted Applicants” column
+    - Professors can create shortlist and have “make link available” button
   - In student view, have form at bottom that allows adding interested applicants to shortlist
     - Button that says “add to shortlist”
     - Redirect to courseview with the updated shortlist column
