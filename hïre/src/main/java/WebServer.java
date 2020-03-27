@@ -152,6 +152,15 @@ public class WebServer {
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
+        post("/landing", (request, response) -> {
+            String jhed = request.cookie("jhed");
+            // TODO: add ability to add a new course
+            response.cookie("jhed", jhed);
+            response.cookie("profileType", "Applicant");
+            response.redirect("/landing");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
         get("/:id/courseinfo", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
 
@@ -159,16 +168,45 @@ public class WebServer {
             Course course = courseDao.read(courseId);
             String name = course.getName();
             String courseNumber = course.getCourseNumber();
+            String description = course.getCourseDescription();
+            if (description.isEmpty()) {
+                description = null;
+            }
+            String interviewLink = course.getInterviewLink();
+            if (interviewLink.isEmpty()) {
+                interviewLink = null;
+            }
             List<Applicant> interestedApplicants = course.getInterestedApplicants();
             List<Applicant> hiredApplicants = course.getHiredApplicants();
 
             /* later can put in semester */
             model.put("name", name);
+            model.put("id", courseId);
             model.put("courseNumber", courseNumber);
+            model.put("description", description);
+            model.put("interviewLink", interviewLink);
             model.put("interestedApplicants", interestedApplicants);
             model.put("hiredApplicants", hiredApplicants);
 
             return new ModelAndView(model, "courseinfo.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        post("/:id/courseinfo", (request, response) -> {
+            String jhed = request.cookie("jhed");
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+
+            String description = request.queryParams("description");
+            String interviewLink = request.queryParams("interviewLink");
+
+            course.setCourseDescription(description);
+            course.setInterviewLink(interviewLink);
+            courseDao.update(course);
+
+            response.cookie("jhed", jhed);
+            response.cookie("profileType", "Applicant");
+            response.redirect("/landing");
+            return null;
         }, new HandlebarsTemplateEngine());
 
         get("/:id/courseprofile", (request, response) -> {
@@ -179,12 +217,21 @@ public class WebServer {
             String name = course.getName();
             String courseNumber = course.getCourseNumber();
             String description = course.getCourseDescription();
+            if (description.isEmpty()) {
+                description = null;
+            }
+            String interviewLink = course.getInterviewLink();
+            if (interviewLink.isEmpty()) {
+                interviewLink = null;
+            }
+
             List<StaffMember> instructors = course.getInstructors();
 
             /* later can put in semester */
             model.put("name", name);
             model.put("courseNumber", courseNumber);
             model.put("description", description);
+            model.put("interviewLink", interviewLink);
             model.put("instructors", instructors);
 
             return new ModelAndView(model, "courseprofile.hbs");

@@ -72,6 +72,35 @@
                 <div class="section-heading">
                     <h2>{{name}} - {{courseNumber}}</h2>
                 </div>
+                <div class="contact-form">
+                    <form id="contact" action="/{{id}}/courseinfo" method="post">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    {{#if description}}
+                                        <textarea name="description" rows="6" value={{description}}></textarea>
+                                    {{else}}
+                                        <textarea name="description" rows="6" placeholder="Enter CA Description..."></textarea>
+                                    {{/if}}
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <fieldset>
+                                    {{#if interviewLink}}
+                                        <input name="interviewLink" type="text" value={{interviewLink}}>
+                                    {{else}}
+                                        <input name="interviewLink" type="text" placeholder="Add Interview sign up link...">
+                                    {{/if}}
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    <button type="submit" id="form-submit" class="main-button">Update Course Info <i class="fa fa-arrow-right"></i></button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -82,23 +111,32 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h2>Hired Applicants</h2>
-                <ul>
-                    {{#each hiredApplicants}}
-                        <li>{{name}}</li>
-                    {{/each}}
-                </ul>
-            </div>
-            <div class="col">
                 <h2>Interested Applicants</h2>
+                <br>
                 <ul>
                     {{#each interestedApplicants}}
                         <li><a href = "/{{jhed}}/studentview">{{name}}</a> </li>
                     {{/each}}
                 </ul>
             </div>
-        </div>
-        <div class="row">
+            <div class="col">
+                <h2>Shortlisted Applicants</h2>
+                <br>
+                <ul>
+                    {{#each shortlistedApplicants}}
+                        <li><a href = "/{{jhed}}/studentview">{{name}}</a> </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="col">
+                <h2>Hired Applicants</h2>
+                <br>
+                <ul>
+                    {{#each hiredApplicants}}
+                        <li>{{name}}</li>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
     </div>
 </section>

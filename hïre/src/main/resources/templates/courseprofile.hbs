@@ -91,7 +91,11 @@
             <div class="col-lg-8 offset-lg-2">
                 <h4>A little more about the position...</h4>
                 <br>
-                <h5>{{description}}</h5>
+                {{#if description}}
+                    <h5>{{description}}</h5>
+                {{else}}
+                    <h5>The professor has not yet wrote a CA position description.</h5>
+                {{/if}}
             </div>
             <div class="col-lg-8 offset-lg-2">
                 <br>

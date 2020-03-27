@@ -121,20 +121,21 @@ public class Course implements Comparable<Course> {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getName());
-    }
-
-    @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", courseNumber='" + courseNumber + '\'' +
-                ", semester='" + semester + '\'' +
-                ", hiringComplete=" + hiringComplete +
+                ", courseDescription='" + courseDescription + '\'' +
+                ", interviewLink='" + interviewLink + '\'' +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
+    }
+
 
     @Override
     public int compareTo(@NotNull Course o) {

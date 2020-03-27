@@ -121,13 +121,9 @@
             {{/each}}
             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
                  data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-                <div class="features-item">
-                    <div class="features-content">
-                        <a href="#" class="text-button-icon">
-                            Add Another Course! <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
+                <form action="/landing" method="post">
+                    <button type="submit" id="form-submit" class="main-button">Add another course <i class="fa fa-arrow-right"></i></button>
+                </form>
             </div>
         </div>
     </div>
