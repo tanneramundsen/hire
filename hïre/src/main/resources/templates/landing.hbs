@@ -107,11 +107,12 @@
                             <h4>{{name}}</h4>
                             <p>Course Number: {{courseNumber}}</p>
                             {{#if isStaffMember}}
-                                <a href="/{{id}}/courseinfo">Manage Course<li class="text-button-icon"></li></a>
-                                         <i class="fa fa-arrow-right"></i>
+                                <a href="/{{id}}/courseinfo" class="text-button-icon">
+                                    Manage Course<i class="fa fa-arrow-right"></i>
+                                </a>
                             {{else}}
-                                <a href="" class="text-button-icon">
-                                    See Progress <i class="fa fa-arrow-right"></i>
+                                <a href="/{{id}}/courseprofile" class="text-button-icon">
+                                    See Progress<i class="fa fa-arrow-right"></i>
                                 </a>
                             {{/if}}
                         </div>

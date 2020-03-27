@@ -26,7 +26,11 @@ public final class DaoUtil {
                 "Spring 2020",
                 false,
                 null,
-                null)
+                null,
+                null,
+                null,
+                null
+                )
         );
         courseDao.add(new Course(
                 "data structures",
@@ -34,6 +38,9 @@ public final class DaoUtil {
                 null,
                 "Spring 2020",
                 false,
+                null,
+                null,
+                null,
                 null,
                 null)
         );
@@ -43,6 +50,9 @@ public final class DaoUtil {
                 null,
                 "Spring 2020",
                 false,
+                null,
+                null,
+                null,
                 null,
                 null)
         );
@@ -161,7 +171,8 @@ public final class DaoUtil {
                     String courseNumber = courseJSON.getString("OfferingName");
                     String semester = courseJSON.getString("Term");
 
-                    Course course = new Course(name, courseNumber, null, semester, false, null, null);
+                    Course course = new Course(name, courseNumber, null, semester, false,
+                            null, null,null,null,null);
                     courses.add(course);
                 }
             }

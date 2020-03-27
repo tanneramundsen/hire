@@ -1,7 +1,5 @@
 import api.ApiServer;
-import com.github.jknack.handlebars.Handlebars;
 import dao.*;
-import exception.DaoException;
 import model.Applicant;
 import model.Course;
 import model.Grade;
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
-import java.util.*;
 
 public class WebServer {
     public static void main(String[] args) {
@@ -89,18 +86,29 @@ public class WebServer {
             String profileType = request.queryParams("profileType");
             String[] courses = request.queryParamsValues("courses");
 
-            List<Course> courseList = new ArrayList<Course>();
-            HashMap<Course, String> coursesHashMap = new HashMap<Course, String>();
-            for (String course:courses) {
-                Course newCourse = courseDao.read(course);
-                courseList.add(newCourse);
-                coursesHashMap.put(newCourse, "Not Taken");
-            }
-
             // use information to create either an applicant or staff member
             if (profileType.equals("Professor")) {
-                staffMemberDao.add(new StaffMember(name,jhed,courseList));
+                List<Course> courseList = new ArrayList<Course>();
+                for (String course:courses) {
+                    Course newCourse = courseDao.read(course);
+                    courseList.add(newCourse);
+                }
+                StaffMember s = new StaffMember(name,jhed,courseList);
+                staffMemberDao.add(s);
+                // Update courses to have staff member as instructor
+                for (Course c: courseList) {
+                    List<StaffMember> instructors = c.getInstructors();
+                    instructors.add(s);
+                    c.setInstructors(instructors);
+                   // TODO: why doesn't this work
+                    //  courseDao.update(c);
+                }
             } else {
+                HashMap<Course, String> coursesHashMap = new HashMap<Course, String>();
+                for (String course:courses) {
+                    Course newCourse = courseDao.read(course);
+                    coursesHashMap.put(newCourse, "Not Taken");
+                }
                 applicantDao.add(new Applicant(name,email,jhed,coursesHashMap));
             }
 
@@ -147,23 +155,39 @@ public class WebServer {
         get("/:id/courseinfo", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
 
-            String jhed = request.cookie("jhed");
             int courseId = Integer.parseInt(request.params(":id"));
-            model.put("courseID", courseId);
-            String name = courseDao.read(courseId).getName();
-            String courseNumber = courseDao.read(courseId).getCourseNumber();
-            List<Applicant> interestedApplicants = courseDao.read(courseId).getInterestedApplicants();
-            List<Applicant> hiredApplicants = courseDao.read(courseId).getHiredApplicants();
-            List<StaffMember> instructors = courseDao.read(courseId).getInstructors();
+            Course course = courseDao.read(courseId);
+            String name = course.getName();
+            String courseNumber = course.getCourseNumber();
+            List<Applicant> interestedApplicants = course.getInterestedApplicants();
+            List<Applicant> hiredApplicants = course.getHiredApplicants();
 
             /* later can put in semester */
             model.put("name", name);
             model.put("courseNumber", courseNumber);
             model.put("interestedApplicants", interestedApplicants);
             model.put("hiredApplicants", hiredApplicants);
-            model.put("instructors", instructors);
 
             return new ModelAndView(model, "courseinfo.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/:id/courseprofile", (request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+            String name = course.getName();
+            String courseNumber = course.getCourseNumber();
+            String description = course.getCourseDescription();
+            List<StaffMember> instructors = course.getInstructors();
+
+            /* later can put in semester */
+            model.put("name", name);
+            model.put("courseNumber", courseNumber);
+            model.put("description", description);
+            model.put("instructors", instructors);
+
+            return new ModelAndView(model, "courseprofile.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/studentprofile", (request, response) -> {

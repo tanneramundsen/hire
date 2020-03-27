@@ -8,7 +8,6 @@ public class StaffMember extends User {
     List<Course> courses;
 
     public List<Applicant> getCAsForCourse(Course course) {
-
         return null;
     }
 
