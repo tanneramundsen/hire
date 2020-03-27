@@ -101,7 +101,7 @@ public class WebServer {
                     instructors.add(s);
                     c.setInstructors(instructors);
                    // TODO: why doesn't this work
-                    //  courseDao.update(c);
+                    courseDao.update(c);
                 }
             } else {
                 HashMap<Course, String> coursesHashMap = new HashMap<Course, String>();

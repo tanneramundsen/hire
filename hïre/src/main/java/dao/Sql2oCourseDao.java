@@ -451,7 +451,9 @@ public class Sql2oCourseDao implements CourseDao {
             }
 
             if(course.getInterestedApplicants() != null) {
+                // TODO: System.out.println(course.getInterestedApplicants());
                 for (Applicant interested : course.getInterestedApplicants()) {
+                    //TODO: System.out.println(interested.getInterestedCourses());
                     int applicantId = interested.getId();
                     if (applicantId == 0) {
                         sql = "INSERT INTO Applicants(name, email, jhed) " +
@@ -471,7 +473,7 @@ public class Sql2oCourseDao implements CourseDao {
                     conn.createQuery(sql)
                             .addParameter("applicantId", applicantId)
                             .addParameter("courseId", courseId)
-                            .addParameter("grade", interested.getInterestedCourses().get(course))
+                            .addParameter("grade", "Not Taken") //TODO: figure out why the interestedCourses lists are all null
                             .executeUpdate();
                 }
             }
