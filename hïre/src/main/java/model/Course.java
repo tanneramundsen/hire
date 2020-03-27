@@ -17,14 +17,19 @@ public class Course implements Comparable<Course> {
     List<Applicant> shortlistedApplicants;
 
     public Course(String name, String courseNumber, List<StaffMember> instructors, String semester,
-                  boolean hiringComplete, List<Applicant> cas, List<Applicant> interestedApplicants) {
+                  boolean hiringComplete, String courseDescription, String interviewLink,
+                  List<Applicant> hiredApplicants, List<Applicant> interestedApplicants,
+                  List<Applicant> shortlistedApplicants) {
         this.name = name;
         this.courseNumber = courseNumber;
         this.instructors = instructors;
         this.semester = semester;
         this.hiringComplete = hiringComplete;
-        this.hiredApplicants = cas;
+        this.courseDescription = courseDescription;
+        this.interviewLink = interviewLink;
+        this.hiredApplicants = hiredApplicants;
         this.interestedApplicants = interestedApplicants;
+        this.shortlistedApplicants = shortlistedApplicants;
     }
 
     public int getId() {
