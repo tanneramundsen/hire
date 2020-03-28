@@ -188,21 +188,6 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .executeUpdate();
 
             // Fresh update to joining tables
-
-            //update headCAInterestList
-            List<Course> headCaInterest = applicant.getHeadCAInterest();
-            if (headCaInterest != null) {
-                for (Course course: headCaInterest) {
-                    sql = "INSERT INTO HeadCAInterest_Courses(applicantId, courseId) " +
-                            "VALUES(:applicantId, :courseId;";
-                    conn.createQuery(sql)
-                            .addParameter("applicantId", applicant.getId())
-                            .addParameter("courseId", course.getId())
-                            .executeUpdate();
-                }
-            }
-            //
-
             if (applicant.getInterestedCourses() != null) {
                 for (Map.Entry<Course,String> entry : applicant.getInterestedCourses().entrySet()) {
                     Course course = entry.getKey();
@@ -236,6 +221,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             .executeUpdate();
                 }
             }
+
             Course hiredCourse = applicant.getHiredCourse();
             if (hiredCourse != null) {
                 int hiredCourseId = hiredCourse.getId();
@@ -353,15 +339,21 @@ public class Sql2oApplicantDao implements ApplicantDao {
             applicant.setRankTwo(rankedCourses[1]);
             applicant.setRankThree(rankedCourses[2]);
 
-            //headCAInterest Table
-            sql = "SELECT C.* " +
-                    "FROM HeadCAInterest_Courses INNER JOIN Courses C " +
-                    "ON HeadCAInterest_Courses.courseId = C.id " +
-                    "WHERE HeadCAInterest_Courses.applicantId = :applicantId;";
-            List<Course> headCAInterestCourses = conn.createQuery(sql)
-                    .addParameter("applicantId", id)
-                    .executeAndFetch(Course.class);
-            //
+            /*headCAInterest Table
+            List<Course> HeadCAInterestCourses = applicant.getHeadCAInterest();
+            if (HeadCAInterestCourses != null) {
+                for (Course course : HeadCAInterestCourses) {
+                    int courseId = course.getId();
+                    sql = "SELECT C.* " +
+                            "FROM HeadCAInterest_Courses INNER JOIN Courses C " +
+                            "ON HeadCAInterest_Courses.courseId = C.id " +
+                            "WHERE HeadCAInterest_Courses.applicantId = :applicantId;";
+                    List<Course> headCAInterestCourses = conn.createQuery(sql)
+                            .addParameter("applicantId", id)
+                            .executeAndFetch(Course.class);
+                }
+            }
+            */
 
             //get corresponding interestedCourses according to joining table
             sql = "SELECT C.* " +
