@@ -1,7 +1,7 @@
 package model;
 import java.util.*;
 
-public class Applicant extends User {
+public class Applicant<Double> extends User {
     int id;
     String name;
     String email;
@@ -11,6 +11,22 @@ public class Applicant extends User {
     Course rankOne = null;
     Course rankTwo = null;
     Course rankThree = null;
+
+    //Supplementary Info To be Visible to Staff and Admin
+    String year;
+    String majorAndMinor;
+    Double gpa;
+    Double registeredCredits;
+    String referenceEmail;
+    String resumeLink;
+    List<Course> headCAInterest;
+    //Fields only visible to Admin
+    boolean fws;
+    String studentStatus;
+    String mostRecentPayroll;
+    String otherJobs;
+    int hoursAvailable;
+
 
     @Override
     public void updateCourses() {
@@ -95,6 +111,54 @@ public class Applicant extends User {
     public void setHiredCourse(Course hiredCourse) {
         this.hiredCourse = hiredCourse;
     }
+
+    public String getYear() { return year; }
+
+    public void setYear(String year) { this.year = year; }
+
+    public String getMajorAndMinor() { return majorAndMinor; }
+
+    public void setMajorAndMinor(String majorAndMinor) { this.majorAndMinor = majorAndMinor; }
+
+    public Double getGpa() {return gpa;}
+
+    public void setGpa(Double gpa) { this.gpa = gpa;}
+
+    public Double getRegisteredCredits() { return registeredCredits; }
+
+    public void setRegisteredCredits(Double registeredCredits) { this.registeredCredits = registeredCredits; }
+
+    public String getReferenceEmail() { return referenceEmail; }
+
+    public void setReferenceEmail(String referenceEmail) { this.referenceEmail = referenceEmail; }
+
+    public String getResumeLink() { return resumeLink; }
+
+    public void setResumeLink(String resumeLink) { this.resumeLink = resumeLink; }
+
+    public List<Course> getHeadCAInterest() { return headCAInterest; }
+
+    public void setHeadCAInterest(List<Course> headCAInterest) { this.headCAInterest = headCAInterest; }
+
+    public boolean getFws() { return fws; }
+
+    public void setFws(boolean fws) { this.fws = fws; }
+
+    public String getStudentStatus() { return studentStatus; }
+
+    public void setStudentStatus(String studentStatus) { this.studentStatus = studentStatus; }
+
+    public String getMostRecentPayroll() { return mostRecentPayroll; }
+
+    public void setMostRecentPayroll(String mostRecentPayroll) { this.mostRecentPayroll = mostRecentPayroll; }
+
+    public String getOtherJobs() { return otherJobs; }
+
+    public void setOtherJobs(String otherJobs) { this.otherJobs = otherJobs; }
+
+    public int getHoursAvailable() { return hoursAvailable; }
+
+    public void setHoursAvailable(int hoursAvailable) { this.hoursAvailable = hoursAvailable; }
 
     @Override
     public boolean equals(Object o) {

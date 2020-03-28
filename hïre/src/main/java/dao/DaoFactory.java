@@ -60,6 +60,17 @@ public final class DaoFactory {
                 "name VARCHAR(100) NOT NULL," +
                 "email VARCHAR(100) NOT NULL," +
                 "jhed VARCHAR(100) NOT NULL, " +
+                "year VARCHAR(100)," +
+                "majorAndMinor VARCHAR(100)," +
+                "gpa DOUBLE, " +
+                "registeredCredits DOUBLE, " +
+                "referenceEmail VARCHAR(100)," +
+                "resumeLink VARCHAR(100)," +
+                "fws boolean," +
+                "studentStatus VARCHAR(100)," +
+                "mostRecentPayroll VARCHAR(100)," +
+                "otherJobs VARCHAR(100)," +
+                "hoursAvailable INTEGER," +
                 "hiredCourse INTEGER," +
                 "rankOne INTEGER," +
                 "rankTwo INTEGER," +
@@ -210,4 +221,28 @@ public final class DaoFactory {
             conn.createQuery(sql).executeUpdate();
         }
     }
+
+    //DANIELA : I added this for a student's headCAInterest Course List
+    private static void dropHeadCAInterestCoursesTableIfExists(Sql2o sql2o) {
+        String sql = "DROP TABLE IF EXISTS HeadCAInterest_Courses;";
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
+    private static void createHeadCAInterestCoursesTable(Sql2o sql2o) {
+        if (DROP_TABLES_IF_EXIST) dropHeadCAInterestCoursesTableIfExists(sql2o);
+        String sql = "CREATE TABLE IF NOT EXISTS HeadCAInterest_Courses(" +
+                "id INTEGER PRIMARY KEY," +
+                "applicantId INTEGER," +
+                "courseId INTEGER," +
+                "FOREIGN KEY (applicantId) REFERENCES Applicant(id)" +
+                "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
+                ");";
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
+
 }
