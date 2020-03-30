@@ -29,10 +29,10 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 String sql;
                 //no duplicates --> insert
                 sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
-                        "registeredCredits, referenceEmail, resumeLink, fws, studentStatus" +
-                        "mostRecentPayroll, otherJobs, hoursAvailable, rankOne, rankTwo, rankThree)" +
+                        "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                        "mostRecentPayroll, otherJobs, hoursAvailable, rankOne, rankTwo, rankThree) " +
                         "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
-                        ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus" +
+                        ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
                         ":mostRecentPayroll, :otherJobs, :hoursAvailable, :rankOne, :rankTwo, :rankThree);";
                 int id = (int) conn.createQuery(sql)
                         .addParameter("name", applicant.getName())
@@ -118,18 +118,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
         try(Connection conn = sql2o.open()) {
             String sql = "UPDATE Applicants " +
-                    "SET name = :name, email = :email, jhed = :jhed, year = :year," +
-                    "majorAndMinor = :majorAndMinor, gpa = :gpa, registeredCredits = :registeredCredits," +
-                    "referenceEmail = :referenceEmail, resumeLink = :resumeLink, fws = :fws," +
-                    "studentStatus = :studentStatus, mostRecentPayroll = : mostRecentPayroll," +
-                    "otherJobs = :otherJobs, hoursAvailable = :hoursAvailable" +
+                    "SET name = :name, email = :email, jhed = :jhed, year = :year, " +
+                    "majorAndMinor = :majorAndMinor, gpa = :gpa, registeredCredits = :registeredCredits, " +
+                    "referenceEmail = :referenceEmail, resumeLink = :resumeLink, fws = :fws, " +
+                    "studentStatus = :studentStatus, mostRecentPayroll = :mostRecentPayroll, " +
+                    "otherJobs = :otherJobs, hoursAvailable = :hoursAvailable " +
                     "WHERE id = :id;";
             conn.createQuery(sql)
                     .addParameter("name", applicant.getName())
                     .addParameter("email", applicant.getEmail())
                     .addParameter("jhed", applicant.getJhed())
-                    .addParameter("id", applicant.getId())
-                    //
                     .addParameter("year", applicant.getYear())
                     .addParameter("majorAndMinor", applicant.getMajorAndMinor())
                     .addParameter("gpa", applicant.getGpa())
@@ -141,7 +139,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("mostRecentPayroll", applicant.getMostRecentPayroll())
                     .addParameter("otherJobs", applicant.getOtherJobs())
                     .addParameter("hoursAvailable", applicant.getHoursAvailable())
-                    //
+                    .addParameter("id", applicant.getId())
                     .executeUpdate();
 
             if (applicant.getRankOne() != null) {
@@ -402,9 +400,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public Applicant read(String jhed) throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits," +
-                    "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll," +
-                    "otherJobs, hoursAvailable" +
+            String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                    "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, " +
+                    "otherJobs, hoursAvailable " +
                     "FROM Applicants " +
                     "WHERE jhed = :jhed;";
             Applicant applicant = conn.createQuery(sql)

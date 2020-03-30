@@ -1,7 +1,7 @@
 package model;
 import java.util.*;
 
-public class Applicant<Double> extends User {
+public class Applicant extends User {
     int id;
     String name;
     String email;

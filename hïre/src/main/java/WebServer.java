@@ -238,13 +238,26 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
 
         get("/studentprofile", (request, response) -> {
-            Map<String, Object> model = new HashMap<String, Object>();
+            Map<String, Object> model = new HashMap<>();
             String jhed = request.cookie("jhed");
             Applicant student = applicantDao.read(jhed);
+
             String name = student.getName();
             String email = student.getEmail();
+            Double gpa = student.getGpa();
+            Double credits = student.getRegisteredCredits();
+            String majorsAndMinors = student.getMajorAndMinor();
+            String reference = student.getReferenceEmail();
+            String resume = student.getResumeLink();
+
             model.put("name", name);
             model.put("email", email);
+            model.put("majorsAndMinors", majorsAndMinors);
+            model.put("gpa", gpa);
+            model.put("credits", credits);
+            model.put("reference", reference);
+            model.put("resume", resume);
+
             if (student.getRankOne() != null) {
                 model.put("rank1", student.getRankOne().getName());
             } else {
@@ -262,9 +275,10 @@ public class WebServer {
             }
             List<Course> courseList = student.getCoursesList();
             model.put("courseList", courseList);
+
             List<Grade> gradesList = new ArrayList<Grade>();
-            HashMap<Course, String> interested_grades = student.getInterestedCourses();
-            for (Map.Entry<Course, String> entry : interested_grades.entrySet()) {
+            HashMap<Course, String> interestedGrades = student.getInterestedCourses();
+            for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
                 String courseId = String.valueOf(entry.getKey().getId());
                 String courseName = entry.getKey().getName();
                 String grade = entry.getValue();
@@ -280,17 +294,32 @@ public class WebServer {
             String rank2 = request.queryParams("rank2");
             String rank3 = request.queryParams("rank3");
             String jhed = request.cookie("jhed");
+            String majorsAndMinors = request.queryParams("majorsAndMinors");
+            Double gpa = Double.valueOf(request.queryParams("gpa"));
+            Double credits = Double.valueOf(request.queryParams("gpa"));
+            String reference = request.queryParams("reference");
+            String resume = request.queryParams("resume");
+
             // For every course, get updated grade ("Not taken" or letter)
             for (Course c : all_courses) {
                 String grade = request.queryParams(String.valueOf(c.getId()));
                 interested_courses.put(c, grade);
             }
+
+            // Update POJO
             Applicant student = applicantDao.read(jhed);
             student.setInterestedCourses(interested_courses);
             student.setRankOne(courseDao.read(rank1));
             student.setRankTwo(courseDao.read(rank2));
             student.setRankThree(courseDao.read(rank3));
+            student.setMajorAndMinor(majorsAndMinors);
+            student.setGpa(gpa);
+            student.setRegisteredCredits(credits);
+            student.setReferenceEmail(reference);
+            student.setResumeLink(resume);
             applicantDao.update(student);
+
+            // Set cookies and redirect
             response.cookie("jhed", jhed);
             response.cookie("profileType", "Applicant");
             response.redirect("/landing");
@@ -299,15 +328,30 @@ public class WebServer {
 
         get("/:jhed/studentview", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
-            String studentjhed = request.params(":jhed");
-            model.put("jhed", studentjhed);
-            Applicant student = applicantDao.read(studentjhed);
+            String jhed = request.params(":jhed");
+
+            Applicant student = applicantDao.read(jhed);
+
             /* later: get if they have taken the course, grade, etc */
             String name = student.getName();
             String email = student.getEmail();
+            Double gpa = student.getGpa();
+            Double credits = student.getRegisteredCredits();
+            String majorsAndMinors = student.getMajorAndMinor();
+            String reference = student.getReferenceEmail();
+            String resume = student.getResumeLink();
+
+            // Put in context for hbs
             model.put("name", name);
-            model.put("studentjhed", studentjhed);
+            model.put("jhed", jhed);
+            model.put("majorsAndMinors", majorsAndMinors);
             model.put("email", email);
+            model.put("gpa", gpa);
+            model.put("credits", credits);
+            model.put("reference", reference);
+            model.put("resume", resume);
+
+            // Populate ranked courses
             if (student.getRankOne() != null) {
                 model.put("courseOne", student.getRankOne().getName());
             } else {
@@ -323,9 +367,13 @@ public class WebServer {
             } else {
                 model.put("courseThree", null);
             }
+
+            // Populate course specific information
             List<Grade> gradesList = new ArrayList<Grade>();
-            HashMap<Course, String> interested_grades = student.getInterestedCourses();
-            for (Map.Entry<Course, String> entry : interested_grades.entrySet()) {
+            List<Course> headCAInterest = student.getHeadCAInterest();
+
+            HashMap<Course, String> interestedGrades = student.getInterestedCourses();
+            for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
                 String grade = entry.getValue();
                 if (!grade.equals("Not Taken")) {
                     String courseId = String.valueOf(entry.getKey().getId());
@@ -333,6 +381,25 @@ public class WebServer {
                     gradesList.add(new Grade(courseId,courseName,grade));
                 }
             }
+//            // Map course to a map containing the keys "grade" and "headCAInterest"
+//            HashMap<Course, HashMap<String, String>> courseSpecificInfo = new HashMap<>();
+//            for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
+//                Course course = entry.getKey();
+//                String grade = entry.getValue();
+//                String interest = "No";
+//                if ((headCAInterest != null) && (headCAInterest.contains(course))) {
+//                    interest = "Yes";
+//                }
+//                if (!grade.equals("Not Taken")) {
+//                    HashMap<String, String> info = new HashMap<>();
+//                    info.put("grade", grade);
+//                    info.put("headCAInterest", interest);
+//
+//                    courseSpecificInfo.put(course, info);
+//                }
+//            }
+//            System.out.println(courseSpecificInfo);
+
             model.put("gradesList", gradesList);
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());

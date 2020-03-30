@@ -38,6 +38,7 @@ public final class DaoFactory {
         createHiredApplicantsCoursesTable(sql2o);
         createStaffMembersCoursesTable(sql2o);
         createShortlistedApplicantsCoursesTable(sql2o);
+        createHeadCAInterestCoursesTable(sql2o);
         return new Sql2oCourseDao(sql2o);
     }
 

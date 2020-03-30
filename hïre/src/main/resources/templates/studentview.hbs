@@ -97,8 +97,14 @@
         <div class="card card-4">
             <div class="card-body">
                 <h2> {{name}}</h2>
-                <h4> Jhed: {{studentjhed}}</h4>
+                <h4> Jhed: {{jhed}}</h4>
                 <h4> Email: {{email}}</h4>
+                <p> GPA: {{gpa}}</p>
+                <p> Number of Credits for Spring 2020: {{credits}}</p>
+                <p> Majors/Minors: {{majorsAndMinors}}</p>
+                <p> Reference: {{reference}}</p>
+                <p> Resume: {{resume}}</p>
+                <!-- <p> Resume: <a href={{resume}}>{{resume}}</a></p>-->
                 <br>
                 <div class="row">
                     <div class="col-md-8 col-sm-12">
@@ -125,7 +131,7 @@
                 <br>
                 <div class="row">
                     <div class="col-md-8 col-sm-12">
-                        <h3> Student's Grades: </h3>
+                        <h3> Course Specific Information </h3>
                         <div class="list-inline">
                             {{#each gradesList}}
                                 <h4> {{courseName}} : {{grade}} </h4>
