@@ -1,14 +1,20 @@
 package model;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class Grade {
     String courseId;
     String courseName;
     String grade;
+    Boolean headCAInterestBool;
+    String headCAInterest;
 
-    public Grade(String courseId, String courseName, String grade) {
+    public Grade(String courseId, String courseName, String grade, String headCAInterest) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.grade = grade;
+        this.headCAInterest = headCAInterest;
+        this.headCAInterestBool = headCAInterest.equals("Yes") ? true : false;
     }
 
     public String getCourseId() {
@@ -35,12 +41,11 @@ public class Grade {
         this.grade = grade;
     }
 
-    @Override
-    public String toString() {
-        return "Grade{" +
-                "courseId='" + courseId + '\'' +
-                ", courseName='" + courseName + '\'' +
-                ", grade='" + grade + '\'' +
-                '}';
+    public String getHeadCAInterest() { return headCAInterest; }
+
+    public void setHeadCAInterest(String headCAInterest) {
+        this.headCAInterest = headCAInterest;
+        this.headCAInterestBool = headCAInterest.equals("Yes") ? true : false;
     }
+
 }

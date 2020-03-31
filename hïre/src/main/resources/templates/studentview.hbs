@@ -101,10 +101,9 @@
                 <h4> Email: {{email}}</h4>
                 <p> GPA: {{gpa}}</p>
                 <p> Number of Credits for Spring 2020: {{credits}}</p>
-                <p> Majors/Minors: {{majorsAndMinors}}</p>
+                <p> Majors/Minors: {{majorAndMinor}}</p>
                 <p> Reference: {{reference}}</p>
                 <p> Resume: {{resume}}</p>
-                <!-- <p> Resume: <a href={{resume}}>{{resume}}</a></p>-->
                 <br>
                 <div class="row">
                     <div class="col-md-8 col-sm-12">
@@ -133,10 +132,11 @@
                     <div class="col-md-8 col-sm-12">
                         <h3> Course Specific Information </h3>
                         <div class="list-inline">
-                            {{#each gradesList}}
-                                <h4> {{courseName}} : {{grade}} </h4>
-                            {{else}}
-                                <h4> No grades inputted yet! </h4>
+                            {{#each courseSpecificInfo}}
+                                <h4> {{@key}} </h4>
+                                {{#each this}}
+                                    <p>{{@key}} : {{this}}</p>
+                                {{/each}}
                             {{/each}}
                         </div>
                     </div>

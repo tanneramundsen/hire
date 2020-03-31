@@ -118,7 +118,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Majors/Minors</label>
-                                <input class="input--style-4" type="text" name="majorsAndMinors" value = {{majorsAndMinors}}>
+                                <input class="input--style-4" type="text" name="majorAndMinor" value = {{majorAndMinor}}>
                             </div>
                         </div>
                     </div>
@@ -141,7 +141,72 @@
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">Reference email</label>
+                                <label class="label">Federal Work Study Eligible?</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="fws">
+                                        {{#if fws}}
+                                            <option selected="selected"> Yes </option>
+                                            <option> No </option>
+                                        {{else}}
+                                            <option> Yes </option>
+                                            <option selected="selected"> No </option>
+                                        {{/if}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Student Status</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="studentStatus">
+                                        {{#if studentStatus}}
+                                            <option selected="selected"> {{studentStatus}} </option>
+                                            <option> Full-time US Citizen </option>
+                                            <option> Full-time International </option>
+                                            <option> Part-time International </option>
+                                        {{else}}
+                                            <option selected="selected"> Full-time US Citizen </option>
+                                            <option> Full-time International </option>
+                                            <option> Part-time International </option>
+                                        {{/if}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Most Recent Payroll</label>
+                                <input class="input--style-4" type="text" name="mostRecentPayroll" value = {{mostRecentPayroll}}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Other Jobs</label>
+                                <input class="input--style-4" type="text" name="otherJobs" value = {{otherJobs}}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Hours Available</label>
+                                <input class="input--style-4" type="text" name="hoursAvailable" value = {{hoursAvailable}}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Reference Email</label>
                                 <input class="input--style-4" type="text" name="reference" value = {{reference}}>
                             </div>
                         </div>
@@ -230,13 +295,14 @@
                                     <tr>
                                         <th>Course</th>
                                         <th>Grade</th>
+                                        <th>Head CA?</th>
                                     </tr>
                                     {{#each gradesList}}
                                     <tr>
                                         <td>{{courseName}}</td>
                                         <td>
                                             <div class="rs-select2 js-select-simple select--no-search">
-                                                <select name={{courseId}}>
+                                                <select name={{courseId}}grade>
                                                     <option selected="selected" > {{grade}} </option>
                                                     <option> Not Taken </option>
                                                     <option> A+ </option>
@@ -254,6 +320,20 @@
                                                     <option> F </option>
                                                     <option> S </option>
                                                     <option> U </option>
+                                                </select>
+                                                <div class="select-dropdown"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="rs-select2 js-select-simple select--no-search">
+                                                <select name={{courseId}}interest>
+                                                    {{#if headCAInterestBool}}
+                                                        <option selected="selected"> Yes </option>
+                                                        <option> No </option>
+                                                    {{else}}
+                                                        <option> Yes </option>
+                                                        <option selected="selected"> No </option>
+                                                    {{/if}}
                                                 </select>
                                                 <div class="select-dropdown"></div>
                                             </div>

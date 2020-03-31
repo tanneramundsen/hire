@@ -8,10 +8,7 @@ import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static spark.Spark.*;
 
@@ -123,7 +120,7 @@ public class WebServer {
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
             String name = null;
-            List<Course> courseList = new ArrayList<Course>();
+            List<Course> courseList = new ArrayList<>();
             boolean isStaffMember = false;
 
             // Redirect back to login if information not in database
@@ -244,17 +241,27 @@ public class WebServer {
 
             String name = student.getName();
             String email = student.getEmail();
+            String majorAndMinor = student.getMajorAndMinor();
             Double gpa = student.getGpa();
             Double credits = student.getRegisteredCredits();
-            String majorsAndMinors = student.getMajorAndMinor();
+            Boolean fws = student.getFws();
+            String studentStatus = student.getStudentStatus();
+            String mostRecentPayroll = student.getMostRecentPayroll();
+            String otherJobs = student.getOtherJobs();
+            int hoursAvailable = student.getHoursAvailable();
             String reference = student.getReferenceEmail();
             String resume = student.getResumeLink();
 
             model.put("name", name);
             model.put("email", email);
-            model.put("majorsAndMinors", majorsAndMinors);
+            model.put("majorAndMinor", majorAndMinor);
             model.put("gpa", gpa);
             model.put("credits", credits);
+            model.put("fws", fws);
+            model.put("studentStatus", studentStatus);
+            model.put("mostRecentPayroll", mostRecentPayroll);
+            model.put("otherJobs", otherJobs);
+            model.put("hoursAvailable", hoursAvailable);
             model.put("reference", reference);
             model.put("resume", resume);
 
@@ -277,46 +284,68 @@ public class WebServer {
             model.put("courseList", courseList);
 
             List<Grade> gradesList = new ArrayList<Grade>();
+            List<Course> headCAInterests = student.getHeadCAInterest();
             HashMap<Course, String> interestedGrades = student.getInterestedCourses();
             for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
                 String courseId = String.valueOf(entry.getKey().getId());
                 String courseName = entry.getKey().getName();
                 String grade = entry.getValue();
-                gradesList.add(new Grade(courseId,courseName,grade));
+                String headCAInterest = "No";
+                if (headCAInterests != null && headCAInterests.contains(entry.getKey())) {
+                    headCAInterest = "Yes";
+                }
+                gradesList.add(new Grade(courseId, courseName, grade, headCAInterest));
             }
             model.put("gradesList", gradesList);
             return new ModelAndView(model, "studentprofile.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/studentprofile", (request, response) -> {
-            HashMap<Course, String> interested_courses = new HashMap();
+            HashMap<Course, String> interestedCourses = new HashMap();
             String rank1 = request.queryParams("rank1");
             String rank2 = request.queryParams("rank2");
             String rank3 = request.queryParams("rank3");
             String jhed = request.cookie("jhed");
-            String majorsAndMinors = request.queryParams("majorsAndMinors");
+            String majorAndMinor = request.queryParams("majorAndMinor");
             Double gpa = Double.valueOf(request.queryParams("gpa"));
-            Double credits = Double.valueOf(request.queryParams("gpa"));
+            Double credits = Double.valueOf(request.queryParams("credits"));
+            String fwsStr = request.queryParams("fws");
+            Boolean fws = fwsStr.equals("Yes") ? true : false;
+            String studentStatus = request.queryParams("studentStatus");
+            String mostRecentPayroll = request.queryParams("mostRecentPayroll");
+            String otherJobs = request.queryParams("otherJobs");
+            int hoursAvailable = Integer.valueOf(request.queryParams("hoursAvailable"));
             String reference = request.queryParams("reference");
             String resume = request.queryParams("resume");
 
             // For every course, get updated grade ("Not taken" or letter)
+            List<Course> headCAInterest = new ArrayList<>();
             for (Course c : all_courses) {
-                String grade = request.queryParams(String.valueOf(c.getId()));
-                interested_courses.put(c, grade);
+                String grade = request.queryParams(c.getId() + "grade");
+                String interest = request.queryParams(c.getId() + "interest");
+                if (interest.equals("Yes")) {
+                    headCAInterest.add(c);
+                }
+                interestedCourses.put(c, grade);
             }
 
             // Update POJO
             Applicant student = applicantDao.read(jhed);
-            student.setInterestedCourses(interested_courses);
+            student.setInterestedCourses(interestedCourses);
             student.setRankOne(courseDao.read(rank1));
             student.setRankTwo(courseDao.read(rank2));
             student.setRankThree(courseDao.read(rank3));
-            student.setMajorAndMinor(majorsAndMinors);
+            student.setMajorAndMinor(majorAndMinor);
             student.setGpa(gpa);
             student.setRegisteredCredits(credits);
+            student.setFws(fws);
+            student.setStudentStatus(studentStatus);
+            student.setMostRecentPayroll(mostRecentPayroll);
+            student.setOtherJobs(otherJobs);
             student.setReferenceEmail(reference);
             student.setResumeLink(resume);
+            student.setHoursAvailable(hoursAvailable);
+            student.setHeadCAInterest(headCAInterest);
             applicantDao.update(student);
 
             // Set cookies and redirect
@@ -337,14 +366,14 @@ public class WebServer {
             String email = student.getEmail();
             Double gpa = student.getGpa();
             Double credits = student.getRegisteredCredits();
-            String majorsAndMinors = student.getMajorAndMinor();
+            String majorAndMinor = student.getMajorAndMinor();
             String reference = student.getReferenceEmail();
             String resume = student.getResumeLink();
 
             // Put in context for hbs
             model.put("name", name);
             model.put("jhed", jhed);
-            model.put("majorsAndMinors", majorsAndMinors);
+            model.put("majorAndMinor", majorAndMinor);
             model.put("email", email);
             model.put("gpa", gpa);
             model.put("credits", credits);
@@ -369,38 +398,27 @@ public class WebServer {
             }
 
             // Populate course specific information
-            List<Grade> gradesList = new ArrayList<Grade>();
             List<Course> headCAInterest = student.getHeadCAInterest();
-
             HashMap<Course, String> interestedGrades = student.getInterestedCourses();
+
+            // Map course to a map containing the keys "grade" and "headCAInterest"
+            HashMap<String, HashMap<String, String>> courseSpecificInfo = new HashMap<>();
             for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
+                Course course = entry.getKey();
+                String courseName = course.getName();
                 String grade = entry.getValue();
+                String interest = "No";
+                if ((headCAInterest != null) && (headCAInterest.contains(course))) {
+                    interest = "Yes";
+                }
                 if (!grade.equals("Not Taken")) {
-                    String courseId = String.valueOf(entry.getKey().getId());
-                    String courseName = entry.getKey().getName();
-                    gradesList.add(new Grade(courseId,courseName,grade));
+                    HashMap<String, String> info = new LinkedHashMap<>();
+                    info.put("Grade", grade);
+                    info.put("Head CA Interest", interest);
+                    courseSpecificInfo.put(courseName, info);
                 }
             }
-//            // Map course to a map containing the keys "grade" and "headCAInterest"
-//            HashMap<Course, HashMap<String, String>> courseSpecificInfo = new HashMap<>();
-//            for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
-//                Course course = entry.getKey();
-//                String grade = entry.getValue();
-//                String interest = "No";
-//                if ((headCAInterest != null) && (headCAInterest.contains(course))) {
-//                    interest = "Yes";
-//                }
-//                if (!grade.equals("Not Taken")) {
-//                    HashMap<String, String> info = new HashMap<>();
-//                    info.put("grade", grade);
-//                    info.put("headCAInterest", interest);
-//
-//                    courseSpecificInfo.put(course, info);
-//                }
-//            }
-//            System.out.println(courseSpecificInfo);
-
-            model.put("gradesList", gradesList);
+            model.put("courseSpecificInfo", courseSpecificInfo);
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());
 

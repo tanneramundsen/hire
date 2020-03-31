@@ -171,6 +171,20 @@ public final class DaoFactory {
         }
     }
 
+    private static void createHeadCAInterestCoursesTable(Sql2o sql2o) {
+        if (DROP_TABLES_IF_EXIST) dropHeadCAInterestCoursesTableIfExists(sql2o);
+        String sql = "CREATE TABLE IF NOT EXISTS HeadCAInterest_Courses(" +
+                "id INTEGER PRIMARY KEY," +
+                "applicantId INTEGER," +
+                "courseId INTEGER," +
+                "FOREIGN KEY (applicantId) REFERENCES Applicants(id)" +
+                "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
+                ");";
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql).executeUpdate();
+        }
+    }
+
     private static void dropApplicantsTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS Applicants;";
         try (Connection conn = sql2o.open()) {
@@ -191,7 +205,6 @@ public final class DaoFactory {
             conn.createQuery(sql).executeUpdate();
         }
     }
-
 
     private static void dropHiredApplicantsCoursesTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS HiredApplicants_Courses;";
@@ -223,27 +236,10 @@ public final class DaoFactory {
         }
     }
 
-    //DANIELA : I added this for a student's headCAInterest Course List
     private static void dropHeadCAInterestCoursesTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS HeadCAInterest_Courses;";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
         }
     }
-
-    private static void createHeadCAInterestCoursesTable(Sql2o sql2o) {
-        if (DROP_TABLES_IF_EXIST) dropHeadCAInterestCoursesTableIfExists(sql2o);
-        String sql = "CREATE TABLE IF NOT EXISTS HeadCAInterest_Courses(" +
-                "id INTEGER PRIMARY KEY," +
-                "applicantId INTEGER," +
-                "courseId INTEGER," +
-                "FOREIGN KEY (applicantId) REFERENCES Applicant(id)" +
-                "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
-                ");";
-        try (Connection conn = sql2o.open()) {
-            conn.createQuery(sql).executeUpdate();
-        }
-    }
-
-
 }
