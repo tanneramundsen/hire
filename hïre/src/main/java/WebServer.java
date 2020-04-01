@@ -359,11 +359,13 @@ public class WebServer {
             return null;
         }, new HandlebarsTemplateEngine());
 
-        get("/:jhed/studentview", (request, response) -> {
+        get("/:courseId/courseinfo/:jhed/studentview", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
             String jhed = request.params(":jhed");
+            //int courseId = Integer.parseInt(request.params(":courseId"));
 
             Applicant student = applicantDao.read(jhed);
+            //Course course = courseDao.read(courseId);
 
             /* later: get if they have taken the course, grade, etc */
             String name = student.getName();
@@ -427,6 +429,26 @@ public class WebServer {
             model.put("courseSpecificInfo", courseSpecificInfo);
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());
+
+
+        put("/:courseId/courseinfo/:jhed/studentview", (request, response) -> {
+            String applicantJhed = request.params(":jhed");
+            int courseId = Integer.parseInt(request.params(":courseId"));
+            Course course = courseDao.read(courseId);
+
+            String description = request.queryParams("description");
+            String interviewLink = request.queryParams("interviewLink");
+
+            course.setCourseDescription(description);
+            course.setInterviewLink(interviewLink);
+            courseDao.update(course);
+
+            response.cookie("jhed", applicantJhed);
+            response.cookie("profileType", "Applicant");
+            response.redirect("/landing");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
 
     }
 
