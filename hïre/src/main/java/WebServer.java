@@ -241,6 +241,7 @@ public class WebServer {
 
             String name = student.getName();
             String email = student.getEmail();
+            String year = student.getYear();
             String majorAndMinor = student.getMajorAndMinor();
             Double gpa = student.getGpa();
             Double credits = student.getRegisteredCredits();
@@ -254,6 +255,7 @@ public class WebServer {
 
             model.put("name", name);
             model.put("email", email);
+            model.put("year", year);
             model.put("majorAndMinor", majorAndMinor);
             model.put("gpa", gpa);
             model.put("credits", credits);
@@ -306,6 +308,7 @@ public class WebServer {
             String rank2 = request.queryParams("rank2");
             String rank3 = request.queryParams("rank3");
             String jhed = request.cookie("jhed");
+            String year = request.queryParams("year");
             String majorAndMinor = request.queryParams("majorAndMinor");
             Double gpa = Double.valueOf(request.queryParams("gpa"));
             Double credits = Double.valueOf(request.queryParams("credits"));
@@ -335,6 +338,7 @@ public class WebServer {
             student.setRankOne(courseDao.read(rank1));
             student.setRankTwo(courseDao.read(rank2));
             student.setRankThree(courseDao.read(rank3));
+            student.setYear(year);
             student.setMajorAndMinor(majorAndMinor);
             student.setGpa(gpa);
             student.setRegisteredCredits(credits);
@@ -364,6 +368,7 @@ public class WebServer {
             /* later: get if they have taken the course, grade, etc */
             String name = student.getName();
             String email = student.getEmail();
+            String year = student.getYear();
             Double gpa = student.getGpa();
             Double credits = student.getRegisteredCredits();
             String majorAndMinor = student.getMajorAndMinor();
@@ -373,6 +378,7 @@ public class WebServer {
             // Put in context for hbs
             model.put("name", name);
             model.put("jhed", jhed);
+            model.put("year", year);
             model.put("majorAndMinor", majorAndMinor);
             model.put("email", email);
             model.put("gpa", gpa);

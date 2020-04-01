@@ -97,8 +97,9 @@
         <div class="card card-4">
             <div class="card-body">
                 <h2> {{name}}</h2>
-                <h4> Jhed: {{jhed}}</h4>
-                <h4> Email: {{email}}</h4>
+                <p> Jhed: {{jhed}}</p>
+                <p> Email: {{email}}</p>
+                <p> Year: {{year}}</p>
                 <p> GPA: {{gpa}}</p>
                 <p> Number of Credits for Spring 2020: {{credits}}</p>
                 <p> Majors/Minors: {{majorAndMinor}}</p>
@@ -110,19 +111,19 @@
                         <h3> Student's Preferred classes: </h3>
                         <div class="list-inline">
                             {{#if courseOne}}
-                                <h4> 1. {{courseOne}}</h4>
+                                <p> 1. {{courseOne}}</p>
                             {{else}}
-                                <h4> 1. Not ranked yet! </h4>
+                                <p> 1. Not ranked yet! </p>
                             {{/if}}
                             {{#if courseTwo}}
-                                <h4> 2. {{courseTwo}}</h4>
+                                <p> 2. {{courseTwo}}</p>
                             {{else}}
-                                <h4> 2. Not ranked yet! </h4>
+                                <p> 2. Not ranked yet! </p>
                             {{/if}}
                             {{#if courseThree}}
-                                <h4> 3. {{courseThree}}</h4>
+                                <p> 3. {{courseThree}}</p>
                             {{else}}
-                                <h4> 3. Not ranked yet! </h4>
+                                <p> 3. Not ranked yet! </p>
                             {{/if}}
                         </div>
                     </div>

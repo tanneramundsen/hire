@@ -102,7 +102,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Name</label>
-                                <input class="input--style-4" type="text" name="name" value = {{name}}>
+                                <input class="input--style-4" type="text" name="name" required value = {{name}}>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,37 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Email</label>
-                                <input class="input--style-4" type="text" name="email" value = {{email}}>
+                                <input class="input--style-4" type="text" name="email" required value = {{email}}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Year (In semester for which you are applying)</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="year">
+                                        {{#if year}}
+                                            <option selected="selected"> {{year}} </option>
+                                            <option> Sophomore </option>
+                                            <option> Junior </option>
+                                            <option> Senior </option>
+                                            <option> Combined (ugrad/grad) </option>
+                                            <option> Masters (1st semester) </option>
+                                            <option> Masters (2-4 semester) </option>
+                                            <option> PhD </option>
+                                        {{else}}
+                                            <option selected="selected"> Sophomore </option>
+                                            <option> Junior </option>
+                                            <option> Senior </option>
+                                            <option> Combined (ugrad/grad) </option>
+                                            <option> Masters (1st semester) </option>
+                                            <option> Masters (2-4 semester) </option>
+                                            <option> PhD </option>
+                                        {{/if}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -118,15 +148,15 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Majors/Minors</label>
-                                <input class="input--style-4" type="text" name="majorAndMinor" value = {{majorAndMinor}}>
+                                <input class="input--style-4" type="text" name="majorAndMinor" required value = {{majorAndMinor}}>
                             </div>
                         </div>
                     </div>
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">GPA</label>
-                                <input class="input--style-4" type="text" name="gpa" value = {{gpa}}>
+                                <label class="label">GPA (Must be >=3.0, 3.2 for head)</label>
+                                <input class="input--style-4" type="text" name="gpa" required value = {{gpa}}>
                             </div>
                         </div>
                     </div>
@@ -134,14 +164,14 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Number of Credits for Spring 2020</label>
-                                <input class="input--style-4" type="text" name="credits" value = {{credits}}>
+                                <input class="input--style-4" type="text" name="credits" required value = {{credits}}>
                             </div>
                         </div>
                     </div>
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">Federal Work Study Eligible?</label>
+                                <label class="label">Federal Work Study Eligible? (must be US citizen)</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="fws">
                                         {{#if fws}}
@@ -182,8 +212,8 @@
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">Most Recent Payroll</label>
-                                <input class="input--style-4" type="text" name="mostRecentPayroll" value = {{mostRecentPayroll}}>
+                                <label class="label">Most Recent Payroll (e.g. 2019 fall)</label>
+                                <input class="input--style-4" type="text" name="mostRecentPayroll" required value = {{mostRecentPayroll}}>
                             </div>
                         </div>
                     </div>
@@ -199,15 +229,15 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Hours Available</label>
-                                <input class="input--style-4" type="text" name="hoursAvailable" value = {{hoursAvailable}}>
+                                <input class="input--style-4" type="text" name="hoursAvailable" required value = {{hoursAvailable}}>
                             </div>
                         </div>
                     </div>
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
-                                <label class="label">Reference Email</label>
-                                <input class="input--style-4" type="text" name="reference" value = {{reference}}>
+                                <label class="label">Reference Name and Email (faculty or employer)</label>
+                                <input class="input--style-4" type="text" name="reference" required value = {{reference}}>
                             </div>
                         </div>
                     </div>
