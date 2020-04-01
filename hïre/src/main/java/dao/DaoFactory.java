@@ -121,7 +121,7 @@ public final class DaoFactory {
                 "staffId INTEGER," +
                 "courseId INTEGER," +
                 "FOREIGN KEY (staffId) REFERENCES StaffMembers(id)" +
-                "FOREIGN KEY (courseId) REFERENCES Courses(id)" +
+                "FOREIGN KEY (courseId) REFERENCES Courses(id) ON UPDATE RESTRICT" +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
