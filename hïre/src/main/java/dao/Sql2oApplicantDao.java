@@ -57,18 +57,6 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         .getKey();
                 applicant.setId(id);
 
-                List<Course> courses = applicant.getHeadCAInterest();
-                if (courses != null) {
-                    for (Course course: courses) {
-                        sql = "INSERT INTO HeadCAInterest_Courses(applicantId, courseId) " +
-                                "VALUES(:applicantId, :courseId);";
-                        conn.createQuery(sql)
-                                .addParameter("applicantId", applicant.getId())
-                                .addParameter("courseId", course.getId())
-                                .executeUpdate();
-                    }
-                }
-
                 if (applicant.getInterestedCourses() != null) {
                     for (Map.Entry<Course,String> entry : applicant.getInterestedCourses().entrySet()) {
                         Course course = entry.getKey();
@@ -104,6 +92,18 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             .addParameter("applicantId", applicant.getId())
                             .addParameter("courseId", course.getId())
                             .executeUpdate();
+                }
+
+                List<Course> courses = applicant.getHeadCAInterest();
+                if (courses != null) {
+                    for (Course course: courses) {
+                        sql = "INSERT INTO HeadCAInterest_Courses(applicantId, courseId) " +
+                                "VALUES(:applicantId, :courseId);";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", applicant.getId())
+                                .addParameter("courseId", course.getId())
+                                .executeUpdate();
+                    }
                 }
             } catch (Sql2oException ex) {
                 throw new DaoException("Unable to add the applicant", ex);
