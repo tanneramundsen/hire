@@ -98,9 +98,13 @@
     <div class="wrapper wrapper--w680">
         <div class="card card-4">
             <div class="card-body">
-                <form id="contact" action="/{{id}}/courseinfo/{{jhed}}/studentview" method="post">
-                    <h2> {{name}}</h2>
-                    <input name="shortlistStatus" type="checkbox" data-toggle="toggle" data-on="Shortlisted" data-off="Shortlist" data-onstyle="primary" data-offstyle="secondary">
+                <h2> {{name}}</h2>
+                <form action="/{{id}}/courseinfo/{{jhed}}/studentview" method="post">
+                    {{#if shortlistStatus}}
+                        <input name="shortlistStatus" type="checkbox" checked data-toggle="toggle" data-on="Shortlisted" data-off="Shortlist" data-onstyle="primary" data-offstyle="secondary">
+                        {{else}}
+                        <input name="shortlistStatus" type="checkbox" data-toggle="toggle" data-on="Shortlisted" data-off="Shortlist" data-onstyle="primary" data-offstyle="secondary">
+                    {{/if}}
                     <p> Jhed: {{jhed}}</p>
                     <p> Email: {{email}}</p>
                     <p> Year: {{year}}</p>
@@ -145,6 +149,9 @@
                                 {{/each}}
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <button type="submit" id="form-submit" class="main-button">Update<i class="fa fa-arrow-right"></i></button>
                     </div>
                 </form>
             </div>
