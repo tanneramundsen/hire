@@ -21,4 +21,4 @@ Iteration 3: (Things to note when testing)
       - The professor can also input a CA description and an interview link. 
   - The professor can checkbox interested applicants and add them to the shortlist.
   - When the professor clicks on an applicant's name in these lists, they will be able to see the profile of the student including their name, email, jhed, ranked courses, and grades etc. (if the student has inputted this information) and they also have the option to Shortlist the student here.
-- On the main landing page, professors and applicants can also choose additional courses to add to their interested course list.
+- On the main landing page, professors and applicants can choose additional courses to add to their interested course list.
