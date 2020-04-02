@@ -113,11 +113,18 @@
             <div class="col">
                 <h2>Interested Applicants</h2>
                 <br>
-                <ul>
-                    {{#each interestedApplicants}}
-                        <li><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a> </li>
-                    {{/each}}
-                </ul>
+                <form action="/{{id}}/courseinfo" method="post">
+                    <div>
+                        {{#each interestedApplicants}}
+                            <input name="selectedForShortList" type="checkbox" value="{{name}}">
+                            <label for="selectedForShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                        {{/each}}
+                    </div>
+                    <div>
+                        <button class="btn btn--radius-2 btn--blue" type="submit">Send to shortlist</button>
+                    </div>
+                </form>
+
             </div>
             <div class="col">
                 <h2>Shortlisted Applicants</h2>

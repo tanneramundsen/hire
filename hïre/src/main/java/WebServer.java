@@ -229,28 +229,49 @@ public class WebServer {
             String jhed = request.cookie("jhed");
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
-
+            List<Applicant> interestedApplicants = course.getInterestedApplicants();
             String description = request.queryParams("description");
             String interviewLink = request.queryParams("interviewLink");
-
+            String[] shortList = request.queryParamsValues("selectedForShortList");
+            for (int i = 0; i < shortList.length; i++) {
+                System.out.println(shortList[i]);
+            }
+            List<String> shortListApplicants = Arrays.asList(shortList);
+            List<Applicant> selectedShortList = new ArrayList<>();
+            for (String studentName : shortListApplicants) {
+                for (Applicant a : interestedApplicants) {
+                    if (a.getName().equals(studentName)) {
+                        selectedShortList.add(a);
+                    }
+                }
+            }
+            course.setShortlistedApplicants(selectedShortList);
             course.setCourseDescription(description);
             course.setInterviewLink(interviewLink);
             courseDao.update(course);
 
             response.cookie("jhed", jhed);
             response.cookie("profileType", "Applicant");
-            response.redirect("/landing");
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
             return null;
+
         }, new HandlebarsTemplateEngine());
 
         get("/:id/courseprofile", (request, response) -> {
+            String jhed = request.cookie("jhed");
             Map<String, Object> model = new HashMap<String, Object>();
-
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
             String name = course.getName();
             String courseNumber = course.getCourseNumber();
             String description = course.getCourseDescription();
+            List<Applicant> shortList = course.getShortlistedApplicants();
+            for (Applicant a : shortList) {
+                if (a.getJhed().equals(jhed)) {
+                    //change status to "being interviewed" or "hired"
+                }
+            }
             if (description.isEmpty()) {
                 description = null;
             }
