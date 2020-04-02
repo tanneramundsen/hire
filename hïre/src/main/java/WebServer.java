@@ -120,6 +120,7 @@ public class WebServer {
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
             String name = null;
+            List<Course> allCourses = courseDao.findAll();
             List<Course> courseList = new ArrayList<>();
             boolean isStaffMember = false;
 
@@ -142,8 +143,16 @@ public class WebServer {
                     courseList = a.getCoursesList();
                 }
             }
+            List<Course> otherCourses = new ArrayList<>();
+            for(Course c: allCourses) {
+                if (!courseList.contains(c)) {
+                    otherCourses.add(c);
+                }
+            }
+
             model.put("name", name);
             model.put("courseList", courseList);
+            model.put("otherCourses", otherCourses);
             model.put("isStaffMember", isStaffMember);
 
             return new ModelAndView(model, "landing.hbs");
@@ -151,9 +160,35 @@ public class WebServer {
 
         post("/landing", (request, response) -> {
             String jhed = request.cookie("jhed");
-            // TODO: add ability to add a new course
+            String profileType = request.cookie("profileType");
+            String[] newCourses = request.queryParamsValues("newCourses");
+
+            // use information to create either an applicant or staff member
+            if (profileType.equals("Professor")) {
+                StaffMember s = staffMemberDao.read(jhed);
+                List<Course> courseList = s.getCourses();
+                for (String course: newCourses) {
+                    Course newCourse = courseDao.read(course);
+                    List<StaffMember> instructors = newCourse.getInstructors();
+                    instructors.add(s);
+                    newCourse.setInstructors(instructors);
+                    courseDao.update(newCourse);
+                    courseList.add(newCourse);
+                }
+                s.setCourses(courseList);
+                staffMemberDao.update(s);
+            } else {
+                Applicant a = applicantDao.read(jhed);
+                HashMap<Course, String> coursesHashMap = a.getInterestedCourses();
+                for (String course: newCourses) {
+                    Course newCourse = courseDao.read(course);
+                    coursesHashMap.put(newCourse, "Not Taken");
+                }
+                a.setInterestedCourses(coursesHashMap);
+                applicantDao.update(a);
+            }
             response.cookie("jhed", jhed);
-            response.cookie("profileType", "Applicant");
+            response.cookie("profileType", profileType);
             response.redirect("/landing");
             return null;
         }, new HandlebarsTemplateEngine());

@@ -119,12 +119,28 @@
                     </div>
                 </div>
             {{/each}}
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
-                 data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-                <form action="/landing" method="post">
-                    <button type="submit" id="form-submit" class="main-button">Add another course <i class="fa fa-arrow-right"></i></button>
-                </form>
-            </div>
+        </div>
+        <div class="row row-space"
+             data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+            <form action="/landing" method="post">
+                <div class="col-md-6 col-sm-12">
+                    <div class="input-group">
+                        <label class="label">Add other courses:</label>
+                        <div class="rs-select2 js-select-simple select--no-search">
+                            <select name="newCourses" multiple="multiple">
+                                <option disabled="disabled" selected="selected">select courses</option>
+                                {{#each otherCourses}}
+                                    <option>{{name}}</option>
+                                {{/each}}
+                            </select>
+                            <div class="select-dropdown"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <button type="submit" id="form-submit" class="text-button">Add! <i class="fa fa-arrow-right"></i></button>
+                </div>
+            </form>
         </div>
     </div>
 </section>
