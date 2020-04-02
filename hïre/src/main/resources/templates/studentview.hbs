@@ -105,6 +105,9 @@
                         {{else}}
                         <input name="shortlistStatus" type="checkbox" data-toggle="toggle" data-on="Shortlisted" data-off="Shortlist" data-onstyle="primary" data-offstyle="secondary">
                     {{/if}}
+                    <div class="row">
+                        <button type="submit" id="form-submit" class="main-button">Update<i class="fa fa-arrow-right"></i></button>
+                    </div>
                     <p> Jhed: {{jhed}}</p>
                     <p> Email: {{email}}</p>
                     <p> Year: {{year}}</p>
@@ -149,9 +152,6 @@
                                 {{/each}}
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <button type="submit" id="form-submit" class="main-button">Update<i class="fa fa-arrow-right"></i></button>
                     </div>
                 </form>
             </div>
