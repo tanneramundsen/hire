@@ -201,7 +201,7 @@ public class Sql2oCourseDao implements CourseDao {
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
-            sql = "SELECT A.name, A.email, A.jhed " +
+            sql = "SELECT A.* " +
                     "FROM InterestedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON InterestedApplicants_Courses.applicantId = A.id " +
@@ -315,7 +315,7 @@ public class Sql2oCourseDao implements CourseDao {
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
-            sql = "SELECT A.name, A.email, A.jhed " +
+            sql = "SELECT A.* " +
                     "FROM InterestedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON InterestedApplicants_Courses.applicantId = A.id " +
