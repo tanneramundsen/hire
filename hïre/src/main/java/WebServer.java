@@ -233,9 +233,7 @@ public class WebServer {
             String description = request.queryParams("description");
             String interviewLink = request.queryParams("interviewLink");
             String[] shortList = request.queryParamsValues("selectedForShortList");
-            for (int i = 0; i < shortList.length; i++) {
-                System.out.println(shortList[i]);
-            }
+
             List<String> shortListApplicants = Arrays.asList(shortList);
             List<Applicant> selectedShortList = new ArrayList<>();
             for (String studentName : shortListApplicants) {
