@@ -99,7 +99,12 @@
             </div>
             <div class="col-lg-8 offset-lg-2">
                 <br>
-                <h4>Application Status: Under Review</h4>
+                {{#if isShortListed}}
+                    <h4>Application Status: Being Interviewed</h4>
+                    <h4>Use the given link: {{interviewLink}}</h4>
+                {{else}}
+                    <h4>Application Status: Under Review</h4>
+                {{/if}}
             </div>
         </div>
         <div class="row">

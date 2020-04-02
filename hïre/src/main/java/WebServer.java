@@ -4,6 +4,7 @@ import model.Applicant;
 import model.Course;
 import model.Grade;
 import model.StaffMember;
+import org.apache.commons.lang3.ArrayUtils;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
@@ -42,13 +43,11 @@ public class WebServer {
 
         get("/", (request, response) -> {
             // TODO: remove cookie username?
-            Map<String, String> model = new HashMap<>();
-            model.put("jhed", request.attribute("jhed"));
-            return new ModelAndView(model, "index.hbs");
+            return new ModelAndView(new HashMap<>(), "index.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/login", (request, response) -> {
-            return new ModelAndView(new HashMap(), "login.hbs");
+            return new ModelAndView(new HashMap<>(), "login.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/login", (request, response) -> {
@@ -66,6 +65,7 @@ public class WebServer {
 
         get("/signout", ((request, response) -> {
             response.removeCookie("jhed");
+            response.removeCookie("profileType");
             response.redirect("/");
             return null;
         }), new HandlebarsTemplateEngine());
@@ -226,34 +226,37 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
 
         post("/:id/courseinfo", (request, response) -> {
-            String jhed = request.cookie("jhed");
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
             List<Applicant> interestedApplicants = course.getInterestedApplicants();
             String description = request.queryParams("description");
             String interviewLink = request.queryParams("interviewLink");
+            if (description == null) {
+                description = course.getCourseDescription();
+            }
+            if (interviewLink == null) {
+                interviewLink = course.getInterviewLink();
+            }
+            List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
             String[] shortList = request.queryParamsValues("selectedForShortList");
-
-            List<String> shortListApplicants = Arrays.asList(shortList);
-            List<Applicant> selectedShortList = new ArrayList<>();
-            for (String studentName : shortListApplicants) {
-                for (Applicant a : interestedApplicants) {
-                    if (a.getName().equals(studentName)) {
-                        selectedShortList.add(a);
+            if (!ArrayUtils.isEmpty(shortList)) {
+                List<String> selectedShortList = Arrays.asList(shortList);
+                for (String studentName : selectedShortList) {
+                    for (Applicant a : interestedApplicants) {
+                        if (a.getName().equals(studentName)) {
+                            shortlistedApplicants.add(a);
+                        }
                     }
                 }
             }
-            course.setShortlistedApplicants(selectedShortList);
+            course.setShortlistedApplicants(shortlistedApplicants);
             course.setCourseDescription(description);
             course.setInterviewLink(interviewLink);
             courseDao.update(course);
 
-            response.cookie("jhed", jhed);
-            response.cookie("profileType", "Applicant");
             String redirect = "/" + courseId + "/courseinfo";
             response.redirect(redirect);
             return null;
-
         }, new HandlebarsTemplateEngine());
 
         get("/:id/courseprofile", (request, response) -> {
@@ -267,7 +270,7 @@ public class WebServer {
             List<Applicant> shortList = course.getShortlistedApplicants();
             for (Applicant a : shortList) {
                 if (a.getJhed().equals(jhed)) {
-                    //change status to "being interviewed" or "hired"
+                    model.put("isShortListed","true");
                 }
             }
             if (description.isEmpty()) {
@@ -359,11 +362,13 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
 
         post("/studentprofile", (request, response) -> {
+            String jhed = request.cookie("jhed");
+            String profileType = request.cookie("profileType");
+
             HashMap<Course, String> interestedCourses = new HashMap();
             String rank1 = request.queryParams("rank1");
             String rank2 = request.queryParams("rank2");
             String rank3 = request.queryParams("rank3");
-            String jhed = request.cookie("jhed");
             String year = request.queryParams("year");
             String majorAndMinor = request.queryParams("majorAndMinor");
             Double gpa = Double.valueOf(request.queryParams("gpa"));
@@ -410,17 +415,17 @@ public class WebServer {
 
             // Set cookies and redirect
             response.cookie("jhed", jhed);
-            response.cookie("profileType", "Applicant");
+            response.cookie("profileType", profileType);
             response.redirect("/landing");
             return null;
         }, new HandlebarsTemplateEngine());
 
         get("/:courseId/courseinfo/:jhed/studentview", (request, response) -> {
             Map<String, Object> model = new HashMap<String, Object>();
-            String jhed = request.params(":jhed");
+            String applicantJhed = request.params(":jhed");
             int courseId = Integer.parseInt(request.params(":courseId"));
 
-            Applicant student = applicantDao.read(jhed);
+            Applicant student = applicantDao.read(applicantJhed);
             Course course1 = courseDao.read(courseId);
 
             /* later: get if they have taken the course, grade, etc */
@@ -437,7 +442,7 @@ public class WebServer {
             model.put("name", name);
             model.put("id", courseId);
             model.put("shortlistStatus", course1.getShortlistedApplicants().contains(student));
-            model.put("jhed", jhed);
+            model.put("jhed", applicantJhed);
             model.put("year", year);
             model.put("majorAndMinor", majorAndMinor);
             model.put("email", email);
@@ -490,8 +495,6 @@ public class WebServer {
 
 
         post("/:courseId/courseinfo/:jhed/studentview", (request, response) -> {
-            String jhed = request.cookie("jhed");
-
             String applicantJhed = request.params(":jhed");
             int courseId = Integer.parseInt(request.params(":courseId"));
 
@@ -514,8 +517,6 @@ public class WebServer {
 
             courseDao.update(course);
 
-            response.cookie("jhed", jhed);
-            response.cookie("profileType", "Applicant");
             String redirect = "/" + courseId + "/courseinfo";
             response.redirect(redirect);
             return null;
