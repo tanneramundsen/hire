@@ -346,16 +346,21 @@ public class WebServer {
 
             List<Grade> gradesList = new ArrayList<Grade>();
             List<Course> headCAInterests = student.getHeadCAInterest();
+            List<Course> previousCA = student.getPreviousCA();
             HashMap<Course, String> interestedGrades = student.getInterestedCourses();
             for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
                 String courseId = String.valueOf(entry.getKey().getId());
                 String courseName = entry.getKey().getName();
                 String grade = entry.getValue();
                 String headCAInterest = "No";
+                String previousCAd = "No";
                 if (headCAInterests != null && headCAInterests.contains(entry.getKey())) {
                     headCAInterest = "Yes";
                 }
-                gradesList.add(new Grade(courseId, courseName, grade, headCAInterest));
+                if (previousCA != null && previousCA.contains(entry.getKey())) {
+                    previousCAd = "Yes";
+                }
+                gradesList.add(new Grade(courseId, courseName, grade, headCAInterest, previousCAd));
             }
             model.put("gradesList", gradesList);
             return new ModelAndView(model, "studentprofile.hbs");
@@ -384,11 +389,16 @@ public class WebServer {
 
             // For every course, get updated grade ("Not taken" or letter)
             List<Course> headCAInterest = new ArrayList<>();
+            List<Course> previousCA = new ArrayList<>();
             for (Course c : all_courses) {
                 String grade = request.queryParams(c.getId() + "grade");
                 String interest = request.queryParams(c.getId() + "interest");
+                String prevCA = request.queryParams(c.getId() + "previousCA");
                 if (interest.equals("Yes")) {
                     headCAInterest.add(c);
+                }
+                if (prevCA.equals("Yes")) {
+                    previousCA.add(c);
                 }
                 interestedCourses.put(c, grade);
             }
@@ -411,6 +421,7 @@ public class WebServer {
             student.setResumeLink(resume);
             student.setHoursAvailable(hoursAvailable);
             student.setHeadCAInterest(headCAInterest);
+            student.setPreviousCA(previousCA);
             applicantDao.update(student);
 
             // Set cookies and redirect
