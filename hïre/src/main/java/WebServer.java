@@ -481,22 +481,28 @@ public class WebServer {
 
             // Populate course specific information
             List<Course> headCAInterest = student.getHeadCAInterest();
+            List<Course> previousCA = student.getPreviousCA();
             HashMap<Course, String> interestedGrades = student.getInterestedCourses();
 
-            // Map course to a map containing the keys "grade" and "headCAInterest"
+            // Map course to a map containing the keys "grade" and "headCAInterest" and "previousCA"
             HashMap<String, HashMap<String, String>> courseSpecificInfo = new HashMap<>();
             for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
                 Course course = entry.getKey();
                 String courseName = course.getName();
                 String grade = entry.getValue();
                 String interest = "No";
+                String prevCA = "No";
                 if ((headCAInterest != null) && (headCAInterest.contains(course))) {
                     interest = "Yes";
+                }
+                if ((previousCA != null) && (previousCA.contains(course))) {
+                    prevCA = "Yes";
                 }
                 if (!grade.equals("Not Taken")) {
                     HashMap<String, String> info = new LinkedHashMap<>();
                     info.put("Grade", grade);
                     info.put("Head CA Interest", interest);
+                    info.put("Previously CA'd", prevCA);
                     courseSpecificInfo.put(courseName, info);
                 }
             }
