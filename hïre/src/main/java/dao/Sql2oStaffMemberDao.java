@@ -84,14 +84,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             }
 
             // Get corresponding courses according to joining table
-            sql = "SELECT C.* " +
-                    "FROM StaffMembers_Courses " +
-                    "INNER JOIN Courses C " +
-                    "ON StaffMembers_Courses.courseId = C.id " +
-                    "WHERE StaffMembers_Courses.staffId = :staffId";
-            List<Course> courses = conn.createQuery(sql)
-                    .addParameter("staffId", id)
-                    .executeAndFetch(Course.class);
+            List<Course> courses = readCourses(conn, id);
             staffMember.setCourses(courses);
 
             return staffMember;
@@ -115,14 +108,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             }
 
             // Get corresponding courses according to joining table
-            sql = "SELECT C.* " +
-                    "FROM StaffMembers_Courses " +
-                    "INNER JOIN Courses C " +
-                    "ON StaffMembers_Courses.courseId = C.id " +
-                    "WHERE StaffMembers_Courses.staffId = :staffId";
-            List<Course> courses = conn.createQuery(sql)
-                    .addParameter("staffId", staffMember.getId())
-                    .executeAndFetch(Course.class);
+            List<Course> courses = readCourses(conn, staffMember.getId());
             staffMember.setCourses(courses);
 
             return staffMember;
@@ -201,5 +187,19 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
         } catch(Sql2oException e) {
             throw new DaoException("Unable to delete staff member", e);
         }
+    }
+
+    private List<Course> readCourses(Connection conn, int staffId) {
+        String sql = "SELECT C.* " +
+                "FROM StaffMembers_Courses " +
+                "INNER JOIN Courses C " +
+                "ON StaffMembers_Courses.courseId = C.id " +
+                "WHERE StaffMembers_Courses.staffId = :staffId";
+
+        List<Course> courses = conn.createQuery(sql)
+                .addParameter("staffId", staffId)
+                .executeAndFetch(Course.class);
+
+        return courses;
     }
 }
