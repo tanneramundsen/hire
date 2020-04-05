@@ -158,7 +158,7 @@ public class WebServer {
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/landing", (request, response) -> {
+        post("/addcourse", (request, response) -> {
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
             String[] newCourses = request.queryParamsValues("newCourses");
@@ -183,6 +183,41 @@ public class WebServer {
                 for (String course: newCourses) {
                     Course newCourse = courseDao.read(course);
                     coursesHashMap.put(newCourse, "Not Taken");
+                }
+                a.setInterestedCourses(coursesHashMap);
+                applicantDao.update(a);
+            }
+            response.cookie("jhed", jhed);
+            response.cookie("profileType", profileType);
+            response.redirect("/landing");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+        post("/deletecourse", (request, response) -> {
+            String jhed = request.cookie("jhed");
+            String profileType = request.cookie("profileType");
+            String[] newCourses = request.queryParamsValues("deleteCourses");
+
+            // use information to create either an applicant or staff member
+            if (profileType.equals("Professor")) {
+                StaffMember s = staffMemberDao.read(jhed);
+                List<Course> courseList = s.getCourses();
+                for (String course: newCourses) {
+                    Course newCourse = courseDao.read(course);
+                    List<StaffMember> instructors = newCourse.getInstructors();
+                    instructors.remove(s);
+                    newCourse.setInstructors(instructors);
+                    courseDao.update(newCourse);
+                    courseList.remove(newCourse);
+                }
+                s.setCourses(courseList);
+                staffMemberDao.update(s);
+            } else {
+                Applicant a = applicantDao.read(jhed);
+                HashMap<Course, String> coursesHashMap = a.getInterestedCourses();
+                for (String course: newCourses) {
+                    Course newCourse = courseDao.read(course);
+                    coursesHashMap.remove(newCourse);
                 }
                 a.setInterestedCourses(coursesHashMap);
                 applicantDao.update(a);
@@ -346,16 +381,21 @@ public class WebServer {
 
             List<Grade> gradesList = new ArrayList<Grade>();
             List<Course> headCAInterests = student.getHeadCAInterest();
+            List<Course> previousCA = student.getPreviousCA();
             HashMap<Course, String> interestedGrades = student.getInterestedCourses();
             for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
                 String courseId = String.valueOf(entry.getKey().getId());
                 String courseName = entry.getKey().getName();
                 String grade = entry.getValue();
                 String headCAInterest = "No";
+                String previousCAd = "No";
                 if (headCAInterests != null && headCAInterests.contains(entry.getKey())) {
                     headCAInterest = "Yes";
                 }
-                gradesList.add(new Grade(courseId, courseName, grade, headCAInterest));
+                if (previousCA != null && previousCA.contains(entry.getKey())) {
+                    previousCAd = "Yes";
+                }
+                gradesList.add(new Grade(courseId, courseName, grade, headCAInterest, previousCAd));
             }
             model.put("gradesList", gradesList);
             return new ModelAndView(model, "studentprofile.hbs");
@@ -384,11 +424,16 @@ public class WebServer {
 
             // For every course, get updated grade ("Not taken" or letter)
             List<Course> headCAInterest = new ArrayList<>();
+            List<Course> previousCA = new ArrayList<>();
             for (Course c : all_courses) {
                 String grade = request.queryParams(c.getId() + "grade");
                 String interest = request.queryParams(c.getId() + "interest");
+                String prevCA = request.queryParams(c.getId() + "previousCA");
                 if (interest.equals("Yes")) {
                     headCAInterest.add(c);
+                }
+                if (prevCA.equals("Yes")) {
+                    previousCA.add(c);
                 }
                 interestedCourses.put(c, grade);
             }
@@ -411,6 +456,7 @@ public class WebServer {
             student.setResumeLink(resume);
             student.setHoursAvailable(hoursAvailable);
             student.setHeadCAInterest(headCAInterest);
+            student.setPreviousCA(previousCA);
             applicantDao.update(student);
 
             // Set cookies and redirect
@@ -470,22 +516,28 @@ public class WebServer {
 
             // Populate course specific information
             List<Course> headCAInterest = student.getHeadCAInterest();
+            List<Course> previousCA = student.getPreviousCA();
             HashMap<Course, String> interestedGrades = student.getInterestedCourses();
 
-            // Map course to a map containing the keys "grade" and "headCAInterest"
+            // Map course to a map containing the keys "grade" and "headCAInterest" and "previousCA"
             HashMap<String, HashMap<String, String>> courseSpecificInfo = new HashMap<>();
             for (Map.Entry<Course, String> entry : interestedGrades.entrySet()) {
                 Course course = entry.getKey();
                 String courseName = course.getName();
                 String grade = entry.getValue();
                 String interest = "No";
+                String prevCA = "No";
                 if ((headCAInterest != null) && (headCAInterest.contains(course))) {
                     interest = "Yes";
+                }
+                if ((previousCA != null) && (previousCA.contains(course))) {
+                    prevCA = "Yes";
                 }
                 if (!grade.equals("Not Taken")) {
                     HashMap<String, String> info = new LinkedHashMap<>();
                     info.put("Grade", grade);
                     info.put("Head CA Interest", interest);
+                    info.put("Previously CA'd", prevCA);
                     courseSpecificInfo.put(courseName, info);
                 }
             }

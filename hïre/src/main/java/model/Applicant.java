@@ -26,6 +26,8 @@ public class Applicant extends User {
     private String mostRecentPayroll;
     private String otherJobs;
     private int hoursAvailable;
+    private List<Course> previousCA;
+
 
 
     @Override
@@ -159,6 +161,10 @@ public class Applicant extends User {
     public int getHoursAvailable() { return hoursAvailable; }
 
     public void setHoursAvailable(int hoursAvailable) { this.hoursAvailable = hoursAvailable; }
+
+    public void setPreviousCA(List<Course> previousCA) { this.previousCA = previousCA; }
+
+    public List<Course> getPreviousCA() { return previousCA; }
 
     @Override
     public boolean equals(Object o) {

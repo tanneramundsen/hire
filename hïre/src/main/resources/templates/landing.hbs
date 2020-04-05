@@ -120,27 +120,50 @@
                 </div>
             {{/each}}
         </div>
-        <div class="row row-space"
+        <div class="row"
              data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-            <form action="/landing" method="post">
-                <div class="col-md-6 col-sm-12">
-                    <div class="input-group">
-                        <label class="label">Add other courses:</label>
-                        <div class="rs-select2 js-select-simple select--no-search">
-                            <select name="newCourses" multiple="multiple">
-                                <option disabled="disabled" selected="selected">select courses</option>
-                                {{#each otherCourses}}
-                                    <option>{{name}}</option>
-                                {{/each}}
-                            </select>
-                            <div class="select-dropdown"></div>
+            <div class="col-md-6 col-sm-12">
+                <form action="/addcourse" method="post">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group">
+                            <label class="label">Add other courses:</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="newCourses" multiple="multiple">
+                                    <option disabled="disabled" selected="selected">select courses</option>
+                                    {{#each otherCourses}}
+                                        <option>{{name}}</option>
+                                    {{/each}}
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <button type="submit" id="form-submit" class="text-button">Add! <i class="fa fa-arrow-right"></i></button>
-                </div>
-            </form>
+                    <div class="col-md-6 col-sm-12">
+                        <button type="submit" id="form-submit" class="text-button">Add! <i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <form action="/deletecourse" method="post">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group">
+                            <label class="label">Delete current courses:</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="deleteCourses" multiple="multiple">
+                                    <option disabled="disabled" selected="selected">select courses</option>
+                                    {{#each courseList}}
+                                        <option>{{name}}</option>
+                                    {{/each}}
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <button type="submit" id="form-submit" class="text-button">Delete! <i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>

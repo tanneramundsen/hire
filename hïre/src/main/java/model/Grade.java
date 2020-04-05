@@ -8,13 +8,17 @@ public class Grade {
     String grade;
     Boolean headCAInterestBool;
     String headCAInterest;
+    Boolean previousCABool;
+    String previousCA;
 
-    public Grade(String courseId, String courseName, String grade, String headCAInterest) {
+    public Grade(String courseId, String courseName, String grade, String headCAInterest, String previousCA) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.grade = grade;
         this.headCAInterest = headCAInterest;
         this.headCAInterestBool = headCAInterest.equals("Yes") ? true : false;
+        this.previousCA = previousCA;
+        this.previousCABool = previousCA.equals("Yes") ? true : false;
     }
 
     public String getCourseId() {
@@ -45,6 +49,13 @@ public class Grade {
 
     public void setHeadCAInterest(String headCAInterest) {
         this.headCAInterest = headCAInterest;
+        this.headCAInterestBool = headCAInterest.equals("Yes") ? true : false;
+    }
+
+    public String getPreviousCA() { return previousCA; }
+
+    public void setPreviousCA(String previousCA) {
+        this.previousCA = previousCA;
         this.headCAInterestBool = headCAInterest.equals("Yes") ? true : false;
     }
 

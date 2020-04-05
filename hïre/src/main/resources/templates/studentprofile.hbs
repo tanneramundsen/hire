@@ -326,6 +326,7 @@
                                         <th>Course</th>
                                         <th>Grade</th>
                                         <th>Head CA?</th>
+                                        <th>Previous CA?</th>
                                     </tr>
                                     {{#each gradesList}}
                                     <tr>
@@ -358,6 +359,20 @@
                                             <div class="rs-select2 js-select-simple select--no-search">
                                                 <select name={{courseId}}interest>
                                                     {{#if headCAInterestBool}}
+                                                        <option selected="selected"> Yes </option>
+                                                        <option> No </option>
+                                                    {{else}}
+                                                        <option> Yes </option>
+                                                        <option selected="selected"> No </option>
+                                                    {{/if}}
+                                                </select>
+                                                <div class="select-dropdown"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="rs-select2 js-select-simple select--no-search">
+                                                <select name={{courseId}}interest>
+                                                    {{#if previousCABool}}
                                                         <option selected="selected"> Yes </option>
                                                         <option> No </option>
                                                     {{else}}
