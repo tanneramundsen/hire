@@ -260,7 +260,7 @@ public class WebServer {
             return new ModelAndView(model, "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/:id/courseinfo", (request, response) -> {
+        post("/:id/courseinfo/addcourseinfo", (request, response) -> {
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
             List<Applicant> interestedApplicants = course.getInterestedApplicants();
@@ -272,21 +272,52 @@ public class WebServer {
             if (interviewLink == null) {
                 interviewLink = course.getInterviewLink();
             }
+            course.setCourseDescription(description);
+            course.setInterviewLink(interviewLink);
+            courseDao.update(course);
+
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+        post("/:id/courseinfo/addtoshortlist", (request, response) -> {
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+            List<Applicant> interestedApplicants = course.getInterestedApplicants();
             List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
             String[] shortList = request.queryParamsValues("selectedForShortList");
             if (!ArrayUtils.isEmpty(shortList)) {
                 List<String> selectedShortList = Arrays.asList(shortList);
-                for (String studentName : selectedShortList) {
-                    for (Applicant a : interestedApplicants) {
-                        if (a.getName().equals(studentName)) {
-                            shortlistedApplicants.add(a);
-                        }
+                for (Applicant a : interestedApplicants) {
+                    if (selectedShortList.contains(a.getName())) {
+                        shortlistedApplicants.add(a);
                     }
                 }
             }
             course.setShortlistedApplicants(shortlistedApplicants);
-            course.setCourseDescription(description);
-            course.setInterviewLink(interviewLink);
+            courseDao.update(course);
+
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+        post("/:id/courseinfo/deleteshortlist", (request, response) -> {
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+            List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
+            List<Applicant> newShortList = new ArrayList<Applicant>();
+            String[] shortList = request.queryParamsValues("checkedFromShortList");
+            if (!ArrayUtils.isEmpty(shortList)) {
+                List<String> checkedFromShortList = Arrays.asList(shortList);
+                for (Applicant a : shortlistedApplicants) {
+                    if (!checkedFromShortList.contains(a.getName())) {
+                        newShortList.add(a);
+                    }
+                }
+            }
+            course.setShortlistedApplicants(newShortList);
             courseDao.update(course);
 
             String redirect = "/" + courseId + "/courseinfo";

@@ -73,7 +73,7 @@
                     <h2>{{name}} - {{courseNumber}}</h2>
                 </div>
                 <div class="contact-form">
-                    <form id="contact" action="/{{id}}/courseinfo" method="post">
+                    <form id="contact" action="/{{id}}/courseinfo/addcourseinfo" method="post">
                         <div class="row">
                             <div class="col-lg-12">
                                 <fieldset>
@@ -113,7 +113,7 @@
             <div class="col">
                 <h2>Interested Applicants</h2>
                 <br>
-                <form action="/{{id}}/courseinfo" method="post">
+                <form action="/{{id}}/courseinfo/addtoshortlist" method="post">
                     <div>
                         {{#each interestedApplicants}}
                             <input name="selectedForShortList" type="checkbox" value="{{name}}">
@@ -124,16 +124,25 @@
                         <button type="submit" id="form-submit" class="main-button">Send to shortlist<i class="fa fa-arrow-right"></i></button>
                     </div>
                 </form>
-
             </div>
             <div class="col">
                 <h2>Shortlisted Applicants</h2>
                 <br>
-                <ul>
-                    {{#each shortlistedApplicants}}
-                        <li><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a> </li>
-                    {{/each}}
-                </ul>
+                <form action="/{{id}}/courseinfo/addtohired" method="post">
+                    <div>
+                        {{#each shortlistedApplicants}}
+                            <input name="checkedFromShortList" type="checkbox" value="{{name}}">
+                            <label for="checkedFromShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                        {{/each}}
+                    </div>
+                    <!-- hi tanner! since we'll need two buttons associated with this form, i made the form action
+                    adding to hired, and the following button is the action delete from shortlist so the default
+                     action is adding to hired but if they click the following button, i treat it as deleting from
+                     shortlist but you can access the checklist as checkedFromShortList in both cases -->
+                    <div>
+                        <button type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/deleteshortlist">Delete from shortlist<i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </form>
             </div>
             <div class="col">
                 <h2>Hired Applicants</h2>

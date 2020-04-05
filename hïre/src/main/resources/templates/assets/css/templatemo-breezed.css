@@ -236,6 +236,29 @@ button.main-button:hover {
   background-color: #5fb759;
 }
 
+button.delete-button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 25px;
+  padding: 10px 25px;
+  background-color: #fff;
+  text-transform: uppercase;
+  color: #d9534f;
+  font-weight: 600;
+  letter-spacing: 1px;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+button.delete-button:hover {
+  color: #fff;
+  background-color: #d9534f;
+}
+
 button.main-button-icon {
   border: none;
   outline: none;
