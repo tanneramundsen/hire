@@ -73,10 +73,10 @@ public final class DaoFactory {
                 "rankOne INTEGER, " +
                 "rankTwo INTEGER, " +
                 "rankThree INTEGER, " +
-                "FOREIGN KEY(hiredCourse) REFERENCES Courses(id) ON DELETE CASCADE " +
-                "FOREIGN KEY(rankOne) REFERENCES Courses(id) ON DELETE CASCADE " +
-                "FOREIGN KEY(rankTwo) REFERENCES Courses(id) ON DELETE CASCADE " +
-                "FOREIGN KEY(rankThree) REFERENCES Courses(id) ON DELETE CASCADE " +
+                "FOREIGN KEY(hiredCourse) REFERENCES Courses(id) ON UPDATE CASCADE ON DELETE CASCADE " +
+                "FOREIGN KEY(rankOne) REFERENCES Courses(id) ON UPDATE CASCADE ON DELETE CASCADE " +
+                "FOREIGN KEY(rankTwo) REFERENCES Courses(id) ON UPDATE CASCADE ON DELETE CASCADE " +
+                "FOREIGN KEY(rankThree) REFERENCES Courses(id) ON UPDATE CASCADE ON DELETE CASCADE " +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
@@ -114,11 +114,11 @@ public final class DaoFactory {
     private static void createStaffMembersCoursesTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropStaffMemberCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS StaffMembers_Courses(" +
-                "id INTEGER PRIMARY KEY, " +
-                "staffId INTEGER, " +
-                "courseId INTEGER, " +
-                "FOREIGN KEY (staffId) REFERENCES StaffMembers(id) ON UPDATE RESTRICT ON DELETE CASCADE " +
-                "FOREIGN KEY (courseId) REFERENCES Courses(id) ON UPDATE RESTRICT ON DELETE CASCADE" +
+                "staffId INTEGER NOT NULL, " +
+                "courseId INTEGER NOT NULL, " +
+                "PRIMARY KEY (staffId, courseId), " +
+                "FOREIGN KEY (staffId) REFERENCES StaffMembers(id) ON UPDATE CASCADE ON DELETE CASCADE " +
+                "FOREIGN KEY (courseId) REFERENCES Courses(id) ON UPDATE CASCADE ON DELETE CASCADE" +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();
@@ -128,17 +128,17 @@ public final class DaoFactory {
     private static void createApplicantsCoursesTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropApplicantsCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS Applicants_Courses(" +
-                "id INTEGER PRIMARY KEY, " +
-                "applicantId INTEGER, " +
-                "courseId INTEGER, " +
+                "applicantId INTEGER NOT NULL, " +
+                "courseId INTEGER NOT NULL, " +
                 "grade VARCHAR(100) DEFAULT 'Not Taken', " +
                 "interested INTEGER DEFAULT 0, " +
                 "shortlisted INTEGER DEFAULT 0, " +
                 "hired INTEGER DEFAULT 0, " +
                 "headCAInterest INTEGER DEFAULT 0, " +
                 "previousCA INTEGER DEFAULT 0, " +
-                "FOREIGN KEY (applicantId) REFERENCES Applicants(id) ON UPDATE RESTRICT ON DELETE CASCADE " +
-                "FOREIGN KEY (courseId) REFERENCES Courses(id) ON UPDATE RESTRICT ON DELETE CASCADE" +
+                "PRIMARY KEY (applicantId, courseId), " +
+                "FOREIGN KEY (applicantId) REFERENCES Applicants(id) ON UPDATE CASCADE ON DELETE CASCADE " +
+                "FOREIGN KEY (courseId) REFERENCES Courses(id) ON UPDATE CASCADE ON DELETE CASCADE" +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();

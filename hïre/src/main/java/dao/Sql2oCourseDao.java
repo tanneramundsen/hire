@@ -169,56 +169,19 @@ public class Sql2oCourseDao implements CourseDao {
             }
 
             // Get corresponding staff members
-            sql = "SELECT StaffMembers.* " +
-                    "FROM StaffMembers_Courses " +
-                    "INNER JOIN StaffMembers " +
-                    "ON StaffMembers_Courses.staffId = StaffMembers.id " +
-                    "WHERE StaffMembers_Courses.courseId = :courseId";
-            List<StaffMember> staff = conn.createQuery(sql)
-                    .addParameter("courseId", id)
-                    .executeAndFetch(StaffMember.class);
+            List<StaffMember> staff = readStaffMembers(conn, course.getId());
             course.setInstructors(staff);
 
             // Get corresponding hired applicants
-            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                    "FROM Applicants_Courses " +
-                    "INNER JOIN Applicants A " +
-                    "ON Applicants_Courses.applicantId = A.id " +
-                    "WHERE Applicants_Courses.courseId = :courseId " +
-                    "AND Applicants_Courses.hired = 1;";
-            List<Applicant> hiredApps = conn.createQuery(sql)
-                    .addParameter("courseId", id)
-                    .executeAndFetch(Applicant.class);
+            List<Applicant> hiredApps = readHiredApplicants(conn, course.getId());
             course.setHiredApplicants(hiredApps);
 
             // Get corresponding interested applicants
-            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                    "FROM Applicants_Courses " +
-                    "INNER JOIN Applicants A " +
-                    "ON Applicants_Courses.applicantId = A.id " +
-                    "WHERE Applicants_Courses.courseId = :courseId " +
-                    "AND Applicants_Courses.interested = 1;";
-            List<Applicant> interestedApps = conn.createQuery(sql)
-                    .addParameter("courseId", id)
-                    .executeAndFetch(Applicant.class);
+            List<Applicant> interestedApps = readInterestedApplicants(conn, course.getId());
             course.setInterestedApplicants(interestedApps);
 
             // Get corresponding shortlisted applicants
-            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                    "FROM Applicants_Courses " +
-                    "INNER JOIN Applicants A " +
-                    "ON Applicants_Courses.applicantId = A.id " +
-                    "WHERE Applicants_Courses.courseId = :courseId " +
-                    "AND Applicants_Courses.shortlisted = 1;";
-            List<Applicant> shortlistedApps = conn.createQuery(sql)
-                    .addParameter("courseId", id)
-                    .executeAndFetch(Applicant.class);
+            List<Applicant> shortlistedApps = readShortlist(conn, course.getId());
             course.setShortlistedApplicants(shortlistedApps);
 
             return course;
@@ -239,57 +202,20 @@ public class Sql2oCourseDao implements CourseDao {
                 return null;
             }
 
-            //get corresponding staff members
-            sql = "SELECT StaffMembers.* " +
-                    "FROM StaffMembers_Courses " +
-                    "INNER JOIN StaffMembers " +
-                    "ON StaffMembers_Courses.staffId = StaffMembers.id " +
-                    "WHERE StaffMembers_Courses.courseId = :courseId";
-            List<StaffMember> staff = conn.createQuery(sql)
-                    .addParameter("courseId", course.getId())
-                    .executeAndFetch(StaffMember.class);
+            // Get corresponding staff members
+            List<StaffMember> staff = readStaffMembers(conn, course.getId());
             course.setInstructors(staff);
 
-            //get corresponding hired applicants
-            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                    "FROM Applicants_Courses " +
-                    "INNER JOIN Applicants A " +
-                    "ON Applicants_Courses.applicantId = A.id " +
-                    "WHERE Applicants_Courses.courseId = :courseId " +
-                    "AND Applicants_Courses.hired = 1;";
-            List<Applicant> hiredApps = conn.createQuery(sql)
-                    .addParameter("courseId", course.getId())
-                    .executeAndFetch(Applicant.class);
+            // Get corresponding hired applicants
+            List<Applicant> hiredApps = readHiredApplicants(conn, course.getId());
             course.setHiredApplicants(hiredApps);
 
-            //get corresponding interested applicants
-            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                    "FROM Applicants_Courses " +
-                    "INNER JOIN Applicants A " +
-                    "ON Applicants_Courses.applicantId = A.id " +
-                    "WHERE Applicants_Courses.courseId = :courseId " +
-                    "AND Applicants_Courses.interested = 1;";
-            List<Applicant> interestedApps = conn.createQuery(sql)
-                    .addParameter("courseId", course.getId())
-                    .executeAndFetch(Applicant.class);
+            // Get corresponding interested applicants
+            List<Applicant> interestedApps = readInterestedApplicants(conn, course.getId());
             course.setInterestedApplicants(interestedApps);
 
-            //get corresponding shortlisted applicants
-            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                    "FROM Applicants_Courses " +
-                    "INNER JOIN Applicants A " +
-                    "ON Applicants_Courses.applicantId = A.id " +
-                    "WHERE Applicants_Courses.courseId = :courseId " +
-                    "AND Applicants_Courses.shortlisted = 1;";
-            List<Applicant> shortlistedApps = conn.createQuery(sql)
-                    .addParameter("courseId", course.getId())
-                    .executeAndFetch(Applicant.class);
+            // Get corresponding shortlisted applicants
+            List<Applicant> shortlistedApps = readShortlist(conn, course.getId());
             course.setShortlistedApplicants(shortlistedApps);
 
             return course;
@@ -301,6 +227,8 @@ public class Sql2oCourseDao implements CourseDao {
 
     public void update(Course course) throws DaoException {
         try (Connection conn = sql2o.open()) {
+            int courseId = course.getId();
+
             String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, " +
                     "semester = :semester, hiringComplete = :hiringComplete, courseDescription = :courseDescription, " +
                     "interviewLink = :interviewLink WHERE id = :id";
@@ -308,15 +236,9 @@ public class Sql2oCourseDao implements CourseDao {
                     .bind(course)
                     .executeUpdate();
 
-            // Delete existing entries with this course in joining tables
-            sql = "DELETE FROM Applicants_Courses WHERE courseId = :courseId;";
-            conn.createQuery(sql)
-                    .addParameter("courseId", course.getId())
-                    .executeUpdate();
-
             sql = "DELETE FROM StaffMembers_Courses WHERE courseId = :courseId;";
             conn.createQuery(sql)
-                    .addParameter("courseId", course.getId())
+                    .addParameter("courseId", courseId)
                     .executeUpdate();
 
             if (course.getInstructors() != null) {
@@ -331,7 +253,6 @@ public class Sql2oCourseDao implements CourseDao {
                         staffMember.setId(staffId);
                     }
 
-                    int courseId = course.getId();
                     sql = "INSERT INTO StaffMembers_Courses(staffId, courseId) " +
                             "VALUES(:staffId, :courseId);";
                     conn.createQuery(sql)
@@ -341,32 +262,25 @@ public class Sql2oCourseDao implements CourseDao {
                 }
             }
 
-            if (course.getInterestedApplicants() != null) {
-                for (Applicant applicant : course.getInterestedApplicants()) {
+            // Read currently shortlisted applicants for this course in the database
+            // and change to not shortlisted. We will then change them back to
+            // shortlisted if the applicant is still on this course's shortlist.
+            List<Applicant> currentShortlist = readShortlist(conn, courseId);
+            if (currentShortlist != null) {
+                for (Applicant applicant : currentShortlist) {
                     int applicantId = applicant.getId();
-                    if (applicantId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
-                                "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
-                                "mostRecentPayroll, otherJobs, hoursAvailable) " +
-                                "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
-                                ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
-                                ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
-                        applicantId = (int) conn.createQuery(sql)
-                                .bind(applicant)
-                                .executeUpdate()
-                                .getKey();
-                        applicant.setId(applicantId);
-                    }
-                    sql = "INSERT INTO Applicants_Courses(applicantId, courseId, interested, grade) " +
-                            "VALUES(:applicantId, :courseId, 1, :grade);";
+                    sql = "UPDATE Applicants_Courses " +
+                            "SET shortlisted = 0 " +
+                            "WHERE applicantId = :applicantId " +
+                            "AND courseId = :courseId;";
                     conn.createQuery(sql)
                             .addParameter("applicantId", applicantId)
-                            .addParameter("courseId", course.getId())
-                            .addParameter("grade", "Not Taken")
+                            .addParameter("courseId", courseId)
                             .executeUpdate();
                 }
             }
 
+            // Update database to reflect current shortlist in Java object
             if (course.getShortlistedApplicants() != null) {
                 for (Applicant applicant : course.getShortlistedApplicants()) {
                     int applicantId = applicant.getId();
@@ -402,6 +316,25 @@ public class Sql2oCourseDao implements CourseDao {
                 }
             }
 
+            // Read currently hired applicants for this course in the database
+            // and change to not hired. We will then change them back to
+            // hired if the applicant is still on this course's hired list.
+            List<Applicant> currentHired = readHiredApplicants(conn, courseId);
+            if (currentHired != null) {
+                for (Applicant applicant: currentHired) {
+                    int applicantId = applicant.getId();
+                    sql = "UPDATE Applicants_Courses " +
+                            "SET hired = 0 " +
+                            "WHERE applicantId = :applicantId " +
+                            "AND courseId = :courseId;";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", applicantId)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
+                }
+            }
+
+            // Update database to reflect current hired list in Java object
             if (course.getHiredApplicants() != null) {
                 for (Applicant applicant : course.getHiredApplicants()) {
                     int applicantId = applicant.getId();
@@ -467,57 +400,21 @@ public class Sql2oCourseDao implements CourseDao {
             String sql = "SELECT * FROM Courses;";
             List<Course> courses = conn.createQuery(sql).executeAndFetch(Course.class);
             for (Course course: courses) {
-                //get corresponding staff members
-                sql = "SELECT StaffMembers.* " +
-                        "FROM StaffMembers_Courses " +
-                        "INNER JOIN StaffMembers " +
-                        "ON StaffMembers_Courses.staffId = StaffMembers.id " +
-                        "WHERE StaffMembers_Courses.courseId = :courseId";
-                List<StaffMember> staff = conn.createQuery(sql)
-                        .addParameter("courseId", course.getId())
-                        .executeAndFetch(StaffMember.class);
+                int courseId = course.getId();
+                // Get corresponding staff members
+                List<StaffMember> staff = readStaffMembers(conn, courseId);
                 course.setInstructors(staff);
 
-                //get corresponding hired applicants
-                sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                        "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                        "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                        "FROM Applicants_Courses " +
-                        "INNER JOIN Applicants A " +
-                        "ON Applicants_Courses.applicantId = A.id " +
-                        "WHERE Applicants_Courses.courseId = :courseId " +
-                        "AND Applicants_Courses.hired = 1;";
-                List<Applicant> hiredApps = conn.createQuery(sql)
-                        .addParameter("courseId", course.getId())
-                        .executeAndFetch(Applicant.class);
+                // Get corresponding hired applicants
+                List<Applicant> hiredApps = readHiredApplicants(conn, courseId);
                 course.setHiredApplicants(hiredApps);
 
-                // get corresponding interested applicants
-                sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                        "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                        "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                        "FROM Applicants_Courses " +
-                        "INNER JOIN Applicants A " +
-                        "ON Applicants_Courses.applicantId = A.id " +
-                        "WHERE Applicants_Courses.courseId = :courseId " +
-                        "AND Applicants_Courses.interested = 1;";
-                List<Applicant> interestedApps = conn.createQuery(sql)
-                        .addParameter("courseId", course.getId())
-                        .executeAndFetch(Applicant.class);
+                // Get corresponding interested applicants
+                List<Applicant> interestedApps = readInterestedApplicants(conn, courseId);
                 course.setInterestedApplicants(interestedApps);
 
-                //get corresponding shortlisted applicants
-                sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
-                        "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
-                        "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
-                        "FROM Applicants_Courses " +
-                        "INNER JOIN Applicants A " +
-                        "ON Applicants_Courses.applicantId = A.id " +
-                        "WHERE Applicants_Courses.courseId = :courseId " +
-                        "AND Applicants_Courses.shortlisted = 1;";
-                List<Applicant> shortlistedApps = conn.createQuery(sql)
-                        .addParameter("courseId", course.getId())
-                        .executeAndFetch(Applicant.class);
+                // Get corresponding shortlisted applicants
+                List<Applicant> shortlistedApps = readShortlist(conn, courseId);
                 course.setShortlistedApplicants(shortlistedApps);
             }
 
@@ -526,4 +423,70 @@ public class Sql2oCourseDao implements CourseDao {
             throw new DaoException("unable to find all courses", e);
         }
     }
+
+    private List<StaffMember> readStaffMembers(Connection conn, int courseId) {
+        String sql = "SELECT StaffMembers.* " +
+                "FROM StaffMembers_Courses " +
+                "INNER JOIN StaffMembers " +
+                "ON StaffMembers_Courses.staffId = StaffMembers.id " +
+                "WHERE StaffMembers_Courses.courseId = :courseId";
+
+        List<StaffMember> staff = conn.createQuery(sql)
+                .addParameter("courseId", courseId)
+                .executeAndFetch(StaffMember.class);
+
+        return staff;
+    }
+
+    private List<Applicant> readInterestedApplicants(Connection conn, int courseId) {
+        String sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
+                "FROM Applicants_Courses " +
+                "INNER JOIN Applicants A " +
+                "ON Applicants_Courses.applicantId = A.id " +
+                "WHERE Applicants_Courses.courseId = :courseId " +
+                "AND Applicants_Courses.interested = 1;";
+
+        List<Applicant> shortlist = conn.createQuery(sql)
+                .addParameter("courseId", courseId)
+                .executeAndFetch(Applicant.class);
+
+        return shortlist;
+    }
+
+    private List<Applicant> readShortlist(Connection conn, int courseId) {
+        String sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
+                "FROM Applicants_Courses " +
+                "INNER JOIN Applicants A " +
+                "ON Applicants_Courses.applicantId = A.id " +
+                "WHERE Applicants_Courses.courseId = :courseId " +
+                "AND Applicants_Courses.shortlisted = 1;";
+
+        List<Applicant> shortlist = conn.createQuery(sql)
+                .addParameter("courseId", courseId)
+                .executeAndFetch(Applicant.class);
+
+        return shortlist;
+    }
+
+    private List<Applicant> readHiredApplicants(Connection conn, int courseId) {
+        String sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
+                "FROM Applicants_Courses " +
+                "INNER JOIN Applicants A " +
+                "ON Applicants_Courses.applicantId = A.id " +
+                "WHERE Applicants_Courses.courseId = :courseId " +
+                "AND Applicants_Courses.hired = 1;";
+
+        List<Applicant> hired = conn.createQuery(sql)
+                .addParameter("courseId", courseId)
+                .executeAndFetch(Applicant.class);
+
+        return hired;
+    }
+
 }
