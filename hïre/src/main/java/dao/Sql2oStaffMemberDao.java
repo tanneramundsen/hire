@@ -28,8 +28,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                 // Normal insert
                 sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed);";
                 staffId = (int) conn.createQuery(sql)
-                        .addParameter("name", staffMember.getName())
-                        .addParameter("jhed", staffMember.getJhed())
+                        .bind(staffMember)
                         .executeUpdate()
                         .getKey();
                 staffMember.setId(staffId);
@@ -40,13 +39,11 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                     for (Course course: courses) {
                         int courseId = course.getId();
                         if (courseId == 0) {
-                            sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
-                                    "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                            sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
+                                    "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
+                                    ":interviewLink);";
                             courseId = (int) conn.createQuery(sql)
-                                    .addParameter("name", course.getName())
-                                    .addParameter("courseNumber", course.getCourseNumber())
-                                    .addParameter("semester", course.getSemester())
-                                    .addParameter("hiringComplete", course.isHiringComplete())
+                                    .bind(course)
                                     .executeUpdate()
                                     .getKey();
 
@@ -86,14 +83,6 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                 return null;
             }
 
-            // TODO: Figure out why executeAndFetch does not fill in name
-            sql = "SELECT name FROM StaffMembers WHERE id = :id";
-            List<Map<String, Object>> names = conn.createQuery(sql)
-                    .addParameter("id", id)
-                    .executeAndFetchTable()
-                    .asList();
-            staffMember.setName((String) names.get(0).get("name"));
-
             // Get corresponding courses according to joining table
             sql = "SELECT C.* " +
                     "FROM StaffMembers_Courses " +
@@ -125,14 +114,6 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                 return null;
             }
 
-            // TODO: Figure out why executeAndFetch does not fill in name
-            sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
-            List<Map<String, Object>> names = conn.createQuery(sql)
-                    .addParameter("jhed", jhed)
-                    .executeAndFetchTable()
-                    .asList();
-            staffMember.setName((String) names.get(0).get("name"));
-
             // Get corresponding courses according to joining table
             sql = "SELECT C.* " +
                     "FROM StaffMembers_Courses " +
@@ -160,9 +141,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                     "SET name = :name, jhed = :jhed " +
                     "WHERE id = :id;";
             conn.createQuery(sql)
-                    .addParameter("name", staffMember.getName())
-                    .addParameter("jhed", staffMember.getJhed())
-                    .addParameter("id", staffId)
+                    .bind(staffMember)
                     .executeUpdate();
 
             // Delete existing entries with this staff member in joining table
@@ -178,13 +157,11 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                 for (Course course: courses) {
                     int courseId = course.getId();
                     if (course.getId() == 0) {
-                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete) " +
-                                "VALUES(:name, :courseNumber, :semester, :hiringComplete);";
+                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
+                                "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
+                                ":interviewLink);";
                         courseId = (int) conn.createQuery(sql)
-                                .addParameter("name", course.getName())
-                                .addParameter("courseNumber", course.getCourseNumber())
-                                .addParameter("semester", course.getSemester())
-                                .addParameter("hiringComplete", course.isHiringComplete())
+                                .bind(course)
                                 .executeUpdate()
                                 .getKey();
 

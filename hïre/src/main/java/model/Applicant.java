@@ -2,31 +2,32 @@ package model;
 import java.util.*;
 
 public class Applicant extends User {
-    int id;
-    String name;
-    String email;
-    String jhed;
-    Course hiredCourse;
-    HashMap<Course, String> interestedCourses;
-    Course rankOne = null;
-    Course rankTwo = null;
-    Course rankThree = null;
+    private int id;
+    private String email;
+    private String jhed;
+    private Course hiredCourse;
+    private HashMap<Course, String> interestedCourses;
+    private Course rankOne = null;
+    private Course rankTwo = null;
+    private Course rankThree = null;
 
     //Supplementary Info To be Visible to Staff and Admin
-    String year;
-    String majorAndMinor;
-    Double gpa;
-    Double registeredCredits;
-    String referenceEmail;
-    String resumeLink;
-    List<Course> headCAInterest;
+    private String year;
+    private String majorAndMinor;
+    private Double gpa;
+    private Double registeredCredits;
+    private String referenceEmail;
+    private String resumeLink;
+    private List<Course> headCAInterest;
+
     //Fields only visible to Admin
-    boolean fws;
-    String studentStatus;
-    String mostRecentPayroll;
-    String otherJobs;
-    int hoursAvailable;
-    List<Course> previousCA;
+    private boolean fws;
+    private String studentStatus;
+    private String mostRecentPayroll;
+    private String otherJobs;
+    private int hoursAvailable;
+    private List<Course> previousCA;
+
 
 
     @Override
