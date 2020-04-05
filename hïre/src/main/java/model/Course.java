@@ -4,17 +4,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class Course implements Comparable<Course> {
-    int id;
-    String name;
-    String courseNumber;
-    List<StaffMember> instructors;
-    String semester;
-    boolean hiringComplete;
-    String courseDescription;
-    String interviewLink;
-    List<Applicant> hiredApplicants;
-    List<Applicant> interestedApplicants;
-    List<Applicant> shortlistedApplicants;
+    private int id;
+    private String name;
+    private String courseNumber;
+    private List<StaffMember> instructors;
+    private String semester;
+    private boolean hiringComplete;
+    private String courseDescription;
+    private String interviewLink;
+    private List<Applicant> hiredApplicants;
+    private List<Applicant> interestedApplicants;
+    private List<Applicant> shortlistedApplicants;
 
     public Course(String name, String courseNumber, List<StaffMember> instructors, String semester,
                   boolean hiringComplete, String courseDescription, String interviewLink,

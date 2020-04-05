@@ -73,10 +73,10 @@ public final class DaoFactory {
                 "rankOne INTEGER," +
                 "rankTwo INTEGER," +
                 "rankThree INTEGER," +
-                "FOREIGN KEY(hiredCourse) REFERENCES Courses(id) ON DELETE CASCADE" +
-                "FOREIGN KEY(rankOne) REFERENCES Courses(id) ON DELETE CASCADE" +
-                "FOREIGN KEY(rankTwo) REFERENCES Courses(id) ON DELETE CASCADE" +
-                "FOREIGN KEY(rankThree) REFERENCES Courses(id) ON DELETE CASCADE" +
+                "FOREIGN KEY(hiredCourse) REFERENCES Courses(id) ON DELETE CASCADE " +
+                "FOREIGN KEY(rankOne) REFERENCES Courses(id) ON DELETE CASCADE " +
+                "FOREIGN KEY(rankTwo) REFERENCES Courses(id) ON DELETE CASCADE " +
+                "FOREIGN KEY(rankThree) REFERENCES Courses(id) ON DELETE CASCADE " +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();

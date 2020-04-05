@@ -1,13 +1,14 @@
 package dao;
+
 import exception.DaoException;
-import model.Course;
 import model.Applicant;
+import model.Course;
 import model.StaffMember;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
-import java.util.*;
+import java.util.List;
 
 public class Sql2oCourseDao implements CourseDao {
 
@@ -20,8 +21,7 @@ public class Sql2oCourseDao implements CourseDao {
     public void add(Course course) throws DaoException {
         if (course.getId() != 0) {
             update(course);
-        }
-        else {
+        } else {
 
             try (Connection conn = sql2o.open()) {
                 String sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
@@ -29,12 +29,7 @@ public class Sql2oCourseDao implements CourseDao {
                         ":interviewLink);";
                 int id = (int) conn.createQuery(sql)
                         //.bind(course)
-                        .addParameter("name", course.getName())
-                        .addParameter("courseNumber", course.getCourseNumber())
-                        .addParameter("semester", course.getSemester())
-                        .addParameter("hiringComplete", course.isHiringComplete())
-                        .addParameter("courseDescription", course.getCourseDescription())
-                        .addParameter("interviewLink", course.getInterviewLink())
+                        .bind(course)
                         .executeUpdate()
                         .getKey();
                 course.setId(id);
@@ -46,8 +41,7 @@ public class Sql2oCourseDao implements CourseDao {
                             sql = "INSERT INTO StaffMembers(name, jhed) " +
                                     "VALUES(:name, :jhed);";
                             staffId = (int) conn.createQuery(sql)
-                                    .addParameter("name", staffMember.getName())
-                                    .addParameter("jhed", staffMember.getJhed())
+                                    .bind(staffMember)
                                     .executeUpdate()
                                     .getKey();
                             staffMember.setId(staffId);
@@ -63,74 +57,80 @@ public class Sql2oCourseDao implements CourseDao {
                 }
 
                 if (course.getHiredApplicants() != null) {
-                    for (Applicant hired : course.getHiredApplicants()) {
-                        int hiredId = hired.getId();
-                        if (hiredId == 0) {
-                            sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                    "VALUES(:name, :email, :jhed);";
-                            hiredId = (int) conn.createQuery(sql)
-                                    .addParameter("name", hired.getName())
-                                    .addParameter("email", hired.getEmail())
-                                    .addParameter("jhed", hired.getJhed())
+                    for (Applicant applicant : course.getHiredApplicants()) {
+                        int applicantId = applicant.getId();
+                        if (applicantId == 0) {
+                            sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
+                                    "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                                    "mostRecentPayroll, otherJobs, hoursAvailable) " +
+                                    "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
+                                    ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
+                                    ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
+                            applicantId = (int) conn.createQuery(sql)
+                                    .bind(applicant)
                                     .executeUpdate()
                                     .getKey();
-                            hired.setId(hiredId);
-                            hired.setHiredCourse(course);
+                            applicant.setId(applicantId);
+                            applicant.setHiredCourse(course);
                         }
 
                         sql = "INSERT INTO HiredApplicants_Courses(applicantId, courseId) " +
                                 "VALUES(:applicantId, :courseId);";
                         conn.createQuery(sql)
-                                .addParameter("applicantId", hired.getId())
+                                .addParameter("applicantId", applicant.getId())
                                 .addParameter("courseId", course.getId())
                                 .executeUpdate();
                     }
                 }
 
-                if(course.getInterestedApplicants() != null) {
-                    for (Applicant interested : course.getInterestedApplicants()) {
-                        int interestedId = interested.getId();
-                        if (interestedId == 0) {
-                            sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                    "VALUES(:name, :email, :jhed);";
-                            interestedId = (int) conn.createQuery(sql)
-                                    .addParameter("name", interested.getName())
-                                    .addParameter("email", interested.getEmail())
-                                    .addParameter("jhed", interested.getJhed())
+                if (course.getInterestedApplicants() != null) {
+                    for (Applicant applicant : course.getInterestedApplicants()) {
+                        int applicantId = applicant.getId();
+                        if (applicantId == 0) {
+                            sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
+                                    "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                                    "mostRecentPayroll, otherJobs, hoursAvailable) " +
+                                    "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
+                                    ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
+                                    ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
+                            applicantId = (int) conn.createQuery(sql)
+                                    .bind(applicant)
                                     .executeUpdate()
                                     .getKey();
-                            interested.setId(interestedId);
+                            applicant.setId(applicantId);
                         }
                         int courseId = course.getId();
                         sql = "INSERT INTO InterestedApplicants_Courses(applicantId, courseId, grade) " +
                                 "VALUES(:applicantId, :courseId, :grade);";
                         conn.createQuery(sql)
-                                .addParameter("applicantId", interested.getId())
+                                .addParameter("applicantId", applicant.getId())
                                 .addParameter("courseId", courseId)
-                                .addParameter("grade", interested.getInterestedCourses().get(course))
+                                .addParameter("grade", applicant.getInterestedCourses().get(course))
                                 .executeUpdate();
                     }
                 }
 
                 if (course.getShortlistedApplicants() != null) {
-                    for (Applicant shortlisted : course.getShortlistedApplicants()) {
-                        int shortlistedId = shortlisted.getId();
-                        if (shortlistedId == 0) {
-                            sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                    "VALUES(:name, :email, :jhed);";
-                            shortlistedId = (int) conn.createQuery(sql)
-                                    .addParameter("name", shortlisted.getName())
-                                    .addParameter("email", shortlisted.getEmail())
-                                    .addParameter("jhed", shortlisted.getJhed())
+                    for (Applicant applicant : course.getShortlistedApplicants()) {
+                        int applicantId = applicant.getId();
+                        if (applicantId == 0) {
+                            sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
+                                    "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                                    "mostRecentPayroll, otherJobs, hoursAvailable) " +
+                                    "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
+                                    ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
+                                    ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
+                            applicantId = (int) conn.createQuery(sql)
+                                    .bind(applicant)
                                     .executeUpdate()
                                     .getKey();
-                            shortlisted.setId(shortlistedId);
+                            applicant.setId(applicantId);
                         }
                         int courseId = course.getId();
                         sql = "INSERT INTO ShortlistedApplicants_Courses(applicantId, courseId) " +
                                 "VALUES(:applicantId, :courseId);";
                         conn.createQuery(sql)
-                                .addParameter("applicantId", shortlisted.getId())
+                                .addParameter("applicantId", applicant.getId())
                                 .addParameter("courseId", courseId)
                                 .executeUpdate();
                     }
@@ -164,20 +164,8 @@ public class Sql2oCourseDao implements CourseDao {
                     .executeAndFetch(StaffMember.class);
             course.setInstructors(staff);
 
-            for (StaffMember sm: staff) {
-                String jhed = sm.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                sm.setName((String) names.get(0).get("name"));
-            }
-
             //get corresponding hired applicants
-            sql = "SELECT A.name, A.email, A.jhed " +
+            sql = "SELECT A.* " +
                     "FROM HiredApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON HiredApplicants_Courses.applicantId = A.id " +
@@ -185,19 +173,6 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> hiredApps = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(Applicant.class);
-
-            for (Applicant app: hiredApps) {
-                String jhed = app.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                app.setName((String) names.get(0).get("name"));
-            }
-
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
@@ -209,23 +184,10 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> interestedApps = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(Applicant.class);
-
-            for (Applicant app: interestedApps) {
-                String jhed = app.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                app.setName((String) names.get(0).get("name"));
-            }
-
             course.setInterestedApplicants(interestedApps);
 
             //get corresponding shortlisted applicants
-            sql = "SELECT A.name, A.email, A.jhed " +
+            sql = "SELECT A.* " +
                     "FROM ShortlistedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON ShortlistedApplicants_Courses.applicantId = A.id " +
@@ -233,19 +195,6 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> shortlistedApps = conn.createQuery(sql)
                     .addParameter("courseId", id)
                     .executeAndFetch(Applicant.class);
-
-            for (Applicant app: shortlistedApps) {
-                String jhed = app.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                app.setName((String) names.get(0).get("name"));
-            }
-
             course.setShortlistedApplicants(shortlistedApps);
 
             return course;
@@ -275,23 +224,10 @@ public class Sql2oCourseDao implements CourseDao {
             List<StaffMember> staff = conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
                     .executeAndFetch(StaffMember.class);
-
-            for (StaffMember sm: staff) {
-                String jhed = sm.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                sm.setName((String) names.get(0).get("name"));
-            }
-
             course.setInstructors(staff);
 
             //get corresponding hired applicants
-            sql = "SELECT A.name, A.email, A.jhed " +
+            sql = "SELECT A.* " +
                     "FROM HiredApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON HiredApplicants_Courses.applicantId = A.id " +
@@ -299,19 +235,6 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> hiredApps = conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
                     .executeAndFetch(Applicant.class);
-
-            for (Applicant app: hiredApps) {
-                String jhed = app.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                app.setName((String) names.get(0).get("name"));
-            }
-
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
@@ -323,23 +246,10 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> interestedApps = conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
                     .executeAndFetch(Applicant.class);
-
-            for (Applicant app: interestedApps) {
-                String jhed = app.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                app.setName((String) names.get(0).get("name"));
-            }
-
             course.setInterestedApplicants(interestedApps);
 
             //get corresponding shortlisted applicants
-            sql = "SELECT A.name, A.email, A.jhed " +
+            sql = "SELECT A.* " +
                     "FROM ShortlistedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON ShortlistedApplicants_Courses.applicantId = A.id " +
@@ -347,19 +257,6 @@ public class Sql2oCourseDao implements CourseDao {
             List<Applicant> shortlistedApps = conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
                     .executeAndFetch(Applicant.class);
-
-            for (Applicant app: shortlistedApps) {
-                String jhed = app.getJhed();
-
-                // TODO: Figure out why executeAndFetch does not fill in name
-                sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                List<Map<String, Object>> names = conn.createQuery(sql)
-                        .addParameter("jhed", jhed)
-                        .executeAndFetchTable()
-                        .asList();
-                app.setName((String) names.get(0).get("name"));
-            }
-
             course.setShortlistedApplicants(shortlistedApps);
 
             return course;
@@ -370,21 +267,15 @@ public class Sql2oCourseDao implements CourseDao {
     }
 
     public void update(Course course) throws DaoException {
-        try(Connection conn = sql2o.open()) {
+        try (Connection conn = sql2o.open()) {
             String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, " +
                     "semester = :semester, hiringComplete = :hiringComplete, courseDescription = :courseDescription, " +
                     "interviewLink = :interviewLink WHERE id = :id";
             conn.createQuery(sql)
-                    .addParameter("name", course.getName())
-                    .addParameter("courseNumber", course.getCourseNumber())
-                    .addParameter("semester", course.getSemester())
-                    .addParameter("hiringComplete", course.isHiringComplete())
-                    .addParameter("courseDescription", course.getCourseDescription())
-                    .addParameter("interviewLink", course.getInterviewLink())
-                    .addParameter("id", course.getId())
+                    .bind(course)
                     .executeUpdate();
 
-            // Delete existing entries with this applicant in joining tables
+            // Delete existing entries with this course in joining tables
             sql = "DELETE FROM InterestedApplicants_Courses WHERE courseId = :courseId;";
             conn.createQuery(sql)
                     .addParameter("courseId", course.getId())
@@ -408,8 +299,7 @@ public class Sql2oCourseDao implements CourseDao {
                     if (staffId == 0) {
                         sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed);";
                         staffId = (int) conn.createQuery(sql)
-                                .addParameter("name", staffMember.getName())
-                                .addParameter("jhed", staffMember.getJhed())
+                                .bind(staffMember)
                                 .executeUpdate()
                                 .getKey();
                         staffMember.setId(staffId);
@@ -426,18 +316,20 @@ public class Sql2oCourseDao implements CourseDao {
             }
 
             if (course.getHiredApplicants() != null) {
-                for (Applicant hired : course.getHiredApplicants()) {
-                    int applicantId = hired.getId();
+                for (Applicant applicant : course.getHiredApplicants()) {
+                    int applicantId = applicant.getId();
                     if (applicantId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                "VALUES(:name, :email, :jhed);";
+                        sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
+                                "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                                "mostRecentPayroll, otherJobs, hoursAvailable) " +
+                                "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
+                                ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
+                                ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
                         applicantId = (int) conn.createQuery(sql)
-                                .addParameter("name", hired.getName())
-                                .addParameter("email", hired.getEmail())
-                                .addParameter("jhed", hired.getJhed())
+                                .bind(applicant)
                                 .executeUpdate()
                                 .getKey();
-                        hired.setId(applicantId);
+                        applicant.setId(applicantId);
                     }
 
                     int courseId = course.getId();
@@ -450,21 +342,21 @@ public class Sql2oCourseDao implements CourseDao {
                 }
             }
 
-            if(course.getInterestedApplicants() != null) {
-                // TODO: System.out.println(course.getInterestedApplicants());
-                for (Applicant interested : course.getInterestedApplicants()) {
-                    //TODO: System.out.println(interested.getInterestedCourses());
-                    int applicantId = interested.getId();
+            if (course.getInterestedApplicants() != null) {
+                for (Applicant applicant : course.getInterestedApplicants()) {
+                    int applicantId = applicant.getId();
                     if (applicantId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                "VALUES(:name, :email, :jhed);";
+                        sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
+                                "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                                "mostRecentPayroll, otherJobs, hoursAvailable) " +
+                                "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
+                                ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
+                                ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
                         applicantId = (int) conn.createQuery(sql)
-                                .addParameter("name", interested.getName())
-                                .addParameter("email", interested.getEmail())
-                                .addParameter("jhed", interested.getJhed())
+                                .bind(applicant)
                                 .executeUpdate()
                                 .getKey();
-                        interested.setId(applicantId);
+                        applicant.setId(applicantId);
                     }
 
                     int courseId = course.getId();
@@ -478,19 +370,21 @@ public class Sql2oCourseDao implements CourseDao {
                 }
             }
 
-            if(course.getShortlistedApplicants() != null) {
-                for (Applicant shortlisted : course.getShortlistedApplicants()) {
-                    int applicantId = shortlisted.getId();
+            if (course.getShortlistedApplicants() != null) {
+                for (Applicant applicant : course.getShortlistedApplicants()) {
+                    int applicantId = applicant.getId();
                     if (applicantId == 0) {
-                        sql = "INSERT INTO Applicants(name, email, jhed) " +
-                                "VALUES(:name, :email, :jhed);";
+                        sql = "INSERT INTO Applicants(name, email, jhed, year, majorAndMinor, gpa, " +
+                                "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                                "mostRecentPayroll, otherJobs, hoursAvailable) " +
+                                "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
+                                ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
+                                ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
                         applicantId = (int) conn.createQuery(sql)
-                                .addParameter("name", shortlisted.getName())
-                                .addParameter("email", shortlisted.getEmail())
-                                .addParameter("jhed", shortlisted.getJhed())
+                                .bind(applicant)
                                 .executeUpdate()
                                 .getKey();
-                        shortlisted.setId(applicantId);
+                        applicant.setId(applicantId);
                     }
 
                     int courseId = course.getId();
@@ -508,9 +402,9 @@ public class Sql2oCourseDao implements CourseDao {
         }
     }
 
-    public void delete(Course course) throws DaoException{
+    public void delete(Course course) throws DaoException {
         int id = course.getId();
-        try(Connection conn = sql2o.open()) {
+        try (Connection conn = sql2o.open()) {
             String sql = "DELETE FROM StaffMembers_Courses WHERE courseId = :id";
             conn.createQuery(sql)
                     .addParameter("id", id)
@@ -535,7 +429,7 @@ public class Sql2oCourseDao implements CourseDao {
             conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
-        } catch(Sql2oException e) {
+        } catch (Sql2oException e) {
             throw new DaoException("Unable to delete course", e);
         }
     }
@@ -544,8 +438,7 @@ public class Sql2oCourseDao implements CourseDao {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Courses;";
             List<Course> courses = conn.createQuery(sql).executeAndFetch(Course.class);
-            for (int i = 0; i < courses.size(); i++) {
-                Course c = courses.get(i);
+            for (Course course: courses) {
                 //get corresponding staff members
                 sql = "SELECT StaffMembers.* " +
                         "FROM StaffMembers_Courses " +
@@ -553,100 +446,46 @@ public class Sql2oCourseDao implements CourseDao {
                         "ON StaffMembers_Courses.staffId = StaffMembers.id " +
                         "WHERE StaffMembers_Courses.courseId = :courseId";
                 List<StaffMember> staff = conn.createQuery(sql)
-                        .addParameter("courseId", c.getId())
+                        .addParameter("courseId", course.getId())
                         .executeAndFetch(StaffMember.class);
-
-                for (StaffMember sm: staff) {
-                    String jhed = sm.getJhed();
-
-                    // TODO: Figure out why executeAndFetch does not fill in name
-                    sql = "SELECT name FROM StaffMembers WHERE jhed = :jhed";
-                    List<Map<String, Object>> names = conn.createQuery(sql)
-                            .addParameter("jhed", jhed)
-                            .executeAndFetchTable()
-                            .asList();
-                    sm.setName((String) names.get(0).get("name"));
-                }
-
-                c.setInstructors(staff);
+                course.setInstructors(staff);
 
                 //get corresponding hired applicants
-                sql = "SELECT A.name, A.email, A.jhed " +
+                sql = "SELECT A.* " +
                         "FROM HiredApplicants_Courses " +
                         "INNER JOIN Applicants A " +
                         "ON HiredApplicants_Courses.applicantId = A.id " +
                         "WHERE HiredApplicants_Courses.courseId = :courseId";
                 List<Applicant> hiredApps = conn.createQuery(sql)
-                        .addParameter("courseId", c.getId())
+                        .addParameter("courseId", course.getId())
                         .executeAndFetch(Applicant.class);
-
-                for (Applicant app: hiredApps) {
-                    String jhed = app.getJhed();
-
-                    // TODO: Figure out why executeAndFetch does not fill in name
-                    sql = "SELECT name " +
-                            "FROM Applicants " +
-                            "WHERE jhed = :jhed";
-                    List<Map<String, Object>> names = conn.createQuery(sql)
-                            .addParameter("jhed", jhed)
-                            .executeAndFetchTable()
-                            .asList();
-                    app.setName((String) names.get(0).get("name"));
-                }
-
-                c.setHiredApplicants(hiredApps);
+                course.setHiredApplicants(hiredApps);
 
                 // get corresponding interested applicants
-                sql = "SELECT A.name, A.email, A.jhed " +
+                sql = "SELECT A.* " +
                         "FROM InterestedApplicants_Courses " +
                         "INNER JOIN Applicants A " +
                         "ON InterestedApplicants_Courses.applicantId = A.id " +
                         "WHERE InterestedApplicants_Courses.courseId = :courseId";
                 List<Applicant> interestedApps = conn.createQuery(sql)
-                        .addParameter("courseId", c.getId())
+                        .addParameter("courseId", course.getId())
                         .executeAndFetch(Applicant.class);
-
-                for (Applicant app: interestedApps) {
-                    String jhed = app.getJhed();
-
-                    // TODO: Figure out why executeAndFetch does not fill in name
-                    sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                    List<Map<String, Object>> names = conn.createQuery(sql)
-                            .addParameter("jhed", jhed)
-                            .executeAndFetchTable()
-                            .asList();
-                    app.setName((String) names.get(0).get("name"));
-                }
-
-                c.setInterestedApplicants(interestedApps);
+                course.setInterestedApplicants(interestedApps);
 
                 //get corresponding shortlisted applicants
-                sql = "SELECT A.name, A.email, A.jhed " +
+                sql = "SELECT A.* " +
                         "FROM ShortlistedApplicants_Courses " +
                         "INNER JOIN Applicants A " +
                         "ON ShortlistedApplicants_Courses.applicantId = A.id " +
                         "WHERE ShortlistedApplicants_Courses.courseId = :courseId";
                 List<Applicant> shortlistedApps = conn.createQuery(sql)
-                        .addParameter("courseId", c.getId())
+                        .addParameter("courseId", course.getId())
                         .executeAndFetch(Applicant.class);
-
-                for (Applicant app: shortlistedApps) {
-                    String jhed = app.getJhed();
-
-                    // TODO: Figure out why executeAndFetch does not fill in name
-                    sql = "SELECT name FROM Applicants WHERE jhed = :jhed";
-                    List<Map<String, Object>> names = conn.createQuery(sql)
-                            .addParameter("jhed", jhed)
-                            .executeAndFetchTable()
-                            .asList();
-                    app.setName((String) names.get(0).get("name"));
-                }
-
-                c.setShortlistedApplicants(shortlistedApps);
+                course.setShortlistedApplicants(shortlistedApps);
             }
 
             return courses;
-        } catch(Sql2oException e) {
+        } catch (Sql2oException e) {
             throw new DaoException("unable to find all courses", e);
         }
     }

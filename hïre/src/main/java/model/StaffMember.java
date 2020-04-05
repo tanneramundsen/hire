@@ -2,10 +2,9 @@ package model;
 import java.util.*;
 
 public class StaffMember extends User {
-    int id;
-    String name;
-    String jhed;
-    List<Course> courses;
+    private int id;
+    private String jhed;
+    private List<Course> courses;
 
     public List<Applicant> getCAsForCourse(Course course) {
         return null;
