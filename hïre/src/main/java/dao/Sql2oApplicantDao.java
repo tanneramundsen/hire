@@ -241,7 +241,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public Applicant read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Applicants WHERE id = :id;";
+            String sql = "SELECT id, name, jhed, year, majorAndMinor, gpa, " +
+                    "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                    "mostRecentPayroll, otherJobs, hoursAvailable " +
+                    "FROM Applicants " +
+                    "WHERE id = :id;";
             Applicant applicant = conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeAndFetchFirst(Applicant.class);
@@ -333,7 +337,10 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public Applicant read(String jhed) throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Applicants WHERE jhed = :jhed;";
+            String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, " +
+                "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                "mostRecentPayroll, otherJobs, hoursAvailable " +
+                "FROM Applicants WHERE jhed = :jhed;";
             Applicant applicant = conn.createQuery(sql)
                     .addParameter("jhed", jhed)
                     .executeAndFetchFirst(Applicant.class);
@@ -425,7 +432,10 @@ public class Sql2oApplicantDao implements ApplicantDao {
     @Override
     public List<Applicant> findAll() throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT * FROM Applicants;";
+            String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, " +
+                    "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
+                    "mostRecentPayroll, otherJobs, hoursAvailable " +
+                    "FROM Applicants WHERE jhed = :jhed;";
             List<Applicant> applicants = conn.createQuery(sql)
                     .executeAndFetch(Applicant.class);
             for (Applicant applicant : applicants) {
@@ -501,7 +511,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public List<Applicant> findByCourseId(int courseId) throws DaoException {
         try(Connection conn = sql2o.open()) {
-            String sql = "SELECT A.* " +
+            String sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                     "FROM Applicants A INNER JOIN InterestedApplicants_Courses " +
                     "ON A.id = InterestedApplicants_Courses.applicantId " +
                     "WHERE InterestedApplicants_Courses.courseId = :courseId";

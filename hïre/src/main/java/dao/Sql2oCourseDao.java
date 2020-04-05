@@ -165,7 +165,9 @@ public class Sql2oCourseDao implements CourseDao {
             course.setInstructors(staff);
 
             //get corresponding hired applicants
-            sql = "SELECT A.* " +
+            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                     "FROM HiredApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON HiredApplicants_Courses.applicantId = A.id " +
@@ -176,7 +178,9 @@ public class Sql2oCourseDao implements CourseDao {
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
-            sql = "SELECT A.* " +
+            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                     "FROM InterestedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON InterestedApplicants_Courses.applicantId = A.id " +
@@ -187,7 +191,9 @@ public class Sql2oCourseDao implements CourseDao {
             course.setInterestedApplicants(interestedApps);
 
             //get corresponding shortlisted applicants
-            sql = "SELECT A.* " +
+            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                     "FROM ShortlistedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON ShortlistedApplicants_Courses.applicantId = A.id " +
@@ -227,7 +233,9 @@ public class Sql2oCourseDao implements CourseDao {
             course.setInstructors(staff);
 
             //get corresponding hired applicants
-            sql = "SELECT A.* " +
+            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                     "FROM HiredApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON HiredApplicants_Courses.applicantId = A.id " +
@@ -238,7 +246,9 @@ public class Sql2oCourseDao implements CourseDao {
             course.setHiredApplicants(hiredApps);
 
             //get corresponding interested applicants
-            sql = "SELECT A.* " +
+            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                     "FROM InterestedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON InterestedApplicants_Courses.applicantId = A.id " +
@@ -249,7 +259,9 @@ public class Sql2oCourseDao implements CourseDao {
             course.setInterestedApplicants(interestedApps);
 
             //get corresponding shortlisted applicants
-            sql = "SELECT A.* " +
+            sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                    "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                    "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                     "FROM ShortlistedApplicants_Courses " +
                     "INNER JOIN Applicants A " +
                     "ON ShortlistedApplicants_Courses.applicantId = A.id " +
@@ -451,7 +463,9 @@ public class Sql2oCourseDao implements CourseDao {
                 course.setInstructors(staff);
 
                 //get corresponding hired applicants
-                sql = "SELECT A.* " +
+                sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                        "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                        "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                         "FROM HiredApplicants_Courses " +
                         "INNER JOIN Applicants A " +
                         "ON HiredApplicants_Courses.applicantId = A.id " +
@@ -462,7 +476,9 @@ public class Sql2oCourseDao implements CourseDao {
                 course.setHiredApplicants(hiredApps);
 
                 // get corresponding interested applicants
-                sql = "SELECT A.* " +
+                sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                        "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                        "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                         "FROM InterestedApplicants_Courses " +
                         "INNER JOIN Applicants A " +
                         "ON InterestedApplicants_Courses.applicantId = A.id " +
@@ -473,7 +489,9 @@ public class Sql2oCourseDao implements CourseDao {
                 course.setInterestedApplicants(interestedApps);
 
                 //get corresponding shortlisted applicants
-                sql = "SELECT A.* " +
+                sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
+                        "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
+                        "A.studentStatus, A.mostRecentPayroll, A.otherJobs, A.hoursAvailable " +
                         "FROM ShortlistedApplicants_Courses " +
                         "INNER JOIN Applicants A " +
                         "ON ShortlistedApplicants_Courses.applicantId = A.id " +
