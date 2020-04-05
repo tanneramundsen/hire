@@ -51,47 +51,111 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                     "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                     ":interviewLink);";
-                            int sId = (int) conn.createQuery(sql)
+                            courseId = (int) conn.createQuery(sql)
                                     .bind(course)
                                     .executeUpdate()
                                     .getKey();
-                            course.setId(sId);
+                            course.setId(courseId);
                         }
                         sql = "INSERT INTO Applicants_Courses(applicantId, courseId, interested, grade) " +
-                                "VALUES(:applicantId, :courseId, :interested, :grade);";
+                                "VALUES(:applicantId, :courseId, 1, :grade);";
                         conn.createQuery(sql)
-                                .addParameter("applicantId", applicant.getId())
+                                .addParameter("applicantId", id)
                                 .addParameter("courseId", course.getId())
-                                .addParameter("interested", true)
                                 .addParameter("grade", grade)
                                 .executeUpdate();
                     }
                 }
 
-                if (applicant.getHiredCourse() != null) {
-                    Course course = applicant.getHiredCourse();
-                    sql = "UPDATE Applicants_Courses " +
-                            "SET hired = :hired " +
-                            "WHERE applicantId = :applicantId " +
-                            "AND courseId = :courseId;";
-                    conn.createQuery(sql)
-                            .addParameter("hired", true)
-                            .addParameter("applicantId", applicant.getId())
-                            .addParameter("courseId", course.getId())
-                            .executeUpdate();
+                if (applicant.getPreviousCA() != null) {
+                    for (Course course: applicant.getPreviousCA()) {
+                        int courseId = course.getId();
+                        if (courseId == 0) {
+                            sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
+                                    "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
+                                    ":interviewLink);";
+                            courseId = (int) conn.createQuery(sql)
+                                    .bind(course)
+                                    .executeUpdate()
+                                    .getKey();
+                            course.setId(courseId);
+
+                            sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
+                                    "VALUES(:applicantId, :courseId, 1);";
+                            conn.createQuery(sql)
+                                    .addParameter("applicantId", id)
+                                    .addParameter("courseId", courseId)
+                                    .executeUpdate();
+                        } else {
+                            sql = "UPDATE Applicants_Courses " +
+                                    "SET previousCA = 1 " +
+                                    "WHERE applicantId = :applicantId " +
+                                    "AND courseId = :courseId;";
+                            conn.createQuery(sql)
+                                    .addParameter("applicantId", id)
+                                    .addParameter("courseId", courseId)
+                                    .executeUpdate();
+                        }
+                    }
                 }
 
-                List<Course> courses = applicant.getHeadCAInterest();
-                if (courses != null) {
-                    for (Course course: courses) {
+                if (applicant.getHeadCAInterest() != null) {
+                    for (Course course: applicant.getHeadCAInterest()) {
+                        int courseId = course.getId();
+                        if (courseId == 0) {
+                            sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription interviewLink) " +
+                                    "VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, :interviewLink);";
+                            courseId = (int) conn.createQuery(sql)
+                                    .bind(course)
+                                    .executeUpdate()
+                                    .getKey();
+                            course.setId(courseId);
+
+                            sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
+                                    "VALUES(:applicantId, :courseId, 1);";
+                            conn.createQuery(sql)
+                                    .addParameter("applicantId", id)
+                                    .addParameter("courseId", courseId)
+                                    .executeUpdate();
+                        } else {
+                            sql = "UPDATE Applicants_Courses " +
+                                    "SET headCAInterest = 1 " +
+                                    "WHERE applicantId = :applicantId " +
+                                    "AND courseId = :courseId;";
+                            conn.createQuery(sql)
+                                    .addParameter("applicantId", id)
+                                    .addParameter("courseId", courseId)
+                                    .executeUpdate();
+                        }
+                    }
+                }
+
+                if (applicant.getHiredCourse() != null) {
+                    Course course = applicant.getHiredCourse();
+                    int courseId = course.getId();
+                    if (courseId == 0) {
+                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, interviewLink) " +
+                                 "VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, :interviewLink);";
+                         courseId = (int) conn.createQuery(sql)
+                                 .bind(course)
+                                 .executeUpdate()
+                                 .getKey();
+                         course.setId(courseId);
+
+                         sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired) " +
+                                 "VALUES(:applicantId, :courseId, 1);";
+                         conn.createQuery(sql)
+                                 .addParameter("applicantId", id)
+                                 .addParameter("courseId", courseId)
+                                 .executeUpdate();
+                    } else {
                         sql = "UPDATE Applicants_Courses " +
-                                "SET headCAInterest = :headCAInterest " +
+                                "SET hired = 1 " +
                                 "WHERE applicantId = :applicantId " +
                                 "AND courseId = :courseId;";
                         conn.createQuery(sql)
-                                .addParameter("headCAInterest", true)
-                                .addParameter("applicantId", applicant.getId())
-                                .addParameter("courseId", course.getId())
+                                .addParameter("applicantId", id)
+                                .addParameter("courseId", courseId)
                                 .executeUpdate();
                     }
                 }
@@ -114,6 +178,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .bind(applicant)
                     .executeUpdate();
 
+            int id = applicant.getId();
+
             // Update rankOne, rankTwo, rankThree
             updateRankedCourseList(applicant, conn);
 
@@ -121,7 +187,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             sql = "DELETE FROM Applicants_Courses " +
                     "WHERE applicantId = :applicantId;";
             conn.createQuery(sql)
-                    .addParameter("applicantId", applicant.getId())
+                    .addParameter("applicantId", id)
                     .executeUpdate();
 
             // Fresh update to joining tables
@@ -132,7 +198,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     Course course = entry.getKey();
                     String grade = entry.getValue();
                     int courseId = course.getId();
-                    if (course.getId() == 0) {
+                    if (courseId == 0) {
                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                 "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                 ":interviewLink);";
@@ -150,13 +216,44 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
                 for (int i = 0; i < interestedCourses.size(); i++) {
                     sql = "INSERT INTO Applicants_Courses(applicantId, courseId, interested, grade) " +
-                            "VALUES(:applicantId, :courseId, :interested, :grade);";
+                            "VALUES(:applicantId, :courseId, 1, :grade);";
                     conn.createQuery(sql)
-                            .addParameter("applicantId", applicant.getId())
+                            .addParameter("applicantId", id)
                             .addParameter("courseId", interestedCourses.get(i).getId())
-                            .addParameter("interested", true)
                             .addParameter("grade", gradesInterested.get(i))
                             .executeUpdate();
+                }
+            }
+
+            if (applicant.getPreviousCA() != null) {
+                for (Course course: applicant.getPreviousCA()) {
+                    int courseId = course.getId();
+                    if (courseId == 0) {
+                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
+                                "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
+                                ":interviewLink);";
+                        courseId = (int) conn.createQuery(sql)
+                                .bind(course)
+                                .executeUpdate()
+                                .getKey();
+                        course.setId(courseId);
+
+                        sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
+                                "VALUES(:applicantId, :courseId, 1);";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", id)
+                                .addParameter("courseId", courseId)
+                                .executeUpdate();
+                    } else {
+                        sql = "UPDATE Applicants_Courses " +
+                                "SET previousCA = 1 " +
+                                "WHERE applicantId = :applicantId " +
+                                "AND courseId = :courseId;";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", id)
+                                .addParameter("courseId", courseId)
+                                .executeUpdate();
+                    }
                 }
             }
 
@@ -171,25 +268,22 @@ public class Sql2oApplicantDao implements ApplicantDao {
                                 .bind(course)
                                 .executeUpdate()
                                 .getKey();
-
                         course.setId(courseId);
 
-                        sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest)" +
-                                "VALUES(:applicantId, :courseId, :headCAInterest);";
+                        sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
+                                "VALUES(:applicantId, :courseId, 1);";
                         conn.createQuery(sql)
-                                .addParameter("applicantId", applicant.getId())
-                                .addParameter("courseId", course.getId())
-                                .addParameter("headCAInterest", true)
+                                .addParameter("applicantId", id)
+                                .addParameter("courseId", courseId)
                                 .executeUpdate();
                     } else {
                         sql = "UPDATE Applicants_Courses " +
-                                "SET headCAInterest = :headCAInterest " +
+                                "SET headCAInterest = 1 " +
                                 "WHERE applicantId = :applicantId " +
                                 "AND courseId = :courseId;";
                         conn.createQuery(sql)
-                                .addParameter("headCAInterest", true)
-                                .addParameter("applicantId", applicant.getId())
-                                .addParameter("courseId", course.getId())
+                                .addParameter("applicantId", id)
+                                .addParameter("courseId", courseId)
                                 .executeUpdate();
                     }
                 }
@@ -210,20 +304,18 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     hiredCourse.setId(hiredCourseId);
 
                     sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired)" +
-                            "VALUES(:applicantId, :courseId, :hired);";
+                            "VALUES(:applicantId, :courseId, 1);";
                     conn.createQuery(sql)
-                            .addParameter("applicantId", applicant.getId())
+                            .addParameter("applicantId", id)
                             .addParameter("courseId", hiredCourseId)
-                            .addParameter("hired", true)
                             .executeUpdate();
                 } else {
                     sql = "UPDATE Applicants_Courses " +
-                            "SET hired = :hired " +
+                            "SET hired = 1 " +
                             "WHERE applicantId = :applicantId " +
                             "AND courseId = :courseId;";
                     conn.createQuery(sql)
-                            .addParameter("hired", true)
-                            .addParameter("applicantId", applicant.getId())
+                            .addParameter("applicantId", id)
                             .addParameter("courseId", hiredCourseId)
                             .executeUpdate();
                 }
@@ -271,17 +363,6 @@ public class Sql2oApplicantDao implements ApplicantDao {
             applicant.setRankTwo(rankedCourses[1]);
             applicant.setRankThree(rankedCourses[2]);
 
-            // Get headCAInterest from joining table
-            sql = "SELECT C.* " +
-                    "FROM Applicants_Courses INNER JOIN Courses C " +
-                    "ON Applicants_Courses.courseId = C.id " +
-                    "WHERE Applicants_Courses.applicantId = :applicantId " +
-                    "AND Applicants_Courses.headCAInterest = 1;";
-            List<Course> headCAInterestCourses = conn.createQuery(sql)
-                    .addParameter("applicantId", id)
-                    .executeAndFetch(Course.class);
-            applicant.setHeadCAInterest(headCAInterestCourses);
-
             // Get corresponding interestedCourses according to joining table
             sql = "SELECT C.* " +
                     "FROM Applicants_Courses INNER JOIN Courses C " +
@@ -310,6 +391,28 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             applicant.setInterestedCourses(interestedCourses);
 
+            // Add previous CA experience
+            sql = "SELECT C.* " +
+                    "FROM Applicants_Courses INNER JOIN Courses C " +
+                    "ON Applicants_Courses.courseId = C.id " +
+                    "WHERE Applicants_Courses.applicantId = :applicantId " +
+                    "AND Applicants_Courses.previousCA = 1;";
+            List<Course> previousCA = conn.createQuery(sql)
+                    .addParameter("applicantId", id)
+                    .executeAndFetch(Course.class);
+            applicant.setPreviousCA(previousCA);
+
+            // Get headCAInterest from joining table
+            sql = "SELECT C.* " +
+                    "FROM Applicants_Courses INNER JOIN Courses C " +
+                    "ON Applicants_Courses.courseId = C.id " +
+                    "WHERE Applicants_Courses.applicantId = :applicantId " +
+                    "AND Applicants_Courses.headCAInterest = 1;";
+            List<Course> headCAInterestCourses = conn.createQuery(sql)
+                    .addParameter("applicantId", id)
+                    .executeAndFetch(Course.class);
+            applicant.setHeadCAInterest(headCAInterestCourses);
+
             // Get HiredCourse
             sql = "SELECT C.* " +
                     "FROM Applicants_Courses INNER JOIN Courses C " +
@@ -337,7 +440,6 @@ public class Sql2oApplicantDao implements ApplicantDao {
             Applicant applicant = conn.createQuery(sql)
                     .addParameter("jhed", jhed)
                     .executeAndFetchFirst(Applicant.class);
-
             if (applicant == null) {
                 return null;
             }
@@ -350,17 +452,6 @@ public class Sql2oApplicantDao implements ApplicantDao {
             applicant.setRankTwo(rankedCourses[1]);
             applicant.setRankThree(rankedCourses[2]);
 
-            // headCAInterest Table
-            sql = "SELECT C.* " +
-                    "FROM Applicants_Courses INNER JOIN Courses C " +
-                    "ON Applicants_Courses.courseId = C.id " +
-                    "WHERE Applicants_Courses.applicantId = :applicantId " +
-                    "AND Applicants_Courses.headCAInterest = 1;";
-            List<Course> headCAInterestCourses = conn.createQuery(sql)
-                    .addParameter("applicantId", id)
-                    .executeAndFetch(Course.class);
-            applicant.setHeadCAInterest(headCAInterestCourses);
-
             // Get corresponding interestedCourses according to joining table
             sql = "SELECT C.* " +
                     "FROM Applicants_Courses INNER JOIN Courses C " +
@@ -368,7 +459,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     "WHERE Applicants_Courses.applicantId = :applicantId " +
                     "AND Applicants_Courses.interested = 1;";
             List<Course> courses = conn.createQuery(sql)
-                    .addParameter("applicantId", applicant.getId())
+                    .addParameter("applicantId", id)
                     .executeAndFetch(Course.class);
 
             // Initialize HashMap and append (Course, grade) pairs one by one
@@ -380,7 +471,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         "AND courseId = :courseId " +
                         "AND interested = 1;";
                 List<Map<String, Object>> grades = conn.createQuery(sql)
-                        .addParameter("applicantId", applicant.getId())
+                        .addParameter("applicantId", id)
                         .addParameter("courseId", course.getId())
                         .executeAndFetchTable()
                         .asList();
@@ -389,13 +480,36 @@ public class Sql2oApplicantDao implements ApplicantDao {
             }
             applicant.setInterestedCourses(interestedCourses);
 
+            // Add previous CA experience
+            sql = "SELECT C.* " +
+                    "FROM Applicants_Courses INNER JOIN Courses C " +
+                    "ON Applicants_Courses.courseId = C.id " +
+                    "WHERE Applicants_Courses.applicantId = :applicantId " +
+                    "AND Applicants_Courses.previousCA = 1;";
+            List<Course> previousCA = conn.createQuery(sql)
+                    .addParameter("applicantId", id)
+                    .executeAndFetch(Course.class);
+            applicant.setPreviousCA(previousCA);
+
+            // headCAInterest Table
+            sql = "SELECT C.* " +
+                    "FROM Applicants_Courses INNER JOIN Courses C " +
+                    "ON Applicants_Courses.courseId = C.id " +
+                    "WHERE Applicants_Courses.applicantId = :applicantId " +
+                    "AND Applicants_Courses.headCAInterest = 1;";
+            List<Course> headCAInterestCourses = conn.createQuery(sql)
+                    .addParameter("applicantId", id)
+                    .executeAndFetch(Course.class);
+            applicant.setHeadCAInterest(headCAInterestCourses);
+
+            // Hired course
             sql = "SELECT C.* " +
                     "FROM Applicants_Courses INNER JOIN Courses C " +
                     "ON Applicants_Courses.courseId = C.id " +
                     "WHERE Applicants_Courses.applicantId = :applicantId " +
                     "AND Applicants_Courses.hired = 1;";
             Course hiredCourse = (conn.createQuery(sql)
-                    .addParameter("applicantId", applicant.getId())
+                    .addParameter("applicantId", id)
                     .executeAndFetchFirst(Course.class));
             applicant.setHiredCourse(hiredCourse);
             return applicant;
