@@ -64,3 +64,28 @@ It does not need to be exhustive.
   - In student view, have form at bottom that allows adding interested applicants to shortlist
     - Button that says “add to shortlist”
     - Redirect to courseview with the updated shortlist column
+    
+    # Retrospective
+    
+    - Items we successfully delivered:
+        - Added more fields to the applicant profile that rounds out their application
+        - Added fields in Applicant class and updated our database to reflect the changes
+        - Added course profile pages that are visible to both students and professors. 
+        - Professors can now add descriptions of the course/responsibilities of the job of CAing that course
+        - Applicants can view the course description
+        - We added the ability for professors and students to add courses in their landing page - previously, all courses had to be added during sign-up and couldn’t be added later
+        - Shortlisting
+            - Added shortlists for each course in the POJOs and databases
+            - Gave professors the ability to add applicants they are interested in to a shortlist for each course they teach
+            - Happens in the course profile page visible to professors
+            - Students can be added either via their profile page or via the course profile page
+    - Items we did not successfully deliver
+        - We did not get to add the feature for professors to send out mass emails to applicants they want to interview. Although we did make it possible for professors to add links to 3-rd party interview-scheduling sites for each of their courses and they can see applicant’s email by clicking on their profile.
+        - We did not implement the backend part of letting applicants see when their application has moved forward (to the interview stage or hired stage). Although we did create the frontend view for that and will fix the backend functionality in iteration 4.
+    - Challenges we faced
+        - Our DAOs and databases are getting a bit cumbersome. Each time we add a new field to any of the classes, it is hard to scale our database to reflect the new additions.
+            - In iteration 4 we are doing a major refactoring of our DAOs and database to simplify the schema and make the task of adding/removing fields in our classes as simple as changing 1 SQL query rather than changing all of our SQL queries and database schema.
+        - We didn’t realize how short iteration 3 was and so we were not able to complete the two features discussed in item II above.
+            - In future iterations, we will be more mindful of how much time we have and limit the number of new features we try to add at once.
+
+
