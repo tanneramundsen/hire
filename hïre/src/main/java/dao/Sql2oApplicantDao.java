@@ -430,8 +430,6 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     .addParameter("jhed", jhed)
                     .executeAndFetchFirst(Applicant.class);
 
-            System.out.println(applicant);
-
             if (applicant == null) {
                 return null;
             }

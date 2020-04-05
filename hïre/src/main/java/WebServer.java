@@ -158,7 +158,7 @@ public class WebServer {
             return new ModelAndView(model, "landing.hbs");
         }, new HandlebarsTemplateEngine());
 
-        post("/landing", (request, response) -> {
+        post("/addcourse", (request, response) -> {
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
             String[] newCourses = request.queryParamsValues("newCourses");
@@ -183,6 +183,41 @@ public class WebServer {
                 for (String course: newCourses) {
                     Course newCourse = courseDao.read(course);
                     coursesHashMap.put(newCourse, "Not Taken");
+                }
+                a.setInterestedCourses(coursesHashMap);
+                applicantDao.update(a);
+            }
+            response.cookie("jhed", jhed);
+            response.cookie("profileType", profileType);
+            response.redirect("/landing");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+        post("/deletecourse", (request, response) -> {
+            String jhed = request.cookie("jhed");
+            String profileType = request.cookie("profileType");
+            String[] newCourses = request.queryParamsValues("deleteCourses");
+
+            // use information to create either an applicant or staff member
+            if (profileType.equals("Professor")) {
+                StaffMember s = staffMemberDao.read(jhed);
+                List<Course> courseList = s.getCourses();
+                for (String course: newCourses) {
+                    Course newCourse = courseDao.read(course);
+                    List<StaffMember> instructors = newCourse.getInstructors();
+                    instructors.remove(s);
+                    newCourse.setInstructors(instructors);
+                    courseDao.update(newCourse);
+                    courseList.remove(newCourse);
+                }
+                s.setCourses(courseList);
+                staffMemberDao.update(s);
+            } else {
+                Applicant a = applicantDao.read(jhed);
+                HashMap<Course, String> coursesHashMap = a.getInterestedCourses();
+                for (String course: newCourses) {
+                    Course newCourse = courseDao.read(course);
+                    coursesHashMap.remove(newCourse);
                 }
                 a.setInterestedCourses(coursesHashMap);
                 applicantDao.update(a);
