@@ -109,6 +109,24 @@
 
 <section class="section" id="about">
     <div class="container">
+        <form action="/{{id}}/courseinfo/setFilters" method=post>
+        <div class="row">
+            <div class="col">
+                <h2>Filter interested applicants by...</h2>
+                    <input name="filterOptions" type="checkbox" id="prevCAExperience" value="prevCAExperience">
+                    <label for="prevCAExperience"> has previous CA experience</label><br>
+                    <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse">
+                    <label for="CAdThisCourse"> has previously CA'd for {{name}}</label><br>
+                    <input name="filterOptions" type="checkbox" id="CSMajor" value="CSMajor">
+                    <label for="CSMajor"> is a CS major</label><br>
+
+            </div>
+            <div class="col">
+                <button type="submit" id="form-submit" class="main-button">Filter<i class="fa fa-arrow-right"></i></button><br>
+                <button type="submit" id="form-submit" class="delete-button">Remove Filters<i class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+        </form>
         <div class="row">
             <div class="col">
                 <h2>Interested Applicants</h2>

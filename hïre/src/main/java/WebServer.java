@@ -281,6 +281,18 @@ public class WebServer {
             return null;
         }, new HandlebarsTemplateEngine());
 
+        post("/:id/courseinfo/setFilters", (request, response) -> {
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+            List<Applicant> interestedApplicants = course.getInterestedApplicants();
+            String[] shortList = request.queryParamsValues("filterOptions");
+
+
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
+
         post("/:id/courseinfo/addtoshortlist", (request, response) -> {
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
