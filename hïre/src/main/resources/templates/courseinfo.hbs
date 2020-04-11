@@ -153,6 +153,9 @@
                             <label for="checkedFromShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
                         {{/each}}
                     </div>
+                    <div>
+                        <button type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
+                    </div>
                     <!-- hi tanner! since we'll need two buttons associated with this form, i made the form action
                     adding to hired, and the following button is the action delete from shortlist so the default
                      action is adding to hired but if they click the following button, i treat it as deleting from
@@ -165,11 +168,17 @@
             <div class="col">
                 <h2>Hired Applicants</h2>
                 <br>
-                <ul>
-                    {{#each hiredApplicants}}
-                        <li>{{name}}</li>
-                    {{/each}}
-                </ul>
+                <form action="/{{id}}/courseinfo/deletehired" method="post">
+                    <div>
+                        {{#each hiredApplicants}}
+                            <input name="selectedForHired" type="checkbox" value="{{name}}">
+                            <label for="selectedForHired"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                        {{/each}}
+                    </div>
+                    <div>
+                        <button type="submit" id="form-submit" class="delete-button">Delete from hired<i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

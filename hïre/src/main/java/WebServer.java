@@ -247,6 +247,8 @@ public class WebServer {
             List<Applicant> interestedApplicants = course.getInterestedApplicants();
             List<Applicant> hiredApplicants = course.getHiredApplicants();
             List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
+            //System.out.println("shortlisted applicants: " + shortlistedApplicants);
+            //System.out.println("hired applicants: " + hiredApplicants);
 
             /* later can put in semester */
             model.put("name", name);
@@ -316,6 +318,32 @@ public class WebServer {
             return null;
         }, new HandlebarsTemplateEngine());
 
+        post("/:id/courseinfo/addtohired", (request, response) -> {
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+            List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
+            List<Applicant> hiredApplicants = course.getHiredApplicants();
+            String[] hiredList = request.queryParamsValues("checkedFromShortList");
+            if (!ArrayUtils.isEmpty(hiredList)) {
+                List<String> selectedHiredList = Arrays.asList(hiredList);
+                for (Applicant a : shortlistedApplicants) {
+                    if (selectedHiredList.contains(a.getName())) {
+                        hiredApplicants.add(a);
+                    }
+                }
+            }
+
+            course.setHiredApplicants(hiredApplicants);
+            //System.out.println(course.getHiredApplicants());
+            courseDao.update(course);
+            //Course course2 = courseDao.read(courseId);
+            //System.out.println(course2.getHiredApplicants());
+
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
+
         post("/:id/courseinfo/deleteshortlist", (request, response) -> {
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
@@ -331,6 +359,28 @@ public class WebServer {
                 }
             }
             course.setShortlistedApplicants(newShortList);
+            courseDao.update(course);
+
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+        post("/:id/courseinfo/deletehired", (request, response) -> {
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+            List<Applicant> hiredApplicants = course.getHiredApplicants();
+            List<Applicant> newHiredList = new ArrayList<Applicant>();
+            String[] hiredList = request.queryParamsValues("selectedForHired");
+            if (!ArrayUtils.isEmpty(hiredList)) {
+                List<String> checkedFromHired = Arrays.asList(hiredList);
+                for (Applicant a : hiredApplicants) {
+                    if (!checkedFromHired.contains(a.getName())) {
+                        newHiredList.add(a);
+                    }
+                }
+            }
+            course.setHiredApplicants(newHiredList);
             courseDao.update(course);
 
             String redirect = "/" + courseId + "/courseinfo";
