@@ -58,7 +58,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             course.setId(courseId);
                         }
                         sql = "INSERT INTO Applicants_Courses(applicantId, courseId, interested, grade) " +
-                                "VALUES(:applicantId, :courseId, 1, :grade);";
+                                "VALUES(:applicantId, :courseId, 1, :grade) " +
+                                "ON CONFLICT (applicantId, courseId) " +
+                                "DO UPDATE SET interested = 1, grade = excluded.grade;";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", id)
                                 .addParameter("courseId", course.getId())
@@ -79,23 +81,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
                                     .executeUpdate()
                                     .getKey();
                             course.setId(courseId);
-
-                            sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
-                                    "VALUES(:applicantId, :courseId, 1);";
-                            conn.createQuery(sql)
-                                    .addParameter("applicantId", id)
-                                    .addParameter("courseId", courseId)
-                                    .executeUpdate();
-                        } else {
-                            sql = "UPDATE Applicants_Courses " +
-                                    "SET previousCA = 1 " +
-                                    "WHERE applicantId = :applicantId " +
-                                    "AND courseId = :courseId;";
-                            conn.createQuery(sql)
-                                    .addParameter("applicantId", id)
-                                    .addParameter("courseId", courseId)
-                                    .executeUpdate();
                         }
+
+                        sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
+                                "VALUES(:applicantId, :courseId, 1) " +
+                                "ON CONFLICT (applicantId, courseId) " +
+                                "DO UPDATE SET previousCA = 1;";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", id)
+                                .addParameter("courseId", courseId)
+                                .executeUpdate();
                     }
                 }
 
@@ -110,23 +105,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
                                     .executeUpdate()
                                     .getKey();
                             course.setId(courseId);
-
-                            sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
-                                    "VALUES(:applicantId, :courseId, 1);";
-                            conn.createQuery(sql)
-                                    .addParameter("applicantId", id)
-                                    .addParameter("courseId", courseId)
-                                    .executeUpdate();
-                        } else {
-                            sql = "UPDATE Applicants_Courses " +
-                                    "SET headCAInterest = 1 " +
-                                    "WHERE applicantId = :applicantId " +
-                                    "AND courseId = :courseId;";
-                            conn.createQuery(sql)
-                                    .addParameter("applicantId", id)
-                                    .addParameter("courseId", courseId)
-                                    .executeUpdate();
                         }
+
+                        sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
+                                "VALUES(:applicantId, :courseId, 1) " +
+                                "ON CONFLICT (applicantId, courseId) " +
+                                "DO UPDATE SET headCAInterest = 1;";
+                        conn.createQuery(sql)
+                                .addParameter("applicantId", id)
+                                .addParameter("courseId", courseId)
+                                .executeUpdate();
                     }
                 }
 
@@ -141,23 +129,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
                                  .executeUpdate()
                                  .getKey();
                          course.setId(courseId);
-
-                         sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired) " +
-                                 "VALUES(:applicantId, :courseId, 1);";
-                         conn.createQuery(sql)
-                                 .addParameter("applicantId", id)
-                                 .addParameter("courseId", courseId)
-                                 .executeUpdate();
-                    } else {
-                        sql = "UPDATE Applicants_Courses " +
-                                "SET hired = 1 " +
-                                "WHERE applicantId = :applicantId " +
-                                "AND courseId = :courseId;";
-                        conn.createQuery(sql)
-                                .addParameter("applicantId", id)
-                                .addParameter("courseId", courseId)
-                                .executeUpdate();
                     }
+
+                    sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired) " +
+                            "VALUES(:applicantId, :courseId, 1) " +
+                            "ON CONFLICT (applicantId, courseId) " +
+                            "DO UPDATE SET hired = 1;";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", id)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
                 }
             } catch (Sql2oException ex) {
                 throw new DaoException("Unable to add the applicant", ex);
@@ -318,7 +299,8 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
                     conn.createQuery(sql)
                             .addParameter("applicantId", id)
-                            .addParameter("courseId", course.getId());
+                            .addParameter("courseId", course.getId())
+                            .executeUpdate();
                 }
             }
 
@@ -348,14 +330,14 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 }
 
                 for (int i = 0; i < interestedCourses.size(); i++) {
-                    sql = "UPDATE Applicants_Courses " +
-                            "SET interested = 1, grade = :grade " +
-                            "WHERE applicantId = :applicantId " +
-                            "AND courseId = :courseId;";
+                    sql = "INSERT INTO Applicants_Courses(applicantId, courseId, interested, grade) " +
+                            "VALUES(:applicantId, :courseId, 1, :grade) " +
+                            "ON CONFLICT (applicantId, courseId) " +
+                            "DO UPDATE SET interested = 1, grade = excluded.grade;";
                     conn.createQuery(sql)
-                            .addParameter("grade", gradesInterested.get(i))
                             .addParameter("applicantId", id)
                             .addParameter("courseId", interestedCourses.get(i).getId())
+                            .addParameter("grade", gradesInterested.get(i))
                             .executeUpdate();
                 }
             }
@@ -392,23 +374,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
                                 .executeUpdate()
                                 .getKey();
                         course.setId(courseId);
-
-                        sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
-                                "VALUES(:applicantId, :courseId, 1);";
-                        conn.createQuery(sql)
-                                .addParameter("applicantId", id)
-                                .addParameter("courseId", courseId)
-                                .executeUpdate();
-                    } else {
-                        sql = "UPDATE Applicants_Courses " +
-                                "SET previousCA = 1 " +
-                                "WHERE applicantId = :applicantId " +
-                                "AND courseId = :courseId;";
-                        conn.createQuery(sql)
-                                .addParameter("applicantId", id)
-                                .addParameter("courseId", courseId)
-                                .executeUpdate();
                     }
+
+                    sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
+                            "VALUES(:applicantId, :courseId, 1) " +
+                            "ON CONFLICT (applicantId, courseId) " +
+                            "DO UPDATE SET previousCA = 1;";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", id)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
                 }
             }
 
@@ -444,23 +419,15 @@ public class Sql2oApplicantDao implements ApplicantDao {
                                 .executeUpdate()
                                 .getKey();
                         course.setId(courseId);
-
-                        sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
-                                "VALUES(:applicantId, :courseId, 1);";
-                        conn.createQuery(sql)
-                                .addParameter("applicantId", id)
-                                .addParameter("courseId", courseId)
-                                .executeUpdate();
-                    } else {
-                        sql = "UPDATE Applicants_Courses " +
-                                "SET headCAInterest = 1 " +
-                                "WHERE applicantId = :applicantId " +
-                                "AND courseId = :courseId;";
-                        conn.createQuery(sql)
-                                .addParameter("applicantId", id)
-                                .addParameter("courseId", courseId)
-                                .executeUpdate();
                     }
+                    sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
+                            "VALUES(:applicantId, :courseId, 1) " +
+                            "ON CONFLICT (applicantId, courseId) " +
+                            "DO UPDATE SET headCAInterest = 1;";
+                    conn.createQuery(sql)
+                            .addParameter("applicantId", id)
+                            .addParameter("courseId", courseId)
+                            .executeUpdate();
                 }
             }
 
@@ -493,23 +460,15 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             .getKey();
 
                     hiredCourse.setId(hiredCourseId);
-
-                    sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired)" +
-                            "VALUES(:applicantId, :courseId, 1);";
-                    conn.createQuery(sql)
-                            .addParameter("applicantId", id)
-                            .addParameter("courseId", hiredCourseId)
-                            .executeUpdate();
-                } else {
-                    sql = "UPDATE Applicants_Courses " +
-                            "SET hired = 1 " +
-                            "WHERE applicantId = :applicantId " +
-                            "AND courseId = :courseId;";
-                    conn.createQuery(sql)
-                            .addParameter("applicantId", id)
-                            .addParameter("courseId", hiredCourseId)
-                            .executeUpdate();
                 }
+                sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired) " +
+                        "VALUES(:applicantId, :courseId, 1,) " +
+                        "ON CONFLICT (applicantId, courseId) " +
+                        "DO UPDATE SET hired = 1;";
+                conn.createQuery(sql)
+                        .addParameter("applicantId", id)
+                        .addParameter("courseId", hiredCourseId)
+                        .executeUpdate();
             }
         } catch (Sql2oException e) {
             throw new DaoException("Unable to update applicant", e);
