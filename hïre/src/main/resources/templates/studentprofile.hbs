@@ -321,16 +321,16 @@
                     </div>
                     <div class="row row-space">
                             <div class="input-group">
-                                <table class="table-bordered table-responsive">
-                                    <tr>
-                                        <th>Course</th>
-                                        <th>Grade</th>
-                                        <th>Head CA?</th>
-                                        <th>Previous CA?</th>
+                                <table class="table-bordered table-responsive" style="border-radius: 2px;">
+                                    <tr align="center">
+                                        <th> Course</th>
+                                        <th> Grade</th>
+                                        <th style="padding: 2px;"> Head CA?</th>
+                                        <th style="padding: 2px;"> Previous CA?</th>
                                     </tr>
                                     {{#each gradesList}}
                                     <tr>
-                                        <td>{{courseName}}</td>
+                                        <td align="center"> {{courseName}}</td>
                                         <td>
                                             <div class="rs-select2 js-select-simple select--no-search">
                                                 <select name={{courseId}}grade>
