@@ -372,6 +372,8 @@ public class WebServer {
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
             List<Applicant> hiredApplicants = course.getHiredApplicants();
+            List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
+
             List<Applicant> newHiredList = new ArrayList<Applicant>();
             String[] hiredList = request.queryParamsValues("selectedForHired");
             if (!ArrayUtils.isEmpty(hiredList)) {
@@ -380,8 +382,13 @@ public class WebServer {
                     if (!checkedFromHired.contains(a.getName())) {
                         newHiredList.add(a);
                     }
+                    if (checkedFromHired.contains(a.getName())) {
+                        shortlistedApplicants.add(a);
+                    }
                 }
             }
+
+            course.setShortlistedApplicants(shortlistedApplicants);
             course.setHiredApplicants(newHiredList);
             courseDao.update(course);
 
