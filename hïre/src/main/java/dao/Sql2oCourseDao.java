@@ -366,7 +366,6 @@ public class Sql2oCourseDao implements CourseDao {
                                 .addParameter("applicantId", applicantId)
                                 .addParameter("courseId", course.getId())
                                 .executeUpdate();
-                        //System.out.println(applicant);
                     }
                 }
             }
