@@ -462,7 +462,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     hiredCourse.setId(hiredCourseId);
                 }
                 sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired) " +
-                        "VALUES(:applicantId, :courseId, 1,) " +
+                        "VALUES(:applicantId, :courseId, 1) " +
                         "ON CONFLICT (applicantId, courseId) " +
                         "DO UPDATE SET hired = 1;";
                 conn.createQuery(sql)
