@@ -525,10 +525,14 @@ public class WebServer {
             String reference = request.queryParams("reference");
             String resume = request.queryParams("resume");
 
+            // Get student's interested courses
+            Applicant student = applicantDao.read(jhed);
+            List<Course> curCourses = student.getCoursesList();
+
             // For every course, get updated grade ("Not taken" or letter)
             List<Course> headCAInterest = new ArrayList<>();
             List<Course> previousCA = new ArrayList<>();
-            for (Course c : all_courses) {
+            for (Course c : curCourses) {
                 String grade = request.queryParams(c.getId() + "grade");
                 String interest = request.queryParams(c.getId() + "interest");
                 String prevCA = request.queryParams(c.getId() + "previousCA");
@@ -542,7 +546,6 @@ public class WebServer {
             }
 
             // Update POJO
-            Applicant student = applicantDao.read(jhed);
             student.setInterestedCourses(interestedCourses);
             student.setRankOne(courseDao.read(rank1));
             student.setRankTwo(courseDao.read(rank2));

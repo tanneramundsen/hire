@@ -358,13 +358,9 @@
                                         <td>
                                             <div class="rs-select2 js-select-simple select--no-search">
                                                 <select name={{courseId}}interest>
-                                                    {{#if headCAInterestBool}}
-                                                        <option selected="selected"> Yes </option>
-                                                        <option> No </option>
-                                                    {{else}}
-                                                        <option> Yes </option>
-                                                        <option selected="selected"> No </option>
-                                                    {{/if}}
+                                                    <option selected="selected" > {{headCAInterest}} </option>
+                                                    <option> No </option>
+                                                    <option> Yes </option>
                                                 </select>
                                                 <div class="select-dropdown"></div>
                                             </div>
@@ -372,13 +368,9 @@
                                         <td>
                                             <div class="rs-select2 js-select-simple select--no-search">
                                                 <select name={{courseId}}previousCA>
-                                                    {{#if previousCABool}}
-                                                        <option selected="selected"> Yes </option>
-                                                        <option> No </option>
-                                                    {{else}}
-                                                        <option> Yes </option>
-                                                        <option selected="selected"> No </option>
-                                                    {{/if}}
+                                                    <option selected="selected" > {{previousCA}} </option>
+                                                    <option> No </option>
+                                                    <option> Yes </option>
                                                 </select>
                                                 <div class="select-dropdown"></div>
                                             </div>
