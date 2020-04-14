@@ -117,13 +117,14 @@
                     <label for="prevCAExperience"> has previous CA experience</label><br>
                     <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse">
                     <label for="CAdThisCourse"> has previously CA'd for {{name}}</label><br>
-                    <input name="filterOptions" type="checkbox" id="CSMajor" value="CSMajor">
-                    <label for="CSMajor"> is a CS major</label><br>
-
+                    <input name="filterOptions" type="checkbox" id="takenCourseAndGrade" value="takenCourseAndGrade">
+                    <label for="takenCourseAndGrade"> has gotten above a B in {{name}}</label><br>
+                    <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest">
+                    <label for="headCAInterest">is interested in being a head CA for {{name}}</label><br>
             </div>
             <div class="col">
-                <button type="submit" id="form-submit" class="main-button">Filter<i class="fa fa-arrow-right"></i></button><br>
-                <button type="submit" id="form-submit" class="delete-button">Remove Filters<i class="fa fa-arrow-right"></i></button>
+                <button type="submit" id="form-submit" class="main-button" formaction="/{{id}}/courseinfo/setFilters">Filter<i class="fa fa-arrow-right"></i></button><br>
+                <button type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/removeFilters">Remove Filters<i class="fa fa-arrow-right"></i></button>
             </div>
         </div>
         </form>

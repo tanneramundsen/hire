@@ -103,6 +103,13 @@ public final class DaoUtil {
         Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", courseHashMap);
         List<Applicant> applicantList = Arrays.asList(new Applicant[] {applicant1, applicant2, applicant3, applicant4, applicant5});
 
+        HashMap<Course, String> courseMap = courseHashMap;
+        for (Course course: courseList) {
+            courseMap.put(course, "A");
+        }
+        applicant1.setInterestedCourses(courseMap);
+        applicant2.setHeadCAInterest(courseList);
+        applicant3.setPreviousCA(courseList);
         Random random = new Random();
 
         // Assign random courses to applicants

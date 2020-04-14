@@ -15,6 +15,10 @@ import java.util.*;
 import static spark.Spark.*;
 
 public class WebServer {
+
+    //filter list
+    static List<String> selectedFilters;
+
     public static void main(String[] args) {
         DaoFactory.DROP_TABLES_IF_EXIST = true;
         DaoFactory.PATH_TO_DATABASE_FILE = Paths.get("src", "main", "resources").toFile().getAbsolutePath()
@@ -244,19 +248,47 @@ public class WebServer {
             if (interviewLink.isEmpty()) {
                 interviewLink = null;
             }
-            List<Applicant> interestedApplicants = course.getInterestedApplicants();
+
             List<Applicant> hiredApplicants = course.getHiredApplicants();
             List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
 
-            /* later can put in semester */
             model.put("name", name);
             model.put("id", courseId);
             model.put("courseNumber", courseNumber);
             model.put("description", description);
             model.put("interviewLink", interviewLink);
-            model.put("interestedApplicants", interestedApplicants);
             model.put("shortlistedApplicants", shortlistedApplicants);
             model.put("hiredApplicants", hiredApplicants);
+
+            if (selectedFilters == null) {
+                List<Applicant> interestedApplicants = course.getInterestedApplicants();
+                model.put("interestedApplicants", interestedApplicants);
+            } else {
+                List<List<Applicant>> filterLists = new ArrayList();
+                for(String s : selectedFilters) {
+                    if (s.equals("prevCAExperience")) {
+                        List<Applicant> list1 = DaoFactory.filterByHasPrevCAExperience();
+                        filterLists.add(list1);
+                    }
+                    if (s.equals("CAdThisCourse")) {
+                        List<Applicant> list2 = DaoFactory.filterByHasPrevCAExperienceForThisClass(course);
+                        filterLists.add(list2);
+                    }
+                    if (s.equals("takenCourseAndGrade")) {
+                        List<Applicant> list3 = DaoFactory.filterByHasGottenAboveB(course);
+                        filterLists.add(list3);
+                    }
+                    if (s.equals("headCAInterest")) {
+                        List<Applicant> list4 = DaoFactory.filterByHeadCAInterest(course);
+                        filterLists.add(list4);
+                    }
+                }
+                List<Applicant> filteredInterestedApplicantList = filterLists.get(0);
+                for (int i = 1; i < filterLists.size(); i++) {
+                    filteredInterestedApplicantList.retainAll(filterLists.get(i));
+                }
+                model.put("interestedApplicants", filteredInterestedApplicantList);
+            }
 
             return new ModelAndView(model, "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());
@@ -285,10 +317,17 @@ public class WebServer {
         post("/:id/courseinfo/setFilters", (request, response) -> {
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
-            List<Applicant> interestedApplicants = course.getInterestedApplicants();
-            String[] shortList = request.queryParamsValues("filterOptions");
+            String[] chosenFilters = request.queryParamsValues("filterOptions");
+            List<String> filterOptions = Arrays.asList(chosenFilters);
+            selectedFilters = filterOptions;
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
 
-
+        post("/:id/courseinfo/removeFilters", (request, response) -> {
+            int courseId = Integer.parseInt(request.params(":id"));
+            selectedFilters = null;
             String redirect = "/" + courseId + "/courseinfo";
             response.redirect(redirect);
             return null;
