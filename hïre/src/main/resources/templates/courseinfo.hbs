@@ -146,25 +146,47 @@
             <div class="col">
                 <h2>Shortlisted Applicants</h2>
                 <br>
-                <form action="/{{id}}/courseinfo/addtohired" method="post">
+                {{#if linkVisible}}
+
                     <div>
                         {{#each shortlistedApplicants}}
-                            <input name="checkedFromShortList" type="checkbox" value="{{name}}">
-                            <label for="checkedFromShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            <a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a><br>
                         {{/each}}
                     </div>
                     <div>
-                        <button type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
+                        <button disabled type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
                     </div>
                     <div>
-                        <button type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/deleteshortlist">Delete from shortlist<i class="fa fa-arrow-right"></i></button>
+                        <button disabled type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/deleteshortlist">Delete from shortlist<i class="fa fa-arrow-right"></i></button>
                     </div>
-                </form>
-                <div>
-                    <button data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button">
-                        Send interview link<i class="fa fa-arrow-right"></i>
-                    </button>
-                </div>
+                    <div>
+                        <button disabled data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button">
+                            Send interview link
+                        </button>
+
+                    {{else}}
+
+                    <form action="/{{id}}/courseinfo/addtohired" method="post">
+                        <div>
+                            {{#each shortlistedApplicants}}
+                                <input name="checkedFromShortList" type="checkbox" value="{{name}}">
+                                <label for="checkedFromShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            {{/each}}
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/deleteshortlist">Delete from shortlist<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </form>
+                    <div>
+                        <button data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button">
+                            Send interview link
+                        </button>
+                    </div>
+
+                {{/if}}
             </div>
             <div class="col">
                 <h2>Hired Applicants</h2>
@@ -184,7 +206,6 @@
                             Send hiring notification<i class="fa fa-arrow-right"></i>
                         </button>
                     </div>
-                    <!-- Modal -->
                 </form>
             </div>
         </div>
@@ -207,8 +228,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
-                <form action="/{{id}}/courseinfo/deletehired" method="post">
-                    <button type="submit" id="form-submit" class="btn btn-primary">Send</button>
+                <form formaction="/{{id}}/courseinfo/sendInterviewLink" method="post" id="sendLinkForm">
+                    <button on_click="modal_form_submit()" id="form-submit" class="btn btn-primary">
+                        Send
+                    </button>
                 </form>
             </div>
         </div>
@@ -252,6 +275,12 @@
        });
    });
 
+</script>
+
+<script type="text/javascript">
+    function modal_form_submit() {
+        document.getElementById("sendLinkForm").submit();
+    }
 </script>
 
 </body>

@@ -244,6 +244,8 @@ public class WebServer {
             if (interviewLink.isEmpty()) {
                 interviewLink = null;
             }
+            boolean linkVisible = course.isLinkVisible();
+
             List<Applicant> interestedApplicants = course.getInterestedApplicants();
             List<Applicant> hiredApplicants = course.getHiredApplicants();
             List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
@@ -254,6 +256,7 @@ public class WebServer {
             model.put("courseNumber", courseNumber);
             model.put("description", description);
             model.put("interviewLink", interviewLink);
+            model.put("linkVisible", linkVisible);
             model.put("interestedApplicants", interestedApplicants);
             model.put("shortlistedApplicants", shortlistedApplicants);
             model.put("hiredApplicants", hiredApplicants);
@@ -392,6 +395,16 @@ public class WebServer {
             course.setHiredApplicants(newHiredList);
             courseDao.update(course);
 
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+        post("/:id/courseinfo/sendInterviewLink", (request, response) -> {
+            System.out.print("interviewLink post method");
+            int courseId = Integer.parseInt(request.params(":id"));
+            Course course = courseDao.read(courseId);
+            course.setLinkVisible(true);
             String redirect = "/" + courseId + "/courseinfo";
             response.redirect(redirect);
             return null;
