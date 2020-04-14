@@ -25,8 +25,8 @@ public class Sql2oCourseDao implements CourseDao {
 
             try (Connection conn = sql2o.open()) {
                 String sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
-                        "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
-                        ":interviewLink);";
+                        "interviewLink, linkVisible) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
+                        ":interviewLink, :linkVisible);";
                 int courseId = (int) conn.createQuery(sql)
                         .bind(course)
                         .executeUpdate()
@@ -215,7 +215,7 @@ public class Sql2oCourseDao implements CourseDao {
 
             String sql = "UPDATE Courses SET name = :name, courseNumber = :courseNumber, " +
                     "semester = :semester, hiringComplete = :hiringComplete, courseDescription = :courseDescription, " +
-                    "interviewLink = :interviewLink WHERE id = :id";
+                    "interviewLink = :interviewLink, linkVisible = :linkVisible WHERE id = :id";
             conn.createQuery(sql)
                     .bind(course)
                     .executeUpdate();

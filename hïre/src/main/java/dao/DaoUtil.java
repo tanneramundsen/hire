@@ -27,6 +27,7 @@ public final class DaoUtil {
                 false,
                 null,
                 null,
+                false,
                 null,
                 null,
                 null
@@ -40,6 +41,7 @@ public final class DaoUtil {
                 false,
                 null,
                 null,
+                false,
                 null,
                 null,
                 null)
@@ -52,6 +54,7 @@ public final class DaoUtil {
                 false,
                 null,
                 null,
+                false,
                 null,
                 null,
                 null)
@@ -172,7 +175,8 @@ public final class DaoUtil {
                     String semester = courseJSON.getString("Term");
 
                     Course course = new Course(name, courseNumber, null, semester, false,
-                            "", "",null,null,null);
+                            "", "", false,null,
+                            null,null);
                     courses.add(course);
                 }
             }

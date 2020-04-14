@@ -12,12 +12,13 @@ public class Course implements Comparable<Course> {
     private boolean hiringComplete;
     private String courseDescription;
     private String interviewLink;
+    private boolean linkVisible;
     private List<Applicant> hiredApplicants;
     private List<Applicant> interestedApplicants;
     private List<Applicant> shortlistedApplicants;
 
     public Course(String name, String courseNumber, List<StaffMember> instructors, String semester,
-                  boolean hiringComplete, String courseDescription, String interviewLink,
+                  boolean hiringComplete, String courseDescription, String interviewLink, boolean linkVisible,
                   List<Applicant> hiredApplicants, List<Applicant> interestedApplicants,
                   List<Applicant> shortlistedApplicants) {
         this.name = name;
@@ -27,6 +28,7 @@ public class Course implements Comparable<Course> {
         this.hiringComplete = hiringComplete;
         this.courseDescription = courseDescription;
         this.interviewLink = interviewLink;
+        this.linkVisible = linkVisible;
         this.hiredApplicants = hiredApplicants;
         this.interestedApplicants = interestedApplicants;
         this.shortlistedApplicants = shortlistedApplicants;
@@ -87,6 +89,10 @@ public class Course implements Comparable<Course> {
     public String getInterviewLink() { return interviewLink; }
 
     public void setInterviewLink(String interviewLink) { this.interviewLink = interviewLink; }
+
+    public boolean isLinkVisible() { return linkVisible; }
+
+    public void setLinkVisible(boolean linkVisible) { this.linkVisible = linkVisible; }
 
     public List<Applicant> getHiredApplicants() {
         return hiredApplicants;
