@@ -92,7 +92,7 @@ public final class DaoFactory {
                 "semester VARCHAR(100) NOT NULL, " +
                 "hiringComplete INTEGER, " +
                 "courseDescription VARCHAR(1000), " +
-                "interviewLink VARCHAR(100) " +
+                "interviewLink VARCHAR(100), " +
                 "linkVisible INTEGER" +
                 ");";
         try (Connection conn = sql2o.open()) {
