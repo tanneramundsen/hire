@@ -113,14 +113,33 @@
         <div class="row">
             <div class="col">
                 <h2>Filter interested applicants by...</h2>
+                {{#if prevCAFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="prevCAExperience" value="prevCAExperience" checked>
+                {{else}}
                     <input name="filterOptions" type="checkbox" id="prevCAExperience" value="prevCAExperience">
-                    <label for="prevCAExperience"> has previous CA experience</label><br>
+                {{/if}}
+                <label for="prevCAExperience"> has previous CA experience</label><br>
+
+                {{#if CadThisCourseFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse" checked>
+                {{else}}
                     <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse">
-                    <label for="CAdThisCourse"> has previously CA'd for {{name}}</label><br>
+                {{/if}}
+                <label for="CAdThisCourse"> has previously CA'd for {{name}}</label><br>
+
+                {{#if gradeFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="takenCourseAndGrade" value="takenCourseAndGrade" checked>
+                {{else}}
                     <input name="filterOptions" type="checkbox" id="takenCourseAndGrade" value="takenCourseAndGrade">
-                    <label for="takenCourseAndGrade"> has gotten above a B in {{name}}</label><br>
+                {{/if}}
+                <label for="takenCourseAndGrade"> has gotten above a B in {{name}}</label><br>
+
+                {{#if headCAFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest" checked>
+                {{else}}
                     <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest">
-                    <label for="headCAInterest">is interested in being a head CA for {{name}}</label><br>
+                {{/if}}
+                <label for="headCAInterest">is interested in being a head CA for {{name}}</label><br>
             </div>
             <div class="col">
                 <button type="submit" id="form-submit" class="main-button" formaction="/{{id}}/courseinfo/setFilters">Filter<i class="fa fa-arrow-right"></i></button><br>

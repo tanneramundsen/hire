@@ -217,7 +217,7 @@ public final class DaoFactory {
                 "rankOne, rankTwo, rankThree " +
                 "FROM Applicants " +
                 "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
-                "WHERE courseId = :id AND (grade='A' OR grade='A-' OR grade='B+') ";
+                "WHERE courseId = :id AND (grade='A+' OR grade='A' OR grade='A-' OR grade='B+') ";
         try (Connection conn = sql2o.open()) {
             return conn.createQuery(sql)
                     .addParameter("id", id)

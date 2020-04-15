@@ -102,7 +102,6 @@ public class WebServer {
                     List<StaffMember> instructors = c.getInstructors();
                     instructors.add(s);
                     c.setInstructors(instructors);
-                   // TODO: why doesn't this work
                     courseDao.update(c);
                 }
             } else {
@@ -260,6 +259,11 @@ public class WebServer {
             model.put("shortlistedApplicants", shortlistedApplicants);
             model.put("hiredApplicants", hiredApplicants);
 
+            boolean prevCAFilterOn = false;
+            boolean CadThisCourseFilterOn = false;
+            boolean gradeFilterOn = false;
+            boolean headCAFilterOn = false;
+
             if (selectedFilters == null) {
                 List<Applicant> interestedApplicants = course.getInterestedApplicants();
                 model.put("interestedApplicants", interestedApplicants);
@@ -269,18 +273,22 @@ public class WebServer {
                     if (s.equals("prevCAExperience")) {
                         List<Applicant> list1 = DaoFactory.filterByHasPrevCAExperience();
                         filterLists.add(list1);
+                        prevCAFilterOn = true;
                     }
                     if (s.equals("CAdThisCourse")) {
                         List<Applicant> list2 = DaoFactory.filterByHasPrevCAExperienceForThisClass(course);
                         filterLists.add(list2);
+                        CadThisCourseFilterOn = true;
                     }
                     if (s.equals("takenCourseAndGrade")) {
                         List<Applicant> list3 = DaoFactory.filterByHasGottenAboveB(course);
                         filterLists.add(list3);
+                        gradeFilterOn = true;
                     }
                     if (s.equals("headCAInterest")) {
                         List<Applicant> list4 = DaoFactory.filterByHeadCAInterest(course);
                         filterLists.add(list4);
+                        headCAFilterOn = true;
                     }
                 }
                 List<Applicant> filteredInterestedApplicantList = filterLists.get(0);
@@ -289,6 +297,11 @@ public class WebServer {
                 }
                 model.put("interestedApplicants", filteredInterestedApplicantList);
             }
+
+            model.put("prevCAFilterOn", prevCAFilterOn);
+            model.put("CadThisCourseFilterOn", CadThisCourseFilterOn);
+            model.put("gradeFilterOn", gradeFilterOn);
+            model.put("headCAFilterOn", headCAFilterOn);
 
             return new ModelAndView(model, "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());
