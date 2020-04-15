@@ -89,27 +89,25 @@ public final class DaoUtil {
 
     public static void addSampleApplicants(CourseDao courseDao, ApplicantDao applicantDao) {
         List<Course> courseList = courseDao.findAll();
-        HashMap<Course, String> courseHashMap = new HashMap<Course, String>();
+        HashMap<Course, String> notTakenMap = new HashMap<Course, String>();
+        HashMap<Course, String> gradeAMap = new HashMap<Course, String>();;
+        // Create course map to not taken or A grades
         for (Course course: courseList) {
-            courseHashMap.put(course, "Not Taken");
+            notTakenMap.put(course, "Not Taken");
+            gradeAMap.put(course, "A");
         }
         if (courseList.size() == 0) addSampleCourses(courseDao);
 
         // Initialize sample applicants
-        Applicant applicant1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", courseHashMap);
-        Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", courseHashMap);
-        Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", courseHashMap);
-        Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", courseHashMap);
-        Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", courseHashMap);
+        Applicant applicant1 = new Applicant("Tanner Amundsen", "tamunds1@jhu.edu", "tamunds1", gradeAMap);
+        Applicant applicant2 = new Applicant("Jennifer Lin", "jlin123@jhu.edu", "jlin123", gradeAMap);
+        Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", gradeAMap);
+        Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", notTakenMap);
+        Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", notTakenMap);
         List<Applicant> applicantList = Arrays.asList(new Applicant[] {applicant1, applicant2, applicant3, applicant4, applicant5});
 
-        HashMap<Course, String> courseMap = courseHashMap;
-        for (Course course: courseList) {
-            courseMap.put(course, "A");
-        }
-        applicant1.setInterestedCourses(courseMap);
-        applicant2.setHeadCAInterest(courseList);
-        applicant3.setPreviousCA(courseList);
+        applicant1.setHeadCAInterest(courseList);
+        applicant2.setPreviousCA(courseList);
         Random random = new Random();
 
         // Assign random courses to applicants
