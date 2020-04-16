@@ -1,6 +1,6 @@
 # Hïre
 
-Alpha version release on Heroku: https://radiant-brushlands-76474.herokuapp.com/
+Alpha version release on Heroku: https://oozers-hire.herokuapp.com/
 
 Created by oozers - Tanner Amundsen, Jennifer Lin, Chester Huynh, Daniela Torres, Madhu Rajmohan
 
