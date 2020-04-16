@@ -1,6 +1,8 @@
 # Hïre
 
-Alpha version release on Heroku: https://oozers-hire.herokuapp.com/
+**Alpha version release on Heroku**: https://oozers-hire.herokuapp.com/
+
+**Postman test suite invitation**: https://app.getpostman.com/join-team?invite_code=8810c19b2e5a3d3024cdcec79f6e2c75&ws=667bb9e0-4540-48c5-95fa-3add0af7f404
 
 Created by oozers - Tanner Amundsen, Jennifer Lin, Chester Huynh, Daniela Torres, Madhu Rajmohan
 
