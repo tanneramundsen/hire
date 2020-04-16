@@ -1,4 +1,7 @@
 # Hïre
+
+Alpha version release on Heroku: https://radiant-brushlands-76474.herokuapp.com/
+
 Created by oozers - Tanner Amundsen, Jennifer Lin, Chester Huynh, Daniela Torres, Madhu Rajmohan
 
 Iteration 3: (Things to note when testing)
