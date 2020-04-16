@@ -148,21 +148,22 @@
                 <br>
                 {{#if linkVisible}}
 
-                    <div>
-                        {{#each shortlistedApplicants}}
-                            <a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a><br>
-                        {{/each}}
-                    </div>
-                    <div>
-                        <button disabled type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
-                    </div>
-                    <div>
-                        <button disabled type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/deleteshortlist">Delete from shortlist<i class="fa fa-arrow-right"></i></button>
-                    </div>
-                    <div>
-                        <button disabled data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button">
-                            Send interview link
-                        </button>
+                    <form action="/{{id}}/courseinfo/addtohired" method="post">
+                        <div>
+                            {{#each shortlistedApplicants}}
+                                <input name="checkedFromShortList" type="checkbox" value="{{name}}">
+                                <label for="checkedFromShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            {{/each}}
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                        <div>
+                            <button disabled data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button-disabled">
+                                Interview link sent
+                            </button>
+                        </div>
+                    </form>
 
                     {{else}}
 
@@ -191,22 +192,39 @@
             <div class="col">
                 <h2>Hired Applicants</h2>
                 <br>
-                <form action="/{{id}}/courseinfo/deletehired" method="post">
+                {{#if hiringComplete}}
+
                     <div>
                         {{#each hiredApplicants}}
-                            <input name="selectedForHired" type="checkbox" value="{{name}}">
-                            <label for="selectedForHired"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            <p><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></p><br>
                         {{/each}}
                     </div>
                     <div>
-                        <button type="submit" id="form-submit" class="delete-button">Delete from hired<i class="fa fa-arrow-right"></i></button>
-                    </div>
-                    <div>
-                        <button type="submit" id="form-submit" class="finalize-button" formaction="/{{id}}/courseinfo/sendHiringNotification">
-                            Send hiring notification<i class="fa fa-arrow-right"></i>
+                        <button disabled data-toggle="modal" data-target="#hiringModal" class="finalize-button-disabled">
+                            Hiring complete
                         </button>
                     </div>
-                </form>
+
+                    {{else}}
+
+                    <form action="/{{id}}/courseinfo/deletehired" method="post">
+                        <div>
+                            {{#each hiredApplicants}}
+                                <input name="selectedForHired" type="checkbox" value="{{name}}">
+                                <label for="selectedForHired"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            {{/each}}
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="delete-button">Delete from hired<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                        <div>
+                            <button data-toggle="modal" data-target="#hiringModal" class="finalize-button">
+                                Send hiring notification
+                            </button>
+                        </div>
+                    </form>
+
+                {{/if}}
             </div>
         </div>
     </div>
@@ -216,25 +234,50 @@
 <!-- ***** Modals ***** -->
 <div class="modal fade" id="interviewLinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to send the interview link? This cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
-                <form formaction="/{{id}}/courseinfo/sendInterviewLink" method="post" id="sendLinkForm">
-                    <button on_click="modal_form_submit()" id="form-submit" class="btn btn-primary">
+        <form action="/{{id}}/courseinfo/sendInterviewLink" method="post" id="sendInterviewLink">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This will send the link to each applicant on your shortlist. This cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                    <button onclick="modal_interview_form_submit()" id="form-submit" class="btn btn-primary">
                         Send
                     </button>
-                </form>
+                </div>
             </div>
-        </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="hiringModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form action="/{{id}}/courseinfo/sendHiringNotification" method="post" id="sendInterviewLink">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This will notify all applicants on this list that they have been hired. You will not be able to undo this.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                    <button onclick="modal_hiring_form_submit()" id="form-submit" class="btn btn-primary">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <!-- ***** Modals End ***** -->
@@ -277,9 +320,12 @@
 
 </script>
 
-<script type="text/javascript">
-    function modal_form_submit() {
-        document.getElementById("sendLinkForm").submit();
+<script>
+    function modal_interview_form_submit(s) {
+        document.getElementById("sendInterviewLink").submit();
+    }
+    function modal_hiring_form_submit(s) {
+        document.getElementById("sendHiringNotification").submit();
     }
 </script>
 

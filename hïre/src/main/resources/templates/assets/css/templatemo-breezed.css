@@ -277,6 +277,24 @@ button.finalize-button {
   transition: all 0.3s ease 0s;
 }
 
+button.finalize-button-disabled {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 25px;
+  padding: 10px 25px;
+  background-color: #fff;
+  text-transform: uppercase;
+  color: #ac35dc9c;
+  font-weight: 600;
+  letter-spacing: 1px;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
 button.finalize-button:hover {
   color: #fff;
   background-color: #ac35dc;
