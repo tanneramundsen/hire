@@ -103,12 +103,12 @@
                     <form action="/signup" method="post">
                         <div class="row row-space">
                             <div class="col-md-6 col-sm-12">
-                                <div class="input-group">
+                                <div class="input-group" data-validate = "Name is required">
                                     <label class="label">First Name</label>
                                     <input class="input--style-4" type="text" name="firstName">
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12" data-validate = "Name is required">
                                 <div class="input-group">
                                     <label class="label">Last Name</label>
                                     <input class="input--style-4" type="text" name="lastName">
@@ -117,7 +117,7 @@
                         </div>
                         <div class="row row-space">
                             <div class="col-md-6 col-sm-12">
-                                <div class="input-group">
+                                <div class="input-group" data-validate = "JHED is required">
                                     <label class="label">JHED</label>
                                     <input class="input--style-4" type="text" name="jhed">
                                 </div>
