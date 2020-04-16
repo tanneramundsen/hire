@@ -14,10 +14,14 @@ import static spark.Spark.*;
 
 public class WebServer {
 
+
     //filter list
     static List<String> selectedFilters;
 
     public static void main(String[] args) {
+
+        port(getHerokuAssignedPort());
+
         DaoFactory.DROP_TABLES_IF_EXIST = true;
         DaoFactory.PATH_TO_DATABASE_FILE = Paths.get("src", "main", "resources").toFile().getAbsolutePath()
                 + "/db/Store.db";
@@ -731,6 +735,14 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
 
 
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 
 

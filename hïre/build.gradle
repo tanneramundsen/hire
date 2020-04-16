@@ -1,11 +1,14 @@
 plugins {
     id 'java'
     id "com.heroku.sdk.heroku-gradle" version "1.0.4"
+    id 'application'
 }
 
 
 group 'org.example'
 version '1.0-SNAPSHOT'
+applicationName = 'hire'
+mainClassName = 'WebServer'
 
 sourceCompatibility = 1.8
 
@@ -33,7 +36,7 @@ dependencies {
 heroku {
     jdkVersion = 1.8
     processTypes(
-            web: "java -jar build/libs/sparkJavaHeroku-1.0-SNAPSHOT.jar"
+            web: "java -jar build/libs/hïre-1.0-SNAPSHOT.jar"
     )
 }
 
