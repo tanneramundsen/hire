@@ -431,9 +431,19 @@ public class WebServer {
             String courseNumber = course.getCourseNumber();
             String description = course.getCourseDescription();
             List<Applicant> shortList = course.getShortlistedApplicants();
+            List<Applicant> hiredList = course.getHiredApplicants();
+            boolean linkVisible = course.isLinkVisible();
+            boolean hiringComplete = course.isHiringComplete();
+            boolean isShortlisted = false;
+            boolean isHired = false;
             for (Applicant a : shortList) {
                 if (a.getJhed().equals(jhed)) {
-                    model.put("isShortListed","true");
+                    isShortlisted = true;
+                }
+            }
+            for (Applicant a : hiredList) {
+                if (a.getJhed().equals(jhed)) {
+                    isHired = true;
                 }
             }
             if (description.isEmpty()) {
@@ -448,6 +458,10 @@ public class WebServer {
 
             /* later can put in semester */
             model.put("name", name);
+            model.put("linkVisible", linkVisible);
+            model.put("hiringComplete", hiringComplete);
+            model.put("isShortListed", isShortlisted);
+            model.put("isHired", isHired);
             model.put("courseNumber", courseNumber);
             model.put("description", description);
             model.put("interviewLink", interviewLink);

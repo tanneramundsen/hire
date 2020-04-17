@@ -99,11 +99,33 @@
             </div>
             <div class="col-lg-8 offset-lg-2">
                 <br>
-                {{#if isShortListed}}
-                    <h4>Application Status: Being Interviewed</h4>
-                    <h4>Use the given link: {{interviewLink}}</h4>
+                {{#if hiringComplete}}
+
+                    {{#if isHired}}
+                        <!-- Applicant is in hired list and hiring process is complete -->
+                        <h4>Application Status: Hired!</h4>
+                    {{else}}
+                        <!--  TODO: Tell people still on the shortlist they are still being interviewed? -->
+                        <!-- Hiring process is complete but applicant is not in hired list -->
+                        <h4>Application Status: Not hired</h4>
+                    {{/if}}
+
                 {{else}}
-                    <h4>Application Status: Under Review</h4>
+
+                    {{#if linkVisible}}
+                        {{#if isShortListed}}
+                            <!-- Applicant is being interviewed -->
+                            <h4>Application Status: Being interviewed</h4>
+                            <h4>Use the given link: <a href = "{{interviewLink}}">{{interviewLink}}</a></h4>
+                        {{else}}
+                            <!-- Applicant is either in Interested or Hired but hiring is not complete -->
+                            <h4>Application Status: Under Review</h4>
+                        {{/if}}
+                    {{else}}
+                        <!-- Hiring process still happening and interview links not sent out yet -->
+                        <h4>Application Status: Under Review</h4>
+                    {{/if}}
+
                 {{/if}}
             </div>
         </div>
