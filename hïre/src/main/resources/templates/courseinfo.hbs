@@ -87,7 +87,7 @@
                             <div class="col-md-6 col-sm-12">
                                 <fieldset>
                                     {{#if interviewLink}}
-                                        <input name="interviewLink" type="text" value={{interviewLink}}>
+                                        <input name="interviewLink" type="text" value="{{interviewLink}}">
                                     {{else}}
                                         <input name="interviewLink" type="text" placeholder="Add Interview sign up link...">
                                     {{/if}}
@@ -113,17 +113,37 @@
         <div class="row">
             <div class="col">
                 <h2>Filter interested applicants by...</h2>
+                {{#if prevCAFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="prevCAExperience" value="prevCAExperience" checked>
+                {{else}}
                     <input name="filterOptions" type="checkbox" id="prevCAExperience" value="prevCAExperience">
-                    <label for="prevCAExperience"> has previous CA experience</label><br>
-                    <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse">
-                    <label for="CAdThisCourse"> has previously CA'd for {{name}}</label><br>
-                    <input name="filterOptions" type="checkbox" id="CSMajor" value="CSMajor">
-                    <label for="CSMajor"> is a CS major</label><br>
+                {{/if}}
+                <label for="prevCAExperience"> has previous CA experience</label><br>
 
+                {{#if CadThisCourseFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse">
+                {{/if}}
+                <label for="CAdThisCourse"> has previously CA'd for {{name}}</label><br>
+
+                {{#if gradeFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="takenCourseAndGrade" value="takenCourseAndGrade" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="takenCourseAndGrade" value="takenCourseAndGrade">
+                {{/if}}
+                <label for="takenCourseAndGrade"> has gotten above a B in {{name}}</label><br>
+
+                {{#if headCAFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest">
+                {{/if}}
+                <label for="headCAInterest">is interested in being a head CA for {{name}}</label><br>
             </div>
             <div class="col">
-                <button type="submit" id="form-submit" class="main-button">Filter<i class="fa fa-arrow-right"></i></button><br>
-                <button type="submit" id="form-submit" class="delete-button">Remove Filters<i class="fa fa-arrow-right"></i></button>
+                <button type="submit" id="form-submit" class="main-button" formaction="/{{id}}/courseinfo/setFilters">Filter<i class="fa fa-arrow-right"></i></button><br>
+                <button type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/removeFilters">Remove Filters<i class="fa fa-arrow-right"></i></button>
             </div>
         </div>
         </form>

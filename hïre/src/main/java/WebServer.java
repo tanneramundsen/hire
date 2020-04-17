@@ -7,15 +7,21 @@ import model.StaffMember;
 import org.apache.commons.lang3.ArrayUtils;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
-//import com.microsoft.aad.msal4j.*;
-
 import java.nio.file.Paths;
 import java.util.*;
 
 import static spark.Spark.*;
 
 public class WebServer {
+
+
+    //filter list
+    static List<String> selectedFilters;
+
     public static void main(String[] args) {
+
+        port(getHerokuAssignedPort());
+
         DaoFactory.DROP_TABLES_IF_EXIST = true;
         DaoFactory.PATH_TO_DATABASE_FILE = Paths.get("src", "main", "resources").toFile().getAbsolutePath()
                 + "/db/Store.db";
@@ -98,7 +104,6 @@ public class WebServer {
                     List<StaffMember> instructors = c.getInstructors();
                     instructors.add(s);
                     c.setInstructors(instructors);
-                   // TODO: why doesn't this work
                     courseDao.update(c);
                 }
             } else {
@@ -244,6 +249,7 @@ public class WebServer {
             if (interviewLink.isEmpty()) {
                 interviewLink = null;
             }
+
             boolean linkVisible = course.isLinkVisible();
             boolean hiringComplete = course.isHiringComplete();
 
@@ -251,7 +257,6 @@ public class WebServer {
             List<Applicant> hiredApplicants = course.getHiredApplicants();
             List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
 
-            /* later can put in semester */
             model.put("name", name);
             model.put("id", courseId);
             model.put("courseNumber", courseNumber);
@@ -262,6 +267,50 @@ public class WebServer {
             model.put("interestedApplicants", interestedApplicants);
             model.put("shortlistedApplicants", shortlistedApplicants);
             model.put("hiredApplicants", hiredApplicants);
+
+            boolean prevCAFilterOn = false;
+            boolean CadThisCourseFilterOn = false;
+            boolean gradeFilterOn = false;
+            boolean headCAFilterOn = false;
+
+            if (selectedFilters == null) {
+                List<Applicant> interestedApplicants = course.getInterestedApplicants();
+                model.put("interestedApplicants", interestedApplicants);
+            } else {
+                List<List<Applicant>> filterLists = new ArrayList();
+                for(String s : selectedFilters) {
+                    if (s.equals("prevCAExperience")) {
+                        List<Applicant> list1 = DaoFactory.filterByHasPrevCAExperience();
+                        filterLists.add(list1);
+                        prevCAFilterOn = true;
+                    }
+                    if (s.equals("CAdThisCourse")) {
+                        List<Applicant> list2 = DaoFactory.filterByHasPrevCAExperienceForThisClass(course);
+                        filterLists.add(list2);
+                        CadThisCourseFilterOn = true;
+                    }
+                    if (s.equals("takenCourseAndGrade")) {
+                        List<Applicant> list3 = DaoFactory.filterByHasGottenAboveB(course);
+                        filterLists.add(list3);
+                        gradeFilterOn = true;
+                    }
+                    if (s.equals("headCAInterest")) {
+                        List<Applicant> list4 = DaoFactory.filterByHeadCAInterest(course);
+                        filterLists.add(list4);
+                        headCAFilterOn = true;
+                    }
+                }
+                List<Applicant> filteredInterestedApplicantList = filterLists.get(0);
+                for (int i = 1; i < filterLists.size(); i++) {
+                    filteredInterestedApplicantList.retainAll(filterLists.get(i));
+                }
+                model.put("interestedApplicants", filteredInterestedApplicantList);
+            }
+
+            model.put("prevCAFilterOn", prevCAFilterOn);
+            model.put("CadThisCourseFilterOn", CadThisCourseFilterOn);
+            model.put("gradeFilterOn", gradeFilterOn);
+            model.put("headCAFilterOn", headCAFilterOn);
 
             return new ModelAndView(model, "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());
@@ -290,10 +339,17 @@ public class WebServer {
         post("/:id/courseinfo/setFilters", (request, response) -> {
             int courseId = Integer.parseInt(request.params(":id"));
             Course course = courseDao.read(courseId);
-            List<Applicant> interestedApplicants = course.getInterestedApplicants();
-            String[] shortList = request.queryParamsValues("filterOptions");
+            String[] chosenFilters = request.queryParamsValues("filterOptions");
+            List<String> filterOptions = Arrays.asList(chosenFilters);
+            selectedFilters = filterOptions;
+            String redirect = "/" + courseId + "/courseinfo";
+            response.redirect(redirect);
+            return null;
+        }, new HandlebarsTemplateEngine());
 
-
+        post("/:id/courseinfo/removeFilters", (request, response) -> {
+            int courseId = Integer.parseInt(request.params(":id"));
+            selectedFilters = null;
             String redirect = "/" + courseId + "/courseinfo";
             response.redirect(redirect);
             return null;
@@ -720,6 +776,14 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
 
 
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 
 

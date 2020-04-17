@@ -2,6 +2,9 @@ package dao;
 
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import model.Applicant;
+import model.Course;
+import java.util.*;
 
 import java.nio.file.Paths;
 
@@ -180,4 +183,62 @@ public final class DaoFactory {
             conn.createQuery(sql).executeUpdate();
         }
     }
+
+    public static List<Applicant> filterByHasPrevCAExperience() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE previousCA = 1 ";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByHasPrevCAExperienceForThisClass(Course c) {
+        int id = c.getId();
+        String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE previousCA = 1 AND courseId = :id ";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByHasGottenAboveB(Course c) {
+        int id = c.getId();
+        String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE courseId = :id AND (grade='A+' OR grade='A' OR grade='A-' OR grade='B+') ";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByHeadCAInterest(Course c) {
+        int id = c.getId();
+        String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE courseId = :id AND headCAInterest = 1 ";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetch(Applicant.class);
+        }
+    }
+
 }
