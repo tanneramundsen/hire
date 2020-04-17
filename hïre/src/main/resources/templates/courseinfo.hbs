@@ -159,7 +159,7 @@
                             <button type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
                         </div>
                         <div>
-                            <button disabled data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button-disabled">
+                            <button disabled data-toggle="modal" class="finalize-button-disabled">
                                 Interview link sent
                             </button>
                         </div>
@@ -196,11 +196,11 @@
 
                     <div>
                         {{#each hiredApplicants}}
-                            <p><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></p><br>
+                            <a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a><br>
                         {{/each}}
                     </div>
                     <div>
-                        <button disabled data-toggle="modal" data-target="#hiringModal" class="finalize-button-disabled">
+                        <button disabled data-toggle="modal" class="finalize-button-disabled">
                             Hiring complete
                         </button>
                     </div>
@@ -217,12 +217,13 @@
                         <div>
                             <button type="submit" id="form-submit" class="delete-button">Delete from hired<i class="fa fa-arrow-right"></i></button>
                         </div>
-                        <div>
-                            <button data-toggle="modal" data-target="#hiringModal" class="finalize-button">
-                                Send hiring notification
-                            </button>
-                        </div>
                     </form>
+                    <div>
+                        <button data-toggle="modal" data-target="#hiringModal" class="finalize-button">
+                            Send hiring notification
+                        </button>
+                    </div>
+
 
                 {{/if}}
             </div>
@@ -247,7 +248,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
-                    <button onclick="modal_interview_form_submit()" id="form-submit" class="btn btn-primary">
+                    <button onclick="modal_interview_form_submit()" id="interview-form-submit" class="btn btn-primary">
                         Send
                     </button>
                 </div>
@@ -258,7 +259,7 @@
 
 <div class="modal fade" id="hiringModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form action="/{{id}}/courseinfo/sendHiringNotification" method="post" id="sendInterviewLink">
+        <form action="/{{id}}/courseinfo/sendHiringNotification" method="post" id="sendHiringNotification">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
@@ -272,7 +273,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
-                    <button onclick="modal_hiring_form_submit()" id="form-submit" class="btn btn-primary">
+                    <button onclick="modal_hiring_form_submit()" id="hiring-form-submit" class="btn btn-primary">
                         Send
                     </button>
                 </div>
@@ -321,10 +322,14 @@
 </script>
 
 <script>
-    function modal_interview_form_submit(s) {
+    function modal_interview_form_submit() {
         document.getElementById("sendInterviewLink").submit();
     }
-    function modal_hiring_form_submit(s) {
+</script>
+
+<script>
+    function modal_hiring_form_submit() {
+        console.log("Hiiiiiiiii!")
         document.getElementById("sendHiringNotification").submit();
     }
 </script>
