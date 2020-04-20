@@ -180,7 +180,7 @@
                         </div>
                         <div>
                             <button disabled data-toggle="modal" class="finalize-button-disabled">
-                                Interview link sent
+                                Interview Link Visible
                             </button>
                         </div>
                     </form>
@@ -203,7 +203,7 @@
                     </form>
                     <div>
                         <button data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button">
-                            Send interview link
+                            Interview Link Not Visible
                         </button>
                     </div>
 
@@ -221,7 +221,7 @@
                     </div>
                     <div>
                         <button disabled data-toggle="modal" class="finalize-button-disabled">
-                            Hiring complete
+                            Hiring Complete!
                         </button>
                     </div>
 
@@ -240,11 +240,9 @@
                     </form>
                     <div>
                         <button data-toggle="modal" data-target="#hiringModal" class="finalize-button">
-                            Send hiring notification
+                            Send Hiring Notification
                         </button>
                     </div>
-
-
                 {{/if}}
             </div>
         </div>
@@ -264,10 +262,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>This will send the link to each applicant on your shortlist. This cannot be undone.</p>
+                    <p>This will send the interview link to each applicant on your shortlist. This cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button onclick="modal_interview_form_submit()" id="interview-form-submit" class="btn btn-primary">
                         Send
                     </button>
@@ -288,11 +286,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>This will notify all applicants on this list that they have been hired. You will not be able to undo this.
+                    <p>This will notify all applicants on this list that they have been hired. This cannot be undone.
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button onclick="modal_hiring_form_submit()" id="hiring-form-submit" class="btn btn-primary">
                         Send
                     </button>
