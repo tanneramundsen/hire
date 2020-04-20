@@ -19,6 +19,7 @@ public class Applicant extends User {
     private String referenceEmail;
     private String resumeLink;
     private List<Course> headCAInterest;
+    private List<Course> previousCA;
 
     //Fields only visible to Admin
     private boolean fws;
@@ -26,7 +27,6 @@ public class Applicant extends User {
     private String mostRecentPayroll;
     private String otherJobs;
     private int hoursAvailable;
-    private List<Course> previousCA;
 
 
 

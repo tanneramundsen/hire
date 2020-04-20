@@ -26,12 +26,25 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
 
             if (staffId == 0) {
                 // Normal insert
-                sql = "INSERT INTO StaffMembers(name, jhed) VALUES(:name, :jhed);";
+                sql = "INSERT INTO StaffMembers(name, jhed, isAdmin) VALUES(:name, :jhed, :isAdmin)";
                 staffId = (int) conn.createQuery(sql)
                         .bind(staffMember)
                         .executeUpdate()
                         .getKey();
                 staffMember.setId(staffId);
+
+                /*
+                // Update isAdmin to true if staff member is admin
+                if (staffMember.getAdmin()) {
+                    sql = "UPDATE StaffMembers " +
+                            "SET isAdmin = 1 " +
+                            "WHERE id = :id;";
+
+                    conn.createQuery(sql)
+                            .addParameter("id", staffId)
+                            .executeUpdate();
+                }
+                 */
 
                 // Add courses
                 List<Course> courses = staffMember.getCourses();
@@ -83,6 +96,21 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                 return null;
             }
 
+            /*
+            // Get isAdmin attribute
+            sql = "SELECT isAdmin FROM StaffMembers " +
+                    "WHERE id = :id";
+            Integer admin = conn.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Integer.class);
+
+            // Update staff member object
+            if (admin == 1) {
+                staffMember.setAdmin(true);
+            }
+
+             */
+
             // Get corresponding courses according to joining table
             List<Course> courses = readCourses(conn, id);
             staffMember.setCourses(courses);
@@ -124,7 +152,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             int staffId = staffMember.getId();
 
             String sql = "UPDATE StaffMembers " +
-                    "SET name = :name, jhed = :jhed " +
+                    "SET name = :name, jhed = :jhed, isAdmin = :isAdmin " +
                     "WHERE id = :id;";
             conn.createQuery(sql)
                     .bind(staffMember)

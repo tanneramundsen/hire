@@ -5,6 +5,7 @@ public class StaffMember extends User {
     private int id;
     private String jhed;
     private List<Course> courses;
+    boolean isAdmin;
 
     public List<Applicant> getCAsForCourse(Course course) {
         return null;
@@ -14,10 +15,11 @@ public class StaffMember extends User {
 
     }
 
-    public StaffMember(String name, String jhed, List<Course> courses) {
+    public StaffMember(String name, String jhed, List<Course> courses, boolean isAdmin) {
         this.name = name;
         this.jhed = jhed;
         this.courses = courses;
+        this.isAdmin = isAdmin;
     }
 
     public int getId() {
@@ -49,6 +51,10 @@ public class StaffMember extends User {
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
+
+    public void setAdmin(boolean admin) { this.isAdmin = admin; }
+
+    public boolean getAdmin() { return this.isAdmin; }
 
     @Override
     public boolean equals(Object o) {

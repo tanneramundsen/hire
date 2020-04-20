@@ -67,8 +67,8 @@ public final class DaoUtil {
 
         Random random = new Random();
 
-        StaffMember sm1 = new StaffMember("Ali Madooei", "madooei1", null);
-        StaffMember sm2 = new StaffMember("Joanne Selinski", "jselinski1", null);
+        StaffMember sm1 = new StaffMember("Ali Madooei", "madooei1", null, false);
+        StaffMember sm2 = new StaffMember("Joanne Selinski", "jselinski1", null, false);
         List<StaffMember> members = Arrays.asList(new StaffMember[] {sm1, sm2});
 
         for (Course course: courseList) {

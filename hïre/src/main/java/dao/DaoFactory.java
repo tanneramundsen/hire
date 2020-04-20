@@ -108,7 +108,8 @@ public final class DaoFactory {
         String sql = "CREATE TABLE IF NOT EXISTS StaffMembers(" +
                 "id INTEGER PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL, " +
-                "jhed VARCHAR(100) NOT NULL" +
+                "jhed VARCHAR(100) NOT NULL, " +
+                "isAdmin INTEGER" +
                 ");";
         try (Connection conn = sql2o.open()) {
             conn.createQuery(sql).executeUpdate();

@@ -83,7 +83,7 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
 
         post("/signup", (request, response) -> {
-            String name = request.queryParams("firstName")+" "+request.queryParams("lastName");
+            String name = request.queryParams("firstName") + " " + request.queryParams("lastName");
             String jhed = request.queryParams("jhed");
             String email = jhed + "@jhu.edu";
             String profileType = request.queryParams("profileType");
@@ -92,14 +92,25 @@ public class WebServer {
             // use information to create either an applicant or staff member
             if (profileType.equals("Professor")) {
                 List<Course> courseList = new ArrayList<Course>();
-                for (String course:courses) {
+                for (String course : courses) {
                     Course newCourse = courseDao.read(course);
                     courseList.add(newCourse);
                 }
-                StaffMember s = new StaffMember(name,jhed,courseList);
+                StaffMember s = new StaffMember(name, jhed, courseList, false);
                 staffMemberDao.add(s);
                 // Update courses to have staff member as instructor
-                for (Course c: courseList) {
+                for (Course c : courseList) {
+                    List<StaffMember> instructors = c.getInstructors();
+                    instructors.add(s);
+                    c.setInstructors(instructors);
+                    courseDao.update(c);
+                }
+            } else if (profileType.equals("Admin")){
+                List<Course> courseList = new ArrayList<Course>();
+                StaffMember s = new StaffMember(name, jhed, all_courses, true);
+                staffMemberDao.add(s);
+                // Update courses to have staff member as instructor
+                for (Course c : courseList) {
                     List<StaffMember> instructors = c.getInstructors();
                     instructors.add(s);
                     c.setInstructors(instructors);
@@ -130,7 +141,7 @@ public class WebServer {
             boolean isStaffMember = false;
 
             // Redirect back to login if information not in database
-            if (profileType.equals("Professor")) {
+            if (profileType.equals("Professor") || profileType.equals("Admin")) {
                 isStaffMember = true;
                 StaffMember sm = staffMemberDao.read(jhed);
                 if (sm == null) {
@@ -169,7 +180,7 @@ public class WebServer {
             String[] newCourses = request.queryParamsValues("newCourses");
 
             // use information to create either an applicant or staff member
-            if (profileType.equals("Professor")) {
+            if (profileType.equals("Professor") || profileType.equals("Admin")) {
                 StaffMember s = staffMemberDao.read(jhed);
                 List<Course> courseList = s.getCourses();
                 for (String course: newCourses) {
@@ -204,7 +215,7 @@ public class WebServer {
             String[] newCourses = request.queryParamsValues("deleteCourses");
 
             // use information to create either an applicant or staff member
-            if (profileType.equals("Professor")) {
+            if (profileType.equals("Professor") || profileType.equals("Admin")) {
                 StaffMember s = staffMemberDao.read(jhed);
                 List<Course> courseList = s.getCourses();
                 for (String course: newCourses) {
@@ -668,6 +679,7 @@ public class WebServer {
             Map<String, Object> model = new HashMap<String, Object>();
             String applicantJhed = request.params(":jhed");
             int courseId = Integer.parseInt(request.params(":courseId"));
+            String profileType = request.cookie("profileType");
 
             Applicant student = applicantDao.read(applicantJhed);
             Course course1 = courseDao.read(courseId);
@@ -694,6 +706,16 @@ public class WebServer {
             model.put("credits", credits);
             model.put("reference", reference);
             model.put("resume", resume);
+            // Only visible to admin
+            String fwsStr = "No";
+            if (student.getFws()) {
+                fwsStr = "Yes";
+            }
+            model.put("fws", fwsStr);
+            model.put("studentStatus", student.getStudentStatus());
+            model.put("mostRecentPayroll", student.getMostRecentPayroll());
+            model.put("otherJobs", student.getOtherJobs());
+            model.put("hoursAvailable", student.getHoursAvailable());
 
             // Populate ranked courses
             if (student.getRankOne() != null) {
@@ -740,6 +762,7 @@ public class WebServer {
                 }
             }
             model.put("courseSpecificInfo", courseSpecificInfo);
+            model.put("isAdmin", profileType.equals("Admin"));
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -771,8 +794,6 @@ public class WebServer {
             response.redirect(redirect);
             return null;
         }, new HandlebarsTemplateEngine());
-
-
     }
 
     static int getHerokuAssignedPort() {

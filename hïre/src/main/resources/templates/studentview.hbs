@@ -108,6 +108,7 @@
                     <div class="row">
                         <button type="submit" id="form-submit" class="main-button">Update<i class="fa fa-arrow-right"></i></button>
                     </div>
+                    <h3> General Information: </h3>
                     <p> Jhed: {{jhed}}</p>
                     <p> Email: {{email}}</p>
                     <p> Year: {{year}}</p>
@@ -116,6 +117,14 @@
                     <p> Majors/Minors: {{majorAndMinor}}</p>
                     <p> Reference: {{reference}}</p>
                     <p> Resume: {{resume}}</p>
+                    {{#if isAdmin}}
+                        <h3> Admin-only information: </h3>
+                        <p> FWS: {{fws}}</p>
+                        <p> Student Status: {{studentStatus}} </p>
+                        <p> Most Recent Payroll: {{mostRecentPayroll}} </p>
+                        <p> Other jobs: {{otherJobs}} </p>
+                        <p> Hours Available: {{hoursAvailable}}</p>
+                    {{/if}}
                     <br>
                     <div class="row">
                         <div class="col-md-8 col-sm-12">
