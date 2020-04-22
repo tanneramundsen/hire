@@ -10,6 +10,10 @@ import org.sql2o.Sql2oException;
 
 import java.util.List;
 
+/**
+ * DAO object to abstract away interactions between the database tables
+ * and the rest of the application
+ */
 public class Sql2oCourseDao implements CourseDao {
 
     private Sql2o sql2o;
@@ -175,6 +179,13 @@ public class Sql2oCourseDao implements CourseDao {
         }
     }
 
+    /**
+     * Obtain a Course POJO object based on a specified name.
+     * @param name string name corresponding to which Course to fetch from the
+     *             Courses table
+     * @return Course POJO corresponding to the specified name or null
+     * @throws DaoException Runtime exception due to failed SQL query
+     */
     public Course read(String name) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM Courses WHERE name = :name";
@@ -393,6 +404,12 @@ public class Sql2oCourseDao implements CourseDao {
         }
     }
 
+    /**
+     * Helper method to obtain corresponding StaffMember POJOs for a given course.
+     * @param conn SQL connection object to database
+     * @param courseId id of a Course for which we want to get the StaffMembers
+     * @return list of StaffMember POJOs for StaffMembers assigned to the course
+     */
     private List<StaffMember> readStaffMembers(Connection conn, int courseId) {
         String sql = "SELECT StaffMembers.* " +
                 "FROM StaffMembers_Courses " +
@@ -407,6 +424,15 @@ public class Sql2oCourseDao implements CourseDao {
         return staff;
     }
 
+    /**
+     * Helper method to obtain Applicants interested in being a CA for the
+     * specified course.
+     * @param conn SQL connection object to database
+     * @param courseId id of a Course for which we want to get the interested
+     *                 Applicants
+     * @return list of Applicant POJOs for Applicants who expressed interested
+     * in being a CA for the course
+     */
     private List<Applicant> readInterestedApplicants(Connection conn, int courseId) {
         String sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
                 "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
@@ -417,13 +443,22 @@ public class Sql2oCourseDao implements CourseDao {
                 "WHERE Applicants_Courses.courseId = :courseId " +
                 "AND Applicants_Courses.interested = 1;";
 
-        List<Applicant> shortlist = conn.createQuery(sql)
+        List<Applicant> interested = conn.createQuery(sql)
                 .addParameter("courseId", courseId)
                 .executeAndFetch(Applicant.class);
 
-        return shortlist;
+        return interested;
     }
 
+    /**
+     * Helper method to obtain Applicants that were moved onto the shortlist
+     * for a specified course.
+     * @param conn SQL connection object to database
+     * @param courseId id of a Course for which we want to get the shortlisted
+     *                 Applicants
+     * @return list of Applicant POJOs for Applicants who have been shortlisted
+     * for a course.
+     */
     private List<Applicant> readShortlist(Connection conn, int courseId) {
         String sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
                 "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +
@@ -441,6 +476,14 @@ public class Sql2oCourseDao implements CourseDao {
         return shortlist;
     }
 
+    /**
+     * Helper method to obtain Applicants hired for a specified course.
+     * @param conn SQL connection object to database
+     * @param courseId id of a Course for which we want to get the hired
+     *                 Applicants
+     * @return list of Applicant POJOs for Applicants who have been hired for
+     * a course.
+     */
     private List<Applicant> readHiredApplicants(Connection conn, int courseId) {
         String sql = "SELECT A.id, A.name, A.email, A.jhed, A.year, A.majorAndMinor, A.gpa, " +
                 "A.registeredCredits, A.referenceEmail, A.resumeLink, A.fws," +

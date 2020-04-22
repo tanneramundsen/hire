@@ -8,6 +8,9 @@ import java.util.*;
 
 import java.nio.file.Paths;
 
+/**
+ * Class to help create database tables.
+ */
 public final class DaoFactory {
 
     public static boolean DROP_TABLES_IF_EXIST = false;
@@ -18,6 +21,9 @@ public final class DaoFactory {
         // This class is not meant to be instantiated!
     }
 
+    /**
+     * Helper method to establish connection with database
+     */
     private static void instantiateSql2o() {
         if (sql2o == null) {
             final String URI = "jdbc:sqlite:" + PATH_TO_DATABASE_FILE;
@@ -27,6 +33,11 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Construct Courses table in database and any dependent tables.
+     * @return Sql2oCourseDao object to help the rest of application interact
+     * with Courses table and relevant child tables
+     */
     public static Sql2oCourseDao getCourseDao() {
         instantiateSql2o();
 
@@ -42,18 +53,32 @@ public final class DaoFactory {
         return new Sql2oCourseDao(sql2o);
     }
 
+    /**
+     * Construct StaffMembers table in database and any dependent tables.
+     * @return Sql2oStaffMemberDao object to help the rest of application
+     * interact with StaffMembers table and relevant child tables
+     */
     public static Sql2oStaffMemberDao getStaffMemberDao() {
         instantiateSql2o();
         createStaffMembersTable(sql2o);
         return new Sql2oStaffMemberDao(sql2o);
     }
 
+    /**
+     * Construct Applicants table in database and any dependent tables.
+     * @return Sql2oApplicantDao object to help the rest of application
+     * interact with Applicants table and relevant child tables
+     */
     public static Sql2oApplicantDao getApplicantDao() {
         instantiateSql2o();
         createApplicantsTable(sql2o);
         return new Sql2oApplicantDao(sql2o);
     }
 
+    /**
+     * Create Applicants table in database
+     * @param sql2o Object that connects to database
+     */
     private static void createApplicantsTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropApplicantsTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS Applicants(" +
@@ -86,6 +111,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Create Courses table in database
+     * @param sql2o Object that connects to database
+     */
     private static void createCoursesTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS Courses(" +
@@ -103,6 +132,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Create StaffMembers table in database
+     * @param sql2o Object that connects to database
+     */
     private static void createStaffMembersTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropStaffMembersTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS StaffMembers(" +
@@ -116,6 +149,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Create junction table in database for StaffMembers and Courses
+     * @param sql2o Object that connects to database
+     */
     private static void createStaffMembersCoursesTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropStaffMemberCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS StaffMembers_Courses(" +
@@ -130,6 +167,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Create junction table in database for Applicants and Courses
+     * @param sql2o Object that connects to database
+     */
     private static void createApplicantsCoursesTable(Sql2o sql2o) {
         if (DROP_TABLES_IF_EXIST) dropApplicantsCoursesTableIfExists(sql2o);
         String sql = "CREATE TABLE IF NOT EXISTS Applicants_Courses(" +
@@ -150,6 +191,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Drop Applicants table in database
+     * @param sql2o Object that connects to database
+     */
     private static void dropApplicantsTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS Applicants;";
         try (Connection conn = sql2o.open()) {
@@ -157,6 +202,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Drop Courses table in database
+     * @param sql2o Object that connects to database
+     */
     private static void dropCoursesTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS Courses;";
         try (Connection conn = sql2o.open()) {
@@ -164,6 +213,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Drop StaffMembers table in database
+     * @param sql2o Object that connects to database
+     */
     private static void dropStaffMembersTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS StaffMembers;";
         try (Connection conn = sql2o.open()) {
@@ -171,6 +224,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Drop StaffMemberCourses table in database
+     * @param sql2o Object that connects to database
+     */
     private static void dropStaffMemberCoursesTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS StaffMembers_Courses;";
         try (Connection conn = sql2o.open()) {
@@ -178,6 +235,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Drop ApplicantsCourses table in database
+     * @param sql2o Object that connects to database
+     */
     private static void dropApplicantsCoursesTableIfExists(Sql2o sql2o) {
         String sql = "DROP TABLE IF EXISTS Applicants_Courses;";
         try (Connection conn = sql2o.open()) {
@@ -185,6 +246,10 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Select applicants that have previous CA experience.
+     * @return list of Applicants that previously CA'd a course
+     */
     public static List<Applicant> filterByHasPrevCAExperience() {
         String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
                 "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
@@ -197,6 +262,11 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Select applicants that have previous CA experience for a specified course.
+     * @param c course for which to query for
+     * @return list of applicants that previously CA'd for the specified course
+     */
     public static List<Applicant> filterByHasPrevCAExperienceForThisClass(Course c) {
         int id = c.getId();
         String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
@@ -212,6 +282,11 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Select applicants that have gotten above a B in a specified course.
+     * @param c course for which to query for
+     * @return list of applicants that have gotten a B in the course
+     */
     public static List<Applicant> filterByHasGottenAboveB(Course c) {
         int id = c.getId();
         String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
@@ -227,6 +302,13 @@ public final class DaoFactory {
         }
     }
 
+    /**
+     * Select applicants that have expressed interest in being a head CA
+     * for a specified course.
+     * @param c course for which to query for
+     * @return list of applicants that expressed interest in being a head CA
+     * for the course
+     */
     public static List<Applicant> filterByHeadCAInterest(Course c) {
         int id = c.getId();
         String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +

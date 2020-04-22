@@ -796,6 +796,10 @@ public class WebServer {
         }, new HandlebarsTemplateEngine());
     }
 
+    /**
+     * Obtain PORT to use for the web server.
+     * @return integer PORT number
+     */
     static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {
@@ -804,6 +808,10 @@ public class WebServer {
         return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 
+    /**
+     * Obtain the path to database for the web application.
+     * @return path to database file
+     */
     static String getHerokuDatabasePath() {
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {

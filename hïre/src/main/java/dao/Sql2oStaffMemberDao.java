@@ -122,6 +122,14 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
         }
     }
 
+    /**
+     * Obtain and load StaffMember information that corresponds to a specified jhed
+     * into an StaffMember POJO.
+     * @param jhed string JHED corresponding to which Applicant to fetch from
+     *           StaffMembers table
+     * @return StaffMember corresponding to the specified jhed or null
+     * @throws DaoException Runtime exception due to failed SQL query
+     */
     public StaffMember read(String jhed) throws DaoException {
         try (Connection conn = sql2o.open()) {
             // Populate non-list attributes of StaffMember object
@@ -217,6 +225,12 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
         }
     }
 
+    /**
+     * Obtain the courses that a StaffMember is responsible for.
+     * @param conn SQL connection object to database
+     * @param staffId id of StaffMember
+     * @return list of courses that the StaffMember is responsible for
+     */
     private List<Course> readCourses(Connection conn, int staffId) {
         String sql = "SELECT C.* " +
                 "FROM StaffMembers_Courses " +

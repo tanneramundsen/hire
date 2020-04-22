@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+/**
+ * DAO object to abstract away interactions between the database tables
+ * and the rest of the application
+ */
 public class Sql2oApplicantDao implements ApplicantDao {
 
     private Sql2o sql2o;
@@ -207,6 +211,14 @@ public class Sql2oApplicantDao implements ApplicantDao {
         }
     }
 
+    /**
+     * Obtain and load Applicant information that corresponds to a specified jhed
+     * into an Applicant POJO.
+     * @param jhed integer corresponding to which Applicant to fetch from
+     *           Applicants table
+     * @return Applicant corresponding to the specified jhed or null
+     * @throws DaoException Runtime exception due to failed SQL query
+     */
     public Applicant read(String jhed) throws DaoException {
         try (Connection conn = sql2o.open()) {
             String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, " +
@@ -566,6 +578,11 @@ public class Sql2oApplicantDao implements ApplicantDao {
         }
     }
 
+    /**
+     * Helper method to update ranked preferences of an applicant
+     * @param conn SQL connection object to database
+     * @param applicant Applicant object with specified ranked preferred courses
+     */
     private void updateRankedCourseList(Connection conn, Applicant applicant) {
         String sql;
         if (applicant.getRankOne() != null) {
@@ -599,6 +616,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
         }
     }
 
+    /**
+     * Obtain the ranked preferred courses for an applicant based on their id.
+     * @param conn SQL connection object to database
+     * @param id Applicant's id
+     * @return list of ranked courses for the Applicant
+     */
     @NotNull
     private Course[] readRankedCourses(Connection conn, int id) {
         String sql;
@@ -627,6 +650,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
         return rankedCourses;
     }
 
+    /**
+     * Obtain the courses that a specified Applicant is interested in.
+     * @param conn SQL connection object to database
+     * @param applicantId id of Applicant
+     * @return list of courses that the Applicant is interested in
+     */
     private List<Course> readInterestedCourses(Connection conn, int applicantId) {
         String sql = "SELECT C.* " +
                 "FROM Applicants_Courses INNER JOIN Courses C " +
@@ -641,6 +670,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
         return interestedCourses;
     }
 
+    /**
+     * Obtain the courses that a specified Applicant has previously CA'd for.
+     * @param conn SQL connection object to database
+     * @param applicantId id of Applicant
+     * @return list of courses that the Applicant previously CA'd for
+     */
     private List<Course> readPreviousCACourses(Connection conn, int applicantId) {
         String sql = "SELECT C.* " +
                 "FROM Applicants_Courses INNER JOIN Courses C " +
@@ -655,6 +690,14 @@ public class Sql2oApplicantDao implements ApplicantDao {
         return previousCA;
     }
 
+    /**
+     * Obtain the courses for which a specified Applicant expressed interest
+     * in being a Head CA.
+     * @param conn SQL connection object to database
+     * @param applicantId id of Applicant
+     * @return list of courses that the Applicant expressed interested in being
+     * a head CA for
+     */
     private List<Course> readHeadCAInterestCourses(Connection conn, int applicantId) {
         String sql = "SELECT C.* " +
                 "FROM Applicants_Courses INNER JOIN Courses C " +
@@ -669,6 +712,12 @@ public class Sql2oApplicantDao implements ApplicantDao {
         return headCAInterestCourses;
     }
 
+    /**
+     * Obtain the course that a specified Applicant is hired for.
+     * @param conn SQL connection object to database
+     * @param applicantId id of Applicant
+     * @return a single course that the Applicant has been hired for
+     */
     private Course readHiredCourse(Connection conn, int applicantId) {
         String sql = "SELECT C.* " +
                 "FROM Applicants_Courses INNER JOIN Courses C " +
