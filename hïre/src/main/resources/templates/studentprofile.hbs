@@ -29,6 +29,7 @@
 
     <link rel="stylesheet" href="assets/css/lightbox.css">
 
+    <script src="static/js/validate.js"></script>
 </head>
 
 <body>
@@ -97,12 +98,12 @@
         <div class="card card-4">
             <div class="card-body">
                 <h2 class="title">Update Profile</h2>
-                <form action="/studentprofile" method="post">
+                <form onsubmit="return validateStudentProfile()" action="/studentprofile" method="post">
                     <div class="row row-space">
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Name</label>
-                                <input class="input--style-4" type="text" name="name" required value="{{name}}">
+                                <input id="name" class="input--style-4" type="text" name="name" required value="{{name}}">
                             </div>
                         </div>
                     </div>
@@ -110,7 +111,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Email</label>
-                                <input class="input--style-4" type="text" name="email" required value="{{email}}">
+                                <input id="email" class="input--style-4" type="text" name="email" required value="{{email}}">
                             </div>
                         </div>
                     </div>
@@ -156,7 +157,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">GPA (Must be >=3.0, 3.2 for head)</label>
-                                <input class="input--style-4" type="text" name="gpa" required value="{{gpa}}">
+                                <input id="gpa" class="input--style-4" type="text" name="gpa" required value="{{gpa}}">
                             </div>
                         </div>
                     </div>
@@ -164,7 +165,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Number of Credits for Spring 2020</label>
-                                <input class="input--style-4" type="text" name="credits" required value="{{credits}}">
+                                <input id="credits" class="input--style-4" type="text" name="credits" required value="{{credits}}">
                             </div>
                         </div>
                     </div>
@@ -229,7 +230,7 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="input-group">
                                 <label class="label">Hours Available</label>
-                                <input class="input--style-4" type="text" name="hoursAvailable" required value="{{hoursAvailable}}">
+                                <input id="hoursAvailable" class="input--style-4" type="text" name="hoursAvailable" required value="{{hoursAvailable}}">
                             </div>
                         </div>
                     </div>
