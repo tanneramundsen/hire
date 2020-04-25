@@ -35,6 +35,7 @@ function validateStudentProfile() {
         return false;
     } else if (credits < 0) {
         alert("Hours available should be at least 0");
+        return false;
     }
 
     return true;
