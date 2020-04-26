@@ -253,7 +253,6 @@ public class WebServer {
             boolean linkVisible = course.isLinkVisible();
             boolean hiringComplete = course.isHiringComplete();
 
-            List<Applicant> interestedApplicants = course.getInterestedApplicants();
             List<Applicant> hiredApplicants = course.getHiredApplicants();
             List<Applicant> shortlistedApplicants = course.getShortlistedApplicants();
 
@@ -264,7 +263,6 @@ public class WebServer {
             model.put("hiringComplete", hiringComplete);
             model.put("interviewLink", interviewLink);
             model.put("linkVisible", linkVisible);
-            model.put("interestedApplicants", interestedApplicants);
             model.put("shortlistedApplicants", shortlistedApplicants);
             model.put("hiredApplicants", hiredApplicants);
 
