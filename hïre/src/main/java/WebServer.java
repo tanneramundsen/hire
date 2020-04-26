@@ -280,6 +280,13 @@ public class WebServer {
             boolean CadThisCourseFilterOn = false;
             boolean gradeFilterOn = false;
             boolean headCAFilterOn = false;
+            boolean sophomoreFilterOn = false;
+            boolean juniorFilterOn = false;
+            boolean seniorFilterOn = false;
+            boolean combinedFilterOn = false;
+            boolean mastersFirstFilterOn = false;
+            boolean mastersSecondFilterOn = false;
+            boolean phDFilterOn = false;
 
             if (selectedFilters == null) {
                 List<Applicant> interestedApplicants = course.getInterestedApplicants();
@@ -307,6 +314,41 @@ public class WebServer {
                         filterLists.add(list4);
                         headCAFilterOn = true;
                     }
+                    if (s.equals("sophomore")) {
+                        List<Applicant> list5 = DaoFactory.filterBySophomore();
+                        filterLists.add(list5);
+                        sophomoreFilterOn = true;
+                    }
+                    if (s.equals("junior")) {
+                        List<Applicant> list6 = DaoFactory.filterByJunior();
+                        filterLists.add(list6);
+                        juniorFilterOn = true;
+                    }
+                    if (s.equals("senior")) {
+                        List<Applicant> list7 = DaoFactory.filterBySenior();
+                        filterLists.add(list7);
+                        seniorFilterOn = true;
+                    }
+                    if (s.equals("combined")) {
+                        List<Applicant> list8 = DaoFactory.filterByCombined();
+                        filterLists.add(list8);
+                        combinedFilterOn = true;
+                    }
+                    if (s.equals("mastersFirst")) {
+                        List<Applicant> list9 = DaoFactory.filterByMastersFirst();
+                        filterLists.add(list9);
+                        mastersFirstFilterOn = true;
+                    }
+                    if (s.equals("mastersSecond")) {
+                        List<Applicant> list10 = DaoFactory.filterByMastersSecond();
+                        filterLists.add(list10);
+                        mastersSecondFilterOn = true;
+                    }
+                    if (s.equals("PhD")) {
+                        List<Applicant> list11 = DaoFactory.filterByPhD();
+                        filterLists.add(list11);
+                        phDFilterOn = true;
+                    }
                 }
                 List<Applicant> filteredInterestedApplicantList = filterLists.get(0);
                 for (int i = 1; i < filterLists.size(); i++) {
@@ -319,6 +361,13 @@ public class WebServer {
             model.put("CadThisCourseFilterOn", CadThisCourseFilterOn);
             model.put("gradeFilterOn", gradeFilterOn);
             model.put("headCAFilterOn", headCAFilterOn);
+            model.put("sophomoreFilterOn", sophomoreFilterOn);
+            model.put("juniorFilterOn", juniorFilterOn);
+            model.put("seniorFilterOn", seniorFilterOn);
+            model.put("combinedFilterOn", combinedFilterOn);
+            model.put("mastersFirstFilterOn", mastersFirstFilterOn);
+            model.put("mastersSecondFilterOn", mastersSecondFilterOn);
+            model.put("phDFilterOn", phDFilterOn);
 
             return new ModelAndView(model, "courseinfo.hbs");
         }, new HandlebarsTemplateEngine());

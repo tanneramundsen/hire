@@ -324,4 +324,87 @@ public final class DaoFactory {
         }
     }
 
+    public static List<Applicant> filterBySophomore() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE year='Sophomore'";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByJunior() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE year='Junior'";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterBySenior() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE year='Senior'";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByCombined() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE year='Combined (ugrad/grad)'";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByMastersFirst() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE year='Masters (1st semester)'";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByMastersSecond() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE year='Masters (2-4 semester)'";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
+
+    public static List<Applicant> filterByPhD() {
+        String sql = "SELECT DISTINCT id, name, email, jhed, year, majorAndMinor, gpa, registeredCredits, " +
+                "referenceEmail, resumeLink, fws, studentStatus, mostRecentPayroll, otherJobs, hoursAvailable, hiredCourse, " +
+                "rankOne, rankTwo, rankThree " +
+                "FROM Applicants " +
+                "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
+                "WHERE year='PhD'";
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql).executeAndFetch(Applicant.class);
+        }
+    }
 }

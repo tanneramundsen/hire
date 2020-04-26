@@ -107,6 +107,11 @@ public final class DaoUtil {
         Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", gradeAMap);
         Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", notTakenMap);
         Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", notTakenMap);
+        applicant1.setYear("Junior");
+        applicant2.setYear("Combined (ugrad/grad)");
+        applicant3.setYear("Masters (1st semester)");
+        applicant4.setYear("Masters (2-4 semester)");
+        applicant5.setYear("PhD");
         List<Applicant> applicantList = Arrays.asList(new Applicant[] {applicant1, applicant2, applicant3, applicant4, applicant5});
 
         applicant1.setHeadCAInterest(courseList);

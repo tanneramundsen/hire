@@ -140,6 +140,55 @@
                     <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest">
                 {{/if}}
                 <label for="headCAInterest">is interested in being a head CA for {{name}}</label><br>
+
+                {{#if sophomoreFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="sophomore" value="sophomore" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="sophomore" value="sophomore">
+                {{/if}}
+                <label for="sophomore"> is a sophomore</label><br>
+
+                {{#if juniorFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="junior" value="junior" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="junior" value="junior">
+                {{/if}}
+                <label for="junior"> is a junior</label><br>
+
+                {{#if seniorFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="senior" value="senior" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="senior" value="senior">
+                {{/if}}
+                <label for="senior"> is a senior</label><br>
+
+                {{#if combinedFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="combined" value="combined" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="combined" value="combined">
+                {{/if}}
+                <label for="combined"> is a combined (ugrad/grad)</label><br>
+
+                {{#if mastersFirstFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="mastersFirst" value="mastersFirst" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="mastersFirst" value="mastersFirst">
+                {{/if}}
+                <label for="mastersFirst"> is a Master's student (1st semester) </label><br>
+
+                {{#if mastersSecondFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="mastersSecond" value="mastersSecond" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="mastersSecond" value="mastersSecond">
+                {{/if}}
+                <label for="mastersSecond"> is a Master's student (2nd-4th semester)</label><br>
+
+                {{#if phDFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="PhD" value="PhD" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="PhD" value="PhD">
+                {{/if}}
+                <label for="PhD"> is a PhD student</label><br>
             </div>
             <div class="col">
                 <button type="submit" id="form-submit" class="main-button" formaction="/{{id}}/courseinfo/setFilters">Filter<i class="fa fa-arrow-right"></i></button><br>
