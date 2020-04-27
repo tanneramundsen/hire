@@ -32,7 +32,7 @@ public final class DaoFactory {
         if (sql2o == null) {
             // Not on Heroku, so use local username, password etc.
             if (databaseUrl == null) {
-                final String URI = "jdbc:postgresql://localhost:5432/Store";
+                final String URI = "jdbc:postgresql://localhost:5432/store";
                 final String USERNAME = "postgres";
                 final String PASSWORD = "postgres";
 
@@ -274,7 +274,7 @@ public final class DaoFactory {
                 "rankOne, rankTwo, rankThree " +
                 "FROM Applicants " +
                 "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
-                "WHERE previousCA = 1 ";
+                "WHERE previousCA = true ";
         try (Connection conn = sql2o.open()) {
             return conn.createQuery(sql).executeAndFetch(Applicant.class);
         }
@@ -292,7 +292,7 @@ public final class DaoFactory {
                 "rankOne, rankTwo, rankThree " +
                 "FROM Applicants " +
                 "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
-                "WHERE previousCA = 1 AND courseId = :id ";
+                "WHERE previousCA = true AND courseId = :id ";
         try (Connection conn = sql2o.open()) {
             return conn.createQuery(sql)
                     .addParameter("id", id)
@@ -334,7 +334,7 @@ public final class DaoFactory {
                 "rankOne, rankTwo, rankThree " +
                 "FROM Applicants " +
                 "JOIN Applicants_Courses ON Applicants.id = Applicants_Courses.applicantId " +
-                "WHERE courseId = :id AND headCAInterest = 1 ";
+                "WHERE courseId = :id AND headCAInterest = true";
         try (Connection conn = sql2o.open()) {
             return conn.createQuery(sql)
                     .addParameter("id", id)

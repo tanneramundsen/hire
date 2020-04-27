@@ -27,9 +27,9 @@ public class WebServer {
         DaoFactory.PATH_TO_DATABASE_FILE = getHerokuDatabasePath();
         ApiServer.INITIALIZE_WITH_SAMPLE_DATA = true;
 
+        Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
         Sql2oStaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
         Sql2oApplicantDao applicantDao = DaoFactory.getApplicantDao();
-        Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
 
         // Add in all courses from SIS API to Courses database
         String school = "whiting school of engineering".replace(" ", "%20");;
@@ -855,7 +855,7 @@ public class WebServer {
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
-        return 5432; //return default port if heroku-port isn't set (i.e. on localhost)
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 
     /**
