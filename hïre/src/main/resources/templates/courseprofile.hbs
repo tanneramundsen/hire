@@ -89,12 +89,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
-                <h4>A little more about the position...</h4>
+                <h4><strong>A little more about the position...</strong></h4>
                 <br>
                 {{#if description}}
                     <h5>{{description}}</h5>
                 {{else}}
-                    <h5>The professor has not yet wrote a CA position description.</h5>
+                    <h5>The professor has not yet written a CA position description.</h5>
                 {{/if}}
             </div>
             <div class="col-lg-8 offset-lg-2">
@@ -103,11 +103,11 @@
 
                     {{#if isHired}}
                         <!-- Applicant is in hired list and hiring process is complete -->
-                        <h4>Application Status: Hired!</h4>
+                        <h4><strong>Application Status:</strong> Hired!</h4>
                     {{else}}
                         <!--  TODO: Tell people still on the shortlist they are still being interviewed? -->
                         <!-- Hiring process is complete but applicant is not in hired list -->
-                        <h4>Application Status: Not hired</h4>
+                        <h4><strong>Application Status:</strong> Not hired</h4>
                     {{/if}}
 
                 {{else}}
@@ -115,15 +115,15 @@
                     {{#if linkVisible}}
                         {{#if isShortListed}}
                             <!-- Applicant is being interviewed -->
-                            <h4>Application Status: Being interviewed</h4>
+                            <h4> <strong>Application Status:</strong> Being interviewed</h4>
                             <h4>Use the given link: <a href = "{{interviewLink}}">{{interviewLink}}</a></h4>
                         {{else}}
                             <!-- Applicant is either in Interested or Hired but hiring is not complete -->
-                            <h4>Application Status: Under Review</h4>
+                            <h4><strong>Application Status:</strong> Under Review</h4>
                         {{/if}}
                     {{else}}
                         <!-- Hiring process still happening and interview links not sent out yet -->
-                        <h4>Application Status: Under Review</h4>
+                        <h4><strong>Application Status:</strong> Under Review</h4>
                     {{/if}}
 
                 {{/if}}
