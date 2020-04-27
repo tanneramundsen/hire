@@ -27,24 +27,11 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             if (staffId == 0) {
                 // Normal insert
                 sql = "INSERT INTO StaffMembers(name, jhed, isAdmin) VALUES(:name, :jhed, :isAdmin)";
-                staffId = (int) conn.createQuery(sql)
+                staffId = (int) conn.createQuery(sql, true)
                         .bind(staffMember)
                         .executeUpdate()
                         .getKey();
                 staffMember.setId(staffId);
-
-                /*
-                // Update isAdmin to true if staff member is admin
-                if (staffMember.getAdmin()) {
-                    sql = "UPDATE StaffMembers " +
-                            "SET isAdmin = 1 " +
-                            "WHERE id = :id;";
-
-                    conn.createQuery(sql)
-                            .addParameter("id", staffId)
-                            .executeUpdate();
-                }
-                 */
 
                 // Add courses
                 List<Course> courses = staffMember.getCourses();
@@ -55,7 +42,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                             sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                     "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                     ":interviewLink);";
-                            courseId = (int) conn.createQuery(sql)
+                            courseId = (int) conn.createQuery(sql, true)
                                     .bind(course)
                                     .executeUpdate()
                                     .getKey();
@@ -95,21 +82,6 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
             if (staffMember == null) {
                 return null;
             }
-
-            /*
-            // Get isAdmin attribute
-            sql = "SELECT isAdmin FROM StaffMembers " +
-                    "WHERE id = :id";
-            Integer admin = conn.createQuery(sql)
-                    .addParameter("id", id)
-                    .executeAndFetchFirst(Integer.class);
-
-            // Update staff member object
-            if (admin == 1) {
-                staffMember.setAdmin(true);
-            }
-
-             */
 
             // Get corresponding courses according to joining table
             List<Course> courses = readCourses(conn, id);
@@ -182,7 +154,7 @@ public class Sql2oStaffMemberDao implements StaffMemberDao {
                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                 "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                 ":interviewLink);";
-                        courseId = (int) conn.createQuery(sql)
+                        courseId = (int) conn.createQuery(sql, true)
                                 .bind(course)
                                 .executeUpdate()
                                 .getKey();

@@ -18,6 +18,7 @@ import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public final class ApiServer {
         // This class is not meant to be instantiated!
     }
 
-    public static void start() {
+    public static void start() throws URISyntaxException {
         ApplicantDao applicantDao = DaoFactory.getApplicantDao();
         StaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
         CourseDao courseDao = DaoFactory.getCourseDao();
