@@ -107,12 +107,26 @@ public final class DaoUtil {
         Applicant applicant3 = new Applicant("Madhu Rajmohan", "mrajmoh1@jhu.edu", "mrajmoh1", gradeAMap);
         Applicant applicant4 = new Applicant("Daniela Torres", "dtorre17@jhu.edu", "dtorre17", notTakenMap);
         Applicant applicant5 = new Applicant("Chester Huynh", "xhuynh1@jhu.edu", "xhuynh1", notTakenMap);
+        Applicant applicant6 = new Applicant("William Shakespeare", "wshake1@jhu.edu", "wshake1", notTakenMap);
+        Applicant applicant7 = new Applicant("Jane Villaneuva", "jvill12@jhu.edu", "jvill12", notTakenMap);
+        Applicant applicant8 = new Applicant("Petra Solano", "psolan3@jhu.edu", "psolan3", notTakenMap);
+        Applicant applicant9 = new Applicant("Michael Cordero", "mcorder2@jhu.edu", "mcorder2", notTakenMap);
+        Applicant applicant10 = new Applicant("Rafael Solano", "rsolan2@jhu.edu", "rsolan2", notTakenMap);
+        Applicant applicant11 = new Applicant("Bill Roche", "broche1@jhu.edu", "broche1", notTakenMap);
+
         applicant1.setYear("Junior");
-        applicant2.setYear("Combined (ugrad/grad)");
-        applicant3.setYear("Masters (1st semester)");
-        applicant4.setYear("Masters (2-4 semester)");
+        applicant2.setYear("Senior");
+        applicant3.setYear("Senior");
+        applicant4.setYear("Sophomore");
         applicant5.setYear("PhD");
-        List<Applicant> applicantList = Arrays.asList(new Applicant[] {applicant1, applicant2, applicant3, applicant4, applicant5});
+        applicant6.setYear("Sophomore");
+        applicant7.setYear("Junior");
+        applicant8.setYear("Junior");
+        applicant9.setYear("Junior");
+        applicant7.setPreviousCA(courseList);
+        applicant8.setHeadCAInterest(courseList);
+        applicant1.setPreviousCA(courseList);
+        List<Applicant> applicantList = Arrays.asList(new Applicant[] {applicant1, applicant2, applicant3, applicant4, applicant5, applicant6, applicant7, applicant8, applicant9, applicant10, applicant11});
 
         applicant1.setHeadCAInterest(courseList);
         applicant2.setPreviousCA(courseList);
