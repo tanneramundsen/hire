@@ -27,6 +27,7 @@ public class WebServer {
         DaoFactory.PATH_TO_DATABASE_FILE = getHerokuDatabasePath();
         ApiServer.INITIALIZE_WITH_SAMPLE_DATA = true;
 
+        DaoFactory.dropAllTablesIfExists();
         Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
         Sql2oStaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
         Sql2oApplicantDao applicantDao = DaoFactory.getApplicantDao();
