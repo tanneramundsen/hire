@@ -38,7 +38,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         "VALUES(:name, :email, :jhed, :year, :majorAndMinor, :gpa, " +
                         ":registeredCredits, :referenceEmail, :resumeLink, :fws, :studentStatus, " +
                         ":mostRecentPayroll, :otherJobs, :hoursAvailable);";
-                int id = (int) conn.createQuery(sql)
+                int id = (int) conn.createQuery(sql, true)
                         .bind(applicant)
                         .executeUpdate()
                         .getKey();
@@ -55,16 +55,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                     "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                     ":interviewLink);";
-                            courseId = (int) conn.createQuery(sql)
+                            courseId = (int) conn.createQuery(sql, true)
                                     .bind(course)
                                     .executeUpdate()
                                     .getKey();
                             course.setId(courseId);
                         }
                         sql = "INSERT INTO Applicants_Courses(applicantId, courseId, interested, grade) " +
-                                "VALUES(:applicantId, :courseId, 1, :grade) " +
+                                "VALUES(:applicantId, :courseId, true, :grade) " +
                                 "ON CONFLICT (applicantId, courseId) " +
-                                "DO UPDATE SET interested = 1, grade = excluded.grade;";
+                                "DO UPDATE SET interested = true, grade = excluded.grade;";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", id)
                                 .addParameter("courseId", course.getId())
@@ -80,7 +80,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                     "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                     ":interviewLink);";
-                            courseId = (int) conn.createQuery(sql)
+                            courseId = (int) conn.createQuery(sql, true)
                                     .bind(course)
                                     .executeUpdate()
                                     .getKey();
@@ -88,9 +88,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         }
 
                         sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
-                                "VALUES(:applicantId, :courseId, 1) " +
+                                "VALUES(:applicantId, :courseId, true) " +
                                 "ON CONFLICT (applicantId, courseId) " +
-                                "DO UPDATE SET previousCA = 1;";
+                                "DO UPDATE SET previousCA = true;";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", id)
                                 .addParameter("courseId", courseId)
@@ -104,7 +104,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         if (courseId == 0) {
                             sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription interviewLink) " +
                                     "VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, :interviewLink);";
-                            courseId = (int) conn.createQuery(sql)
+                            courseId = (int) conn.createQuery(sql, true)
                                     .bind(course)
                                     .executeUpdate()
                                     .getKey();
@@ -112,9 +112,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         }
 
                         sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
-                                "VALUES(:applicantId, :courseId, 1) " +
+                                "VALUES(:applicantId, :courseId, true) " +
                                 "ON CONFLICT (applicantId, courseId) " +
-                                "DO UPDATE SET headCAInterest = 1;";
+                                "DO UPDATE SET headCAInterest = true;";
                         conn.createQuery(sql)
                                 .addParameter("applicantId", id)
                                 .addParameter("courseId", courseId)
@@ -126,19 +126,19 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     Course course = applicant.getHiredCourse();
                     int courseId = course.getId();
                     if (courseId == 0) {
-                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, interviewLink) " +
-                                 "VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, :interviewLink);";
-                         courseId = (int) conn.createQuery(sql)
-                                 .bind(course)
-                                 .executeUpdate()
-                                 .getKey();
-                         course.setId(courseId);
+                        sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, interviewLink) " +
+                                "VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, :interviewLink);";
+                        courseId = (int) conn.createQuery(sql, true)
+                                .bind(course)
+                                .executeUpdate()
+                                .getKey();
+                        course.setId(courseId);
                     }
 
                     sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired) " +
-                            "VALUES(:applicantId, :courseId, 1) " +
+                            "VALUES(:applicantId, :courseId, true) " +
                             "ON CONFLICT (applicantId, courseId) " +
-                            "DO UPDATE SET hired = 1;";
+                            "DO UPDATE SET hired = true;";
                     conn.createQuery(sql)
                             .addParameter("applicantId", id)
                             .addParameter("courseId", courseId)
@@ -181,7 +181,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         "FROM Applicants_Courses " +
                         "WHERE applicantId = :applicantId " +
                         "AND courseId = :courseId " +
-                        "AND interested = 1;";
+                        "AND interested = true;";
                 List<Map<String, Object>> grades = conn.createQuery(sql)
                         .addParameter("applicantId", id)
                         .addParameter("courseId", course.getId())
@@ -250,7 +250,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         "FROM Applicants_Courses " +
                         "WHERE applicantId = :applicantId " +
                         "AND courseId = :courseId " +
-                        "AND interested = 1;";
+                        "AND interested = true;";
                 List<Map<String, Object>> grades = conn.createQuery(sql)
                         .addParameter("applicantId", id)
                         .addParameter("courseId", course.getId())
@@ -305,7 +305,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             if (currentInterestedCourses != null) {
                 for (Course course: currentInterestedCourses) {
                     sql = "UPDATE Applicants_Courses " +
-                            "SET interested = 0 " +
+                            "SET interested = false " +
                             "WHERE applicantId = :applicantId " +
                             "AND courseId = :courseId;";
 
@@ -329,7 +329,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                 "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                 ":interviewLink);";
-                        courseId = (int) conn.createQuery(sql)
+                        courseId = (int) conn.createQuery(sql, true)
                                 .bind(course)
                                 .executeUpdate()
                                 .getKey();
@@ -343,9 +343,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
                 for (int i = 0; i < interestedCourses.size(); i++) {
                     sql = "INSERT INTO Applicants_Courses(applicantId, courseId, interested, grade) " +
-                            "VALUES(:applicantId, :courseId, 1, :grade) " +
+                            "VALUES(:applicantId, :courseId, true, :grade) " +
                             "ON CONFLICT (applicantId, courseId) " +
-                            "DO UPDATE SET interested = 1, grade = excluded.grade;";
+                            "DO UPDATE SET interested = true, grade = excluded.grade;";
                     conn.createQuery(sql)
                             .addParameter("applicantId", id)
                             .addParameter("courseId", interestedCourses.get(i).getId())
@@ -362,7 +362,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             if (currentPreviousCA != null) {
                 for (Course course: currentPreviousCA) {
                     sql = "UPDATE Applicants_Courses " +
-                            "SET previousCA = 0 " +
+                            "SET previousCA = false " +
                             "WHERE applicantId = :applicantId " +
                             "AND courseId = :courseId;";
                     conn.createQuery(sql)
@@ -381,7 +381,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                 "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                 ":interviewLink);";
-                        courseId = (int) conn.createQuery(sql)
+                        courseId = (int) conn.createQuery(sql, true)
                                 .bind(course)
                                 .executeUpdate()
                                 .getKey();
@@ -389,9 +389,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     }
 
                     sql = "INSERT INTO Applicants_Courses(applicantId, courseId, previousCA) " +
-                            "VALUES(:applicantId, :courseId, 1) " +
+                            "VALUES(:applicantId, :courseId, true) " +
                             "ON CONFLICT (applicantId, courseId) " +
-                            "DO UPDATE SET previousCA = 1;";
+                            "DO UPDATE SET previousCA = true;";
                     conn.createQuery(sql)
                             .addParameter("applicantId", id)
                             .addParameter("courseId", courseId)
@@ -407,7 +407,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             if (currentHeadCAInterest != null) {
                 for (Course course: currentHeadCAInterest) {
                     sql = "UPDATE Applicants_Courses " +
-                            "SET headCAInterest = 0 " +
+                            "SET headCAInterest = false " +
                             "WHERE applicantId = :applicantId " +
                             "AND courseId = :courseId;";
                     conn.createQuery(sql)
@@ -426,16 +426,16 @@ public class Sql2oApplicantDao implements ApplicantDao {
                         sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, " +
                                 "interviewLink) VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, " +
                                 ":interviewLink);";
-                        courseId = (int) conn.createQuery(sql)
+                        courseId = (int) conn.createQuery(sql, true)
                                 .bind(course)
                                 .executeUpdate()
                                 .getKey();
                         course.setId(courseId);
                     }
                     sql = "INSERT INTO Applicants_Courses(applicantId, courseId, headCAInterest) " +
-                            "VALUES(:applicantId, :courseId, 1) " +
+                            "VALUES(:applicantId, :courseId, true) " +
                             "ON CONFLICT (applicantId, courseId) " +
-                            "DO UPDATE SET headCAInterest = 1;";
+                            "DO UPDATE SET headCAInterest = true;";
                     conn.createQuery(sql)
                             .addParameter("applicantId", id)
                             .addParameter("courseId", courseId)
@@ -449,7 +449,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
             Course currentHired = readHiredCourse(conn, id);
             if (currentHired != null) {
                 sql = "UPDATE Applicants_Courses " +
-                        "SET hired = 0 " +
+                        "SET hired = false " +
                         "WHERE applicantId = :applicantId " +
                         "AND courseId = :courseId;";
                 conn.createQuery(sql)
@@ -466,7 +466,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 if (hiredCourseId == 0) {
                     sql = "INSERT INTO Courses(name, courseNumber, semester, hiringComplete, courseDescription, interviewLink) " +
                             "VALUES(:name, :courseNumber, :semester, :hiringComplete, :courseDescription, :interviewLink);";
-                    hiredCourseId = (int) conn.createQuery(sql)
+                    hiredCourseId = (int) conn.createQuery(sql, true)
                             .bind(hiredCourse)
                             .executeUpdate()
                             .getKey();
@@ -474,9 +474,9 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     hiredCourse.setId(hiredCourseId);
                 }
                 sql = "INSERT INTO Applicants_Courses(applicantId, courseId, hired) " +
-                        "VALUES(:applicantId, :courseId, 1) " +
+                        "VALUES(:applicantId, :courseId, true) " +
                         "ON CONFLICT (applicantId, courseId) " +
-                        "DO UPDATE SET hired = 1;";
+                        "DO UPDATE SET hired = true;";
                 conn.createQuery(sql)
                         .addParameter("applicantId", id)
                         .addParameter("courseId", hiredCourseId)
@@ -532,7 +532,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                             "FROM Applicants_Courses " +
                             "WHERE applicantId = :applicantId " +
                             "AND courseId = :courseId " +
-                            "AND interested = 1;";
+                            "AND interested = true;";
                     List<Map<String, Object>> grades = conn.createQuery(sql)
                             .addParameter("applicantId", applicantId)
                             .addParameter("courseId", course.getId())
@@ -569,7 +569,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     "FROM Applicants A INNER JOIN Applicants_Courses " +
                     "ON A.id = Applicants_Courses.applicantId " +
                     "WHERE Applicants_Courses.courseId = :courseId " +
-                    "AND Applicants_Courses.interested = 1;";
+                    "AND Applicants_Courses.interested = true;";
             return conn.createQuery(sql)
                     .addParameter("courseId", courseId)
                     .executeAndFetch(Applicant.class);
@@ -661,7 +661,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 "FROM Applicants_Courses INNER JOIN Courses C " +
                 "ON Applicants_Courses.courseId = C.id " +
                 "WHERE Applicants_Courses.applicantId = :applicantId " +
-                "AND Applicants_Courses.interested = 1;";
+                "AND Applicants_Courses.interested = true;";
 
         List<Course> interestedCourses = conn.createQuery(sql)
                 .addParameter("applicantId", applicantId)
@@ -681,7 +681,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 "FROM Applicants_Courses INNER JOIN Courses C " +
                 "ON Applicants_Courses.courseId = C.id " +
                 "WHERE Applicants_Courses.applicantId = :applicantId " +
-                "AND Applicants_Courses.previousCA = 1;";
+                "AND Applicants_Courses.previousCA = true;";
 
         List<Course> previousCA = conn.createQuery(sql)
                 .addParameter("applicantId", applicantId)
@@ -703,7 +703,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 "FROM Applicants_Courses INNER JOIN Courses C " +
                 "ON Applicants_Courses.courseId = C.id " +
                 "WHERE Applicants_Courses.applicantId = :applicantId " +
-                "AND Applicants_Courses.headCAInterest = 1;";
+                "AND Applicants_Courses.headCAInterest = true;";
 
         List<Course> headCAInterestCourses = conn.createQuery(sql)
                 .addParameter("applicantId", applicantId)
@@ -723,7 +723,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                 "FROM Applicants_Courses INNER JOIN Courses C " +
                 "ON Applicants_Courses.courseId = C.id " +
                 "WHERE Applicants_Courses.applicantId = :applicantId " +
-                "AND Applicants_Courses.hired = 1;";
+                "AND Applicants_Courses.hired = true;";
 
         Course hired = conn.createQuery(sql)
                 .addParameter("applicantId", applicantId)

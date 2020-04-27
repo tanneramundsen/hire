@@ -2,6 +2,7 @@ package api;
 
 import dao.DaoFactory;
 
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 /**
@@ -9,7 +10,7 @@ import java.nio.file.Paths;
  * for inspecting and manual testing through e.g. Postman application.
  */
 public class RunApiServer {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
         ApiServer.start();
     }
 }

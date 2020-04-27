@@ -7,6 +7,8 @@ import model.StaffMember;
 import org.apache.commons.lang3.ArrayUtils;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
+
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -14,11 +16,10 @@ import static spark.Spark.*;
 
 public class WebServer {
 
-
     //filter list
     static List<String> selectedFilters;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
 
         port(getHerokuAssignedPort());
 
@@ -26,9 +27,9 @@ public class WebServer {
         DaoFactory.PATH_TO_DATABASE_FILE = getHerokuDatabasePath();
         ApiServer.INITIALIZE_WITH_SAMPLE_DATA = true;
 
+        Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
         Sql2oStaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
         Sql2oApplicantDao applicantDao = DaoFactory.getApplicantDao();
-        Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
 
         // Add in all courses from SIS API to Courses database
         String school = "whiting school of engineering".replace(" ", "%20");;
