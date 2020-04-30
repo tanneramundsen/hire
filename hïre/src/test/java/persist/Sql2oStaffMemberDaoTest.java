@@ -25,18 +25,9 @@ public class Sql2oStaffMemberDaoTest {
     private Sql2oCourseDao courseDao;
     private Sql2oApplicantDao applicantDao;
 
-    private String getResourcesPath() {
-        Path resourceDirectory = Paths.get("src", "test", "resources");
-        return resourceDirectory.toFile().getAbsolutePath();
-    }
-
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() {
         DaoFactory.DROP_TABLES_IF_EXIST = true;
-        DaoFactory.PATH_TO_DATABASE_FILE = Paths.get("src", "test", "resources").toFile().getAbsolutePath()
-                + "/db/Test.db";
-        ApiServer.INITIALIZE_WITH_SAMPLE_DATA = false;
-        ApiServer.start();
     }
 
     @Before
@@ -187,11 +178,6 @@ public class Sql2oStaffMemberDaoTest {
     public void addingStaffMemberWithNullNameFails() {
         StaffMember s1 = new StaffMember(null, "madooei1", null, false);
         staffMemberDao.add(s1);
-    }
-
-    @AfterClass
-    public static void afterClass() throws Exception {
-        ApiServer.stop();
     }
 
 }

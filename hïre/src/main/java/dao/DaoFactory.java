@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 public final class DaoFactory {
 
     public static boolean DROP_TABLES_IF_EXIST = false;
-    public static String PATH_TO_DATABASE_FILE = Paths.get("src", "main", "resources").toFile().getAbsolutePath() + "/db/Store.db";
     private static Sql2o sql2o;
 
     private DaoFactory() {

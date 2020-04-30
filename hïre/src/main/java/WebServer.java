@@ -24,7 +24,6 @@ public class WebServer {
         port(getHerokuAssignedPort());
 
         DaoFactory.DROP_TABLES_IF_EXIST = true;
-        DaoFactory.PATH_TO_DATABASE_FILE = getHerokuDatabasePath();
         ApiServer.INITIALIZE_WITH_SAMPLE_DATA = true;
 
         DaoFactory.dropAllTablesIfExists();

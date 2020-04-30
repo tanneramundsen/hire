@@ -2,11 +2,7 @@ package api;
 
 import com.google.gson.Gson;
 
-import dao.ApplicantDao;
-import dao.CourseDao;
-import dao.StaffMemberDao;
-import dao.DaoFactory;
-import dao.DaoUtil;
+import dao.*;
 import exception.ApiError;
 import exception.DaoException;
 import io.javalin.Javalin;
@@ -28,7 +24,8 @@ import static spark.Spark.*;
 public final class ApiServer {
 
     public static boolean INITIALIZE_WITH_SAMPLE_DATA = true;
-    public static int PORT = 7000;
+    public static int PORT = getHerokuAssignedPort();
+
     private static Javalin app;
 
     public static String school = "whiting school of engineering".replace(" ", "%20");;
@@ -41,15 +38,16 @@ public final class ApiServer {
     }
 
     public static void start() throws URISyntaxException {
-        ApplicantDao applicantDao = DaoFactory.getApplicantDao();
-        StaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
-        CourseDao courseDao = DaoFactory.getCourseDao();
+        DaoFactory.dropAllTablesIfExists();
+        Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
+        Sql2oStaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
+        Sql2oApplicantDao applicantDao = DaoFactory.getApplicantDao();
 
         if (INITIALIZE_WITH_SAMPLE_DATA) {
+            DaoFactory.dropAllTablesIfExists();
             DaoUtil.addSISCourses(courseDao, url);
-            //  DaoUtil.addSampleCourses(courseDao);
-            // DaoUtil.addSampleApplicants(courseDao, applicantDao);
-            // DaoUtil.addSampleStaffMembers(courseDao, staffMemberDao);
+            DaoUtil.addSampleApplicants(courseDao, applicantDao);
+            DaoUtil.addSampleStaffMembers(courseDao, staffMemberDao);
         }
 
         Gson gson = new Gson();
@@ -67,7 +65,7 @@ public final class ApiServer {
         postApplicants(applicantDao);
         getApplicants(applicantDao);
         updateApplicants(applicantDao);
-        deleteApplicants(applicantDao);*/
+        deleteApplicants(applicantDao);**/
 
         // Handle exceptions
         app.exception(ApiError.class, (exception, ctx) -> {
@@ -193,4 +191,16 @@ public final class ApiServer {
         app.stop();
     }
 
+    /**
+     * Obtain PORT to use for the API server.
+     * @return integer PORT number
+     */
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
 }
