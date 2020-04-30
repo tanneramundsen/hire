@@ -152,7 +152,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
 
     public Applicant read(int id) throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT id, name, jhed, year, majorAndMinor, gpa, " +
+            String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, " +
                     "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
                     "mostRecentPayroll, otherJobs, hoursAvailable " +
                     "FROM Applicants " +
@@ -290,6 +290,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
                     "WHERE id = :id;";
             conn.createQuery(sql)
                     .bind(applicant)
+                    .addParameter("email", applicant.getEmail())
                     .executeUpdate();
 
             int id = applicant.getId();
@@ -509,10 +510,7 @@ public class Sql2oApplicantDao implements ApplicantDao {
     @Override
     public List<Applicant> findAll() throws DaoException {
         try (Connection conn = sql2o.open()) {
-            String sql = "SELECT id, name, email, jhed, year, majorAndMinor, gpa, " +
-                    "registeredCredits, referenceEmail, resumeLink, fws, studentStatus, " +
-                    "mostRecentPayroll, otherJobs, hoursAvailable " +
-                    "FROM Applicants WHERE jhed = :jhed;";
+            String sql = "SELECT * FROM Applicants";
             List<Applicant> applicants = conn.createQuery(sql)
                     .executeAndFetch(Applicant.class);
             for (Applicant applicant : applicants) {
