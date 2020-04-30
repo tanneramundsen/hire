@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- ***** Header Area End ***** -->
+{{#partial "content" }}
 
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
-    <title>CourseProfile Page</title>
-
-    <!--
-
-    Breezed Template
-
-    https://templatemo.com/tm-543-breezed
-
-    -->
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
 
@@ -31,40 +16,7 @@
 
 </head>
 
-<body>
 
-<!-- ***** Preloader Start ***** -->
-<div id="preloader">
-    <div class="jumper">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-</div>
-<!-- ***** Preloader End ***** -->
-<header class="header-area header-sticky">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="/" class="logo">
-                        HIRE
-                    </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                        <!-- add profile html-->
-                        <li class="scroll-to-section"><a href="/landing">Home</a></li>
-                        <li class="scroll-to-section"><a href="/studentprofile">My Profile</a></li>
-                        <li class="scroll-to-section"><a href="/signout">Sign Out</a></li>
-                    </ul>
-                    <!-- ***** Menu End ***** -->
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- ***** Course Heading Start ***** -->
 <section class="section" id="landing">
     <div class="container">
@@ -135,6 +87,7 @@
 </section>
 <!-- ***** Course Info Ends ***** -->
 
+{{/partial }}
 <!-- jQuery -->
 <script src="../assets/js/jquery-2.1.0.min.js"></script>
 
@@ -154,25 +107,7 @@
 
 <!-- Global Init -->
 <script src="../assets/js/custom.js"></script>
-
-<script>
-
-   $(function() {
-       var selectedClass = "";
-       $("p").click(function(){
-           selectedClass = $(this).attr("data-rel");
-           $("#portfolio").fadeTo(50, 0.1);
-           $("#portfolio div").not("."+selectedClass).fadeOut();
-           setTimeout(function() {
-               $("."+selectedClass).fadeIn();
-               $("#portfolio").fadeTo(50, 1);
-           }, 500);
-
-       });
-   });
-
-</script>
-
+{{> base.hbs }}
 </body>
 </html>
 
