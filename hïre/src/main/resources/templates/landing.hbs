@@ -7,13 +7,18 @@
             <div class="col-lg-8 offset-lg-2">
                 <div class="section-heading">
                     <h2>Welcome Back {{ name }}!</h2>
-                    <h2></h2>
+                    <h2> </h2>
                     {{#if isStaffMember}}
                         <h6>Manage your courses below</h6>
+                        <div class="tooltip"><i class="fa fa-info-circle"></i>
+                            <span class="tooltiptext"> Add courses that{{ name }} is teaching for the semester.</span>
+                        </div>
                     {{else}}
                         <h6>See your courses below</h6>
+                        <div class="tooltip"><i class="fa fa-info-circle"></i>
+                            <span class="tooltiptext"> Add courses that you are interested in applying to be a CA for. Complete the application in MY PROFILE.</span>
+                        </div>
                     {{/if}}
-
                 </div>
             </div>
         </div>
@@ -57,7 +62,7 @@
                             <label class="label">Add other courses:</label>
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select name="newCourses" multiple="multiple">
-                                    <option disabled="disabled" selected="selected">select courses</option>
+                                    <option disabled="disabled" selected="selected">select courses </option>
                                     {{#each otherCourses}}
                                         <option>{{name}}</option>
                                     {{/each}}
