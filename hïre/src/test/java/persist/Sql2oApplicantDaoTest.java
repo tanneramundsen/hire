@@ -32,7 +32,7 @@ public class Sql2oApplicantDaoTest {
     }
 
     @Before
-    public void setUp() throws URISyntaxException {
+    public void setUp() throws URISyntaxException, ClassNotFoundException {
         //below method drops all dependent tables and creates new ones
         staffMemberDao = DaoFactory.getStaffMemberDao();
         applicantDao = DaoFactory.getApplicantDao();

@@ -10,7 +10,7 @@ import java.nio.file.Paths;
  * for inspecting and manual testing through e.g. Postman application.
  */
 public class RunApiServer {
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, ClassNotFoundException {
         ApiServer.start();
     }
 }

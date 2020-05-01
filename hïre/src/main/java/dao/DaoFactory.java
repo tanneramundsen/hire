@@ -26,9 +26,10 @@ public final class DaoFactory {
     /**
      * Helper method to establish connection with database
      */
-    private static void instantiateSql2o() throws URISyntaxException {
+    private static void instantiateSql2o() throws URISyntaxException, ClassNotFoundException {
         String databaseUrl = System.getenv("DATABASE_URL");
         if (sql2o == null) {
+            Class.forName("org.postgresql.Driver");
             // Not on Heroku, so use local username, password etc.
             if (databaseUrl == null) {
                 final String URI = "jdbc:postgresql://localhost:5432/store";
@@ -50,7 +51,7 @@ public final class DaoFactory {
         }
     }
 
-    public static void dropAllTablesIfExists() throws URISyntaxException {
+    public static void dropAllTablesIfExists() throws URISyntaxException, ClassNotFoundException {
         instantiateSql2o();
         if (DROP_TABLES_IF_EXIST) {
             dropApplicantsCoursesTableIfExists(sql2o);
@@ -66,7 +67,7 @@ public final class DaoFactory {
      * @return Sql2oCourseDao object to help the rest of application interact
      * with Courses table and relevant child tables
      */
-    public static Sql2oCourseDao getCourseDao() throws URISyntaxException {
+    public static Sql2oCourseDao getCourseDao() throws URISyntaxException, ClassNotFoundException {
         instantiateSql2o();
         createCoursesTable(sql2o);
         return new Sql2oCourseDao(sql2o);
@@ -77,7 +78,7 @@ public final class DaoFactory {
      * @return Sql2oStaffMemberDao object to help the rest of application
      * interact with StaffMembers table and relevant child tables
      */
-    public static Sql2oStaffMemberDao getStaffMemberDao() throws URISyntaxException {
+    public static Sql2oStaffMemberDao getStaffMemberDao() throws URISyntaxException, ClassNotFoundException {
         instantiateSql2o();
         createStaffMembersTable(sql2o);
         return new Sql2oStaffMemberDao(sql2o);
@@ -88,7 +89,7 @@ public final class DaoFactory {
      * @return Sql2oApplicantDao object to help the rest of application
      * interact with Applicants table and relevant child tables
      */
-    public static Sql2oApplicantDao getApplicantDao() throws URISyntaxException {
+    public static Sql2oApplicantDao getApplicantDao() throws URISyntaxException, ClassNotFoundException {
         instantiateSql2o();
         createApplicantsTable(sql2o);
         // Create course dependent tables

@@ -19,7 +19,7 @@ public class WebServer {
     //filter list
     static List<String> selectedFilters;
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, ClassNotFoundException {
 
         port(getHerokuAssignedPort());
 

@@ -37,7 +37,7 @@ public final class ApiServer {
         // This class is not meant to be instantiated!
     }
 
-    public static void start() throws URISyntaxException {
+    public static void start() throws URISyntaxException, ClassNotFoundException {
         DaoFactory.dropAllTablesIfExists();
         Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
         Sql2oStaffMemberDao staffMemberDao = DaoFactory.getStaffMemberDao();
