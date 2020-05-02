@@ -1,7 +1,5 @@
 package persist;
 
-import api.ApiServer;
-
 import dao.DaoFactory;
 import dao.Sql2oStaffMemberDao;
 import dao.Sql2oApplicantDao;

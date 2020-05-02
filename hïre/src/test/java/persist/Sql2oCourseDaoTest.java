@@ -1,7 +1,5 @@
 package persist;
 
-import api.ApiServer;
-
 import dao.*;
 import exception.DaoException;
 import model.Applicant;

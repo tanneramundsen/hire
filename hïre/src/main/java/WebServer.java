@@ -1,4 +1,3 @@
-import api.ApiServer;
 import dao.*;
 import model.Applicant;
 import model.Course;
@@ -24,7 +23,6 @@ public class WebServer {
         port(getHerokuAssignedPort());
 
         DaoFactory.DROP_TABLES_IF_EXIST = true;
-        ApiServer.INITIALIZE_WITH_SAMPLE_DATA = true;
 
         DaoFactory.dropAllTablesIfExists();
         Sql2oCourseDao courseDao = DaoFactory.getCourseDao();
@@ -276,6 +274,7 @@ public class WebServer {
             model.put("linkVisible", linkVisible);
             model.put("shortlistedApplicants", shortlistedApplicants);
             model.put("hiredApplicants", hiredApplicants);
+            model.put("isStaffMember", true);
 
             boolean prevCAFilterOn = false;
             boolean CadThisCourseFilterOn = false;
@@ -822,6 +821,7 @@ public class WebServer {
             }
             model.put("courseSpecificInfo", courseSpecificInfo);
             model.put("isAdmin", profileType.equals("Admin"));
+            model.put("isStaffMember", true);
             return new ModelAndView(model, "studentview.hbs");
         }, new HandlebarsTemplateEngine());
 
