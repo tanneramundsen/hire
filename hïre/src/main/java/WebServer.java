@@ -179,6 +179,9 @@ public class WebServer {
             String[] newCourses = request.queryParamsValues("newCourses");
 
             if (newCourses == null || newCourses.length == 0) {
+                response.cookie("jhed", jhed);
+                response.cookie("profileType", profileType);
+                response.redirect("/landing");
                 return null;
             }
 
@@ -218,6 +221,9 @@ public class WebServer {
             String[] newCourses = request.queryParamsValues("deleteCourses");
 
             if (newCourses == null || newCourses.length == 0) {
+                response.cookie("jhed", jhed);
+                response.cookie("profileType", profileType);
+                response.redirect("/landing");
                 return null;
             }
 
