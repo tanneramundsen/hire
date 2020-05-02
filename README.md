@@ -6,6 +6,9 @@
 
 Created by oozers - Tanner Amundsen, Jennifer Lin, Chester Huynh, Daniela Torres, Madhu Rajmohan
 
+NOTE: In our directory we have two folders: hïre and hire
+Both have the same code, the folder without ï was easier to deploy.
+
 Iteration 5: (Things to note when testing)
 - Currently, all the SIS classes in the CS department are added into our courses databases when you open the site. 
 - There are a few sample applicants: tamunds1, jlin123, mrajmoh1, dtorre17, xhuynh1, wshake1, jvill12, psolan3, mcorder2, rsolan2, broche1. 
