@@ -178,6 +178,10 @@ public class WebServer {
             String profileType = request.cookie("profileType");
             String[] newCourses = request.queryParamsValues("newCourses");
 
+            if (newCourses == null || newCourses.length == 0) {
+                return null;
+            }
+
             // use information to create either an applicant or staff member
             if (profileType.equals("Professor") || profileType.equals("Admin")) {
                 StaffMember s = staffMemberDao.read(jhed);
@@ -212,6 +216,10 @@ public class WebServer {
             String jhed = request.cookie("jhed");
             String profileType = request.cookie("profileType");
             String[] newCourses = request.queryParamsValues("deleteCourses");
+
+            if (newCourses == null || newCourses.length == 0) {
+                return null;
+            }
 
             // use information to create either an applicant or staff member
             if (profileType.equals("Professor") || profileType.equals("Admin")) {
