@@ -1,0 +1,177 @@
+<!-- ***** Header Area End ***** -->
+{{#partial "content" }}
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/font-awesome.css">
+
+    <link rel="stylesheet" href="../../../assets/css/templatemo-breezed.css">
+
+    <link rel="stylesheet" href="../../../assets/css/owl-carousel.css">
+
+    <link rel="stylesheet" href="../../../assets/css/lightbox.css">
+
+    <link rel="stylesheet" href="../../../assets/css/bootstrap-toggle.min.css">
+
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Icons font CSS-->
+    <link href="../../../assets/vendor2/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../../assets/vendor2/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="../../../assets/vendor2/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="../../../assets/vendor2/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="../../../assets/css/main2.css" rel="stylesheet" media="all">
+</head>
+
+<!-- ***** Header Area Start
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+
+                    <a href="/" class="logo">
+                        hïre
+                    </a>
+
+                    <ul class="nav">
+                        <li class="scroll-to-section"><a href="/landing" class="active">Home</a></li>
+                        <li class="scroll-to-section"><a href="/signout">Sign Out</a></li>
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>***** -->
+<!-- ***** Header Area End ***** -->
+
+
+<div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins" style="background-image: url('../../../assets/images/slide-01.jpg');">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-4">
+            <div class="card-body">
+                <h2> {{name}}</h2>
+                <form action="/{{id}}/courseinfo/{{jhed}}/studentview" method="post">
+                    {{#if shortlistStatus}}
+                        <input name="shortlistStatus" type="checkbox" checked data-toggle="toggle" data-on="Shortlisted" data-off="Shortlist" data-onstyle="primary" data-offstyle="secondary">
+                        {{else}}
+                        <input name="shortlistStatus" type="checkbox" data-toggle="toggle" data-on="Shortlisted" data-off="Shortlist" data-onstyle="primary" data-offstyle="secondary">
+                    {{/if}}
+                    <div class="row">
+                        <button type="submit" id="form-submit" class="main-button">Update<i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    <h3> General Information: </h3>
+                    <p> Jhed: {{jhed}}</p>
+                    <p> Email: {{email}}</p>
+                    <p> Year: {{year}}</p>
+                    <p> GPA: {{gpa}}</p>
+                    <p> Number of Credits for Spring 2020: {{credits}}</p>
+                    <p> Majors/Minors: {{majorAndMinor}}</p>
+                    <p> Reference: {{reference}}</p>
+                    <p> Resume: {{resume}}</p>
+                    {{#if isAdmin}}
+                        <h3> Admin-only information: </h3>
+                        <p> FWS: {{fws}}</p>
+                        <p> Student Status: {{studentStatus}} </p>
+                        <p> Most Recent Payroll: {{mostRecentPayroll}} </p>
+                        <p> Other jobs: {{otherJobs}} </p>
+                        <p> Hours Available: {{hoursAvailable}}</p>
+                    {{/if}}
+                    <br>
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <h3> Student's Preferred classes: </h3>
+                            <div class="list-inline">
+                                {{#if courseOne}}
+                                    <p> 1. {{courseOne}}</p>
+                                {{else}}
+                                    <p> 1. Not ranked yet! </p>
+                                {{/if}}
+                                {{#if courseTwo}}
+                                    <p> 2. {{courseTwo}}</p>
+                                {{else}}
+                                    <p> 2. Not ranked yet! </p>
+                                {{/if}}
+                                {{#if courseThree}}
+                                    <p> 3. {{courseThree}}</p>
+                                {{else}}
+                                    <p> 3. Not ranked yet! </p>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <h3> Course Specific Information </h3>
+                            <div class="list-inline">
+                                {{#each courseSpecificInfo}}
+                                    <h4> {{@key}} </h4>
+                                    {{#each this}}
+                                        <p>{{@key}} : {{this}}</p>
+                                    {{/each}}
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ***** Main Banner Area End ***** -->
+
+{{/partial }}
+
+
+<!-- jQuery -->
+<script src="../../../assets/js/jquery-2.1.0.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="../../../assets/js/popper.js"></script>
+<script src="../../../assets/js/bootstrap.min.js"></script>
+<script src="../../../assets/js/bootstrap-toggle.min.js"></script>
+
+<!-- Plugins -->
+<script src="../../../assets/js/owl-carousel.js"></script>
+<script src="../../../assets/js/scrollreveal.min.js"></script>
+<script src="../../../assets/js/waypoints.min.js"></script>
+<script src="../../../assets/js/jquery.counterup.min.js"></script>
+<script src="../../../assets/js/imgfix.min.js"></script>
+<script src="../../../assets/js/slick.js"></script>
+<script src="../../../assets/js/lightbox.js"></script>
+<script src="../../../assets/js/isotope.js"></script>
+
+<!-- Global Init -->
+<script src="../../../assets/js/custom.js"></script>
+
+
+
+<!-- Jquery JS-->
+<script src="../../../assets/vendor2/jquery/jquery.min.js"></script>
+<!-- Vendor JS-->
+<script src="../../../assets/vendor2/select2/select2.min.js"></script>
+<script src="../../../assets/vendor2/datepicker/moment.min.js"></script>
+<script src="../../../assets/vendor2/datepicker/daterangepicker.js"></script>
+
+<!-- Main JS-->
+<script src="../../../assets/js/global.js"></script>
+
+{{> base.hbs }}
+</body>
+</html>

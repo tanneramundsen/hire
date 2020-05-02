@@ -1,0 +1,338 @@
+<!-- ***** Header Area End ***** -->
+{{#partial "content" }}
+<head>
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
+
+    <link rel="stylesheet" href="../assets/css/templatemo-breezed.css">
+
+    <link rel="stylesheet" href="../assets/css/owl-carousel.css">
+
+    <link rel="stylesheet" href="../assets/css/lightbox.css">
+
+</head>
+
+<!-- ***** Course Heading Start ***** -->
+<section class="section" id="landing">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="section-heading">
+                    <h2>{{name}} - {{courseNumber}}</h2>
+                </div>
+                <div class="contact-form">
+                    <form id="contact" action="/{{id}}/courseinfo/addcourseinfo" method="post">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    {{#if description}}
+                                        <textarea name="description" rows="6">{{description}}</textarea>
+                                    {{else}}
+                                        <textarea name="description" rows="6" placeholder="Enter CA position description..."></textarea>
+                                    {{/if}}
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <fieldset>
+                                    {{#if interviewLink}}
+                                        <input name="interviewLink" type="text" value="{{interviewLink}}">
+                                    {{else}}
+                                        <input name="interviewLink" type="text" placeholder="Add interview sign up link...">
+                                    {{/if}}
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                                <fieldset>
+                                    <button type="submit" id="form-submit" class="main-button">Update Course Info <i class="fa fa-arrow-right"></i></button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ***** Course Heading End ***** -->
+
+<section class="section" id="about">
+    <div class="container">
+        <form action="/{{id}}/courseinfo/setFilters" method=post>
+        <div class="row">
+            <div class="col">
+                <h2>Filter interested applicants by...</h2>
+                {{#if prevCAFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="prevCAExperience" value="prevCAExperience" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="prevCAExperience" value="prevCAExperience">
+                {{/if}}
+                <label for="prevCAExperience"> has previous CA experience</label><br>
+
+                {{#if CadThisCourseFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="CAdThisCourse" value="CAdThisCourse">
+                {{/if}}
+                <label for="CAdThisCourse"> has previously CA'd for {{name}}</label><br>
+
+                {{#if gradeFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="takenCourseAndGrade" value="takenCourseAndGrade" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="takenCourseAndGrade" value="takenCourseAndGrade">
+                {{/if}}
+                <label for="takenCourseAndGrade"> has gotten above a B in {{name}}</label><br>
+
+                {{#if headCAFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="headCAInterest" value="headCAInterest">
+                {{/if}}
+                <label for="headCAInterest">is interested in being a head CA for {{name}}</label><br>
+
+                {{#if sophomoreFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="sophomore" value="sophomore" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="sophomore" value="sophomore">
+                {{/if}}
+                <label for="sophomore"> is a sophomore</label><br>
+
+                {{#if juniorFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="junior" value="junior" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="junior" value="junior">
+                {{/if}}
+                <label for="junior"> is a junior</label><br>
+
+                {{#if seniorFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="senior" value="senior" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="senior" value="senior">
+                {{/if}}
+                <label for="senior"> is a senior</label><br>
+
+                {{#if combinedFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="combined" value="combined" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="combined" value="combined">
+                {{/if}}
+                <label for="combined"> is a combined (ugrad/grad)</label><br>
+
+                {{#if mastersFirstFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="mastersFirst" value="mastersFirst" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="mastersFirst" value="mastersFirst">
+                {{/if}}
+                <label for="mastersFirst"> is a Master's student (1st semester) </label><br>
+
+                {{#if mastersSecondFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="mastersSecond" value="mastersSecond" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="mastersSecond" value="mastersSecond">
+                {{/if}}
+                <label for="mastersSecond"> is a Master's student (2nd-4th semester)</label><br>
+
+                {{#if phDFilterOn}}
+                    <input name="filterOptions" type="checkbox" id="PhD" value="PhD" checked>
+                {{else}}
+                    <input name="filterOptions" type="checkbox" id="PhD" value="PhD">
+                {{/if}}
+                <label for="PhD"> is a PhD student</label><br>
+            </div>
+            <div class="col">
+                <button type="submit" id="form-submit" class="main-button" formaction="/{{id}}/courseinfo/setFilters">Filter<i class="fa fa-arrow-right"></i></button><br>
+                <button type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/removeFilters">Remove Filters<i class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                <h2>Interested Applicants</h2>
+                <br>
+                <form action="/{{id}}/courseinfo/addtoshortlist" method="post">
+                    <div>
+                        {{#each interestedApplicants}}
+                            <input name="selectedForShortList" type="checkbox" value="{{name}}">
+                            <label for="selectedForShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                        {{/each}}
+                    </div>
+                    <div>
+                        <button type="submit" id="form-submit" class="main-button">Send to shortlist<i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                <h2>Shortlisted Applicants</h2>
+                <br>
+                {{#if linkVisible}}
+
+                    <form action="/{{id}}/courseinfo/addtohired" method="post">
+                        <div>
+                            {{#each shortlistedApplicants}}
+                                <input name="checkedFromShortList" type="checkbox" value="{{name}}">
+                                <label for="checkedFromShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            {{/each}}
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                        <div>
+                            <button disabled data-toggle="modal" class="finalize-button-disabled">
+                                Interview Link Visible
+                            </button>
+                        </div>
+                    </form>
+
+                    {{else}}
+
+                    <form action="/{{id}}/courseinfo/addtohired" method="post">
+                        <div>
+                            {{#each shortlistedApplicants}}
+                                <input name="checkedFromShortList" type="checkbox" value="{{name}}">
+                                <label for="checkedFromShortList"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            {{/each}}
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="main-button">Send to hired<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="delete-button" formaction="/{{id}}/courseinfo/deleteshortlist">Delete from shortlist<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </form>
+                    <div>
+                        <button data-toggle="modal" data-target="#interviewLinkModal" class="finalize-button">
+                            Make Interview Link Visible
+                        </button>
+                    </div>
+
+                {{/if}}
+            </div>
+            <div class="col">
+                <h2>Hired Applicants</h2>
+                <br>
+                {{#if hiringComplete}}
+
+                    <div>
+                        {{#each hiredApplicants}}
+                            <a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a><br>
+                        {{/each}}
+                    </div>
+                    <div>
+                        <button disabled data-toggle="modal" class="finalize-button-disabled">
+                            Hiring Complete!
+                        </button>
+                    </div>
+
+                    {{else}}
+
+                    <form action="/{{id}}/courseinfo/deletehired" method="post">
+                        <div>
+                            {{#each hiredApplicants}}
+                                <input name="selectedForHired" type="checkbox" value="{{name}}">
+                                <label for="selectedForHired"><a href = "/{{../id}}/courseinfo/{{jhed}}/studentview">{{name}}</a></label><br>
+                            {{/each}}
+                        </div>
+                        <div>
+                            <button type="submit" id="form-submit" class="delete-button">Delete from hired<i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </form>
+                    <div>
+                        <button data-toggle="modal" data-target="#hiringModal" class="finalize-button">
+                            Send Hiring Notification
+                        </button>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ***** Course Info Ends ***** -->
+
+<!-- ***** Modals ***** -->
+<div class="modal fade" id="interviewLinkModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form action="/{{id}}/courseinfo/sendInterviewLink" method="post" id="sendInterviewLink">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This will send the interview link to each applicant on your shortlist. This cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button onclick="modal_interview_form_submit()" id="interview-form-submit" class="btn btn-primary">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="hiringModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form action="/{{id}}/courseinfo/sendHiringNotification" method="post" id="sendHiringNotification">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This will notify all applicants on this list that they have been hired. This cannot be undone.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button onclick="modal_hiring_form_submit()" id="hiring-form-submit" class="btn btn-primary">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- ***** Modals End ***** -->
+{{/partial }}
+<!-- jQuery -->
+<script src="../assets/js/jquery-2.1.0.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="../assets/js/popper.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+
+<!-- Plugins -->
+<script src="../assets/js/owl-carousel.js"></script>
+<script src="../assets/js/scrollreveal.min.js"></script>
+<script src="../assets/js/waypoints.min.js"></script>
+<script src="../assets/js/jquery.counterup.min.js"></script>
+<script src="../assets/js/imgfix.min.js"></script>
+<script src="../assets/js/slick.js"></script>
+<script src="../assets/js/lightbox.js"></script>
+<script src="../assets/js/isotope.js"></script>
+
+<!-- Global Init -->
+<script src="../assets/js/custom.js"></script>
+
+<script>
+    function modal_interview_form_submit() {
+        document.getElementById("sendInterviewLink").submit();
+    }
+</script>
+
+<script>
+    function modal_hiring_form_submit() {
+        console.log("Hiiiiiiiii!")
+        document.getElementById("sendHiringNotification").submit();
+    }
+</script>
+{{> base.hbs }}
+</body>
+</html>
+
