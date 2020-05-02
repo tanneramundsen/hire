@@ -1,13 +1,22 @@
 
 **Revisiting original project proposal**
+
 The original project proposal was for an app that solves the “super tedious and unorganized” CA hiring/tracking/payroll process. Some of the must-have requirements that we included were:
+
 As a staff member looking to hire CAs, I want to filter CA applications based on the candidate's qualifications and availability.
+
 As a CA applicant, I want to have an all-in-one and intuitive application where I can input all my qualifications and availability so I can apply for many positions through one application.
+
 As a CA applicant, I always know the status of my application and be notified of changes (getting an interview, getting hired etc.).
+
 As a staff member looking to hire CAs, I want to keep track of the applications and note when I conduct interviews/hire students.
+
 As a staff member looking to hire CAs, I want to easily see candidate's availability for interviews and schedule interviews during free time slots.
+
 As a hired student CA, I want to be reminded every week to enter my hours for payroll.
+
 As a staff member, I want to be notified when CAs complete their time sheets and remind them if necessary.
+
 Very quickly we realized that we would not have the time to make our app track the onboarding and payroll process. We decided that it would be better if we focused solely on facilitating the application, interviewing, and hiring process.
     As such, we delivered the first 4 of the above must-have requirements as well as several other features including a streamlined shortlisting process, the ability for an admin to see select attributes from an applicant’s profile (like Federal Work Study eligibility, etc.), and others. We also allow all users (students, professors, admin) to easily add and delete courses from their course list. This makes it super convenient for students who apply for different positions in different years as well as professors who teach different courses in different years. 
 For the interview process, we originally wanted to integrate a calendar/scheduling feature within the app to allows users to put in their availability for interview - we decided to use an external scheduling tool instead and provided a space for the link to the external resource within our app
