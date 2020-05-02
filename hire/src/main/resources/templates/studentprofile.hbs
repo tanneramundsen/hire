@@ -1,0 +1,323 @@
+{{#partial "content" }}
+
+<div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins" style="background-image: url('assets/images/slide-01.jpg');">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-4">
+            <div class="card-body">
+                <h2 class="title">Update Profile</h2>
+                <form onsubmit="return validateStudentProfile()" action="/studentprofile" method="post">
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Name</label>
+                                <input id="name" class="input--style-4" type="text" name="name" required value="{{name}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Email</label>
+                                <input id="email" class="input--style-4" type="text" name="email" required value="{{email}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Year (In semester for which you are applying)</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="year">
+                                        {{#if year}}
+                                            <option selected="selected"> {{year}} </option>
+                                            <option> Sophomore </option>
+                                            <option> Junior </option>
+                                            <option> Senior </option>
+                                            <option> Combined (ugrad/grad) </option>
+                                            <option> Masters (1st semester) </option>
+                                            <option> Masters (2-4 semester) </option>
+                                            <option> PhD </option>
+                                        {{else}}
+                                            <option selected="selected"> Sophomore </option>
+                                            <option> Junior </option>
+                                            <option> Senior </option>
+                                            <option> Combined (ugrad/grad) </option>
+                                            <option> Masters (1st semester) </option>
+                                            <option> Masters (2-4 semester) </option>
+                                            <option> PhD </option>
+                                        {{/if}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Majors/Minors</label>
+                                <input class="input--style-4" type="text" name="majorAndMinor" required value="{{majorAndMinor}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">GPA (Must be >=3.0, 3.2 for head)</label>
+                                <input id="gpa" class="input--style-4" type="text" name="gpa" required value="{{gpa}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Number of Credits for Spring 2020</label>
+                                <input id="credits" class="input--style-4" type="text" name="credits" required value="{{credits}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Federal Work Study Eligible? (must be US citizen)</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="fws">
+                                        {{#if fws}}
+                                            <option selected="selected"> Yes </option>
+                                            <option> No </option>
+                                        {{else}}
+                                            <option> Yes </option>
+                                            <option selected="selected"> No </option>
+                                        {{/if}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Student Status</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="studentStatus">
+                                        {{#if studentStatus}}
+                                            <option selected="selected"> {{studentStatus}} </option>
+                                            <option> Full-time US Citizen </option>
+                                            <option> Full-time International </option>
+                                            <option> Part-time International </option>
+                                        {{else}}
+                                            <option selected="selected"> Full-time US Citizen </option>
+                                            <option> Full-time International </option>
+                                            <option> Part-time International </option>
+                                        {{/if}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Most Recent Payroll (e.g. 2019 fall)</label>
+                                <input class="input--style-4" type="text" name="mostRecentPayroll" required value="{{mostRecentPayroll}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Other Jobs</label>
+                                <input class="input--style-4" type="text" name="otherJobs" value="{{otherJobs}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Hours Available</label>
+                                <input id="hoursAvailable" class="input--style-4" type="text" name="hoursAvailable" required value="{{hoursAvailable}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Reference Name and Email (faculty or employer)</label>
+                                <input class="input--style-4" type="text" name="reference" required value="{{reference}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Link to Resume</label>
+                                <input class="input--style-4" type="text" name="resume" value="{{resume}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <label class="label">Rank your top 3 classes:</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="rank1">
+                                        {{#if rank1}}
+                                            <option selected="selected">
+                                                {{rank1}}
+                                            </option>
+                                        {{else}}
+                                            <option disabled="disabled" selected="selected">Choose Rank 1</option>
+                                        {{/if}}
+                                        {{#each courseList}}
+                                            <option>
+                                                {{name}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="rank2">
+                                        {{#if rank2}}
+                                            <option selected="selected">
+                                                {{rank2}}
+                                            </option>
+                                        {{else}}
+                                            <option disabled="disabled" selected="selected">Choose Rank 2</option>
+                                        {{/if}}
+                                        {{#each courseList}}
+                                            <option>
+                                                {{name}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="rank3">
+                                        {{#if rank3}}
+                                            <option selected="selected">
+                                                {{rank3}}
+                                            </option>
+                                        {{else}}
+                                            <option disabled="disabled" selected="selected">Choose Rank 3</option>
+                                        {{/if}}
+                                        {{#each courseList}}
+                                            <option>
+                                                {{name}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                            <div class="input-group">
+                                <table class="table-bordered table-responsive" style="border-radius: 2px;">
+                                    <tr align="center">
+                                        <th> Course</th>
+                                        <th> Grade</th>
+                                        <th style="padding: 2px;"> Head CA?</th>
+                                        <th style="padding: 2px;"> Previous CA?</th>
+                                    </tr>
+                                    {{#each gradesList}}
+                                    <tr>
+                                        <td align="center"> {{courseName}}</td>
+                                        <td>
+                                            <div class="rs-select2 js-select-simple select--no-search">
+                                                <select name={{courseId}}grade>
+                                                    <option selected="selected" > {{grade}} </option>
+                                                    <option> Not Taken </option>
+                                                    <option> A+ </option>
+                                                    <option> A </option>
+                                                    <option> A- </option>
+                                                    <option> B+ </option>
+                                                    <option> B </option>
+                                                    <option> B- </option>
+                                                    <option> C+ </option>
+                                                    <option> C </option>
+                                                    <option> C- </option>
+                                                    <option> D+ </option>
+                                                    <option> D </option>
+                                                    <option> D- </option>
+                                                    <option> F </option>
+                                                    <option> S </option>
+                                                    <option> U </option>
+                                                </select>
+                                                <div class="select-dropdown"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="rs-select2 js-select-simple select--no-search">
+                                                <select name={{courseId}}interest>
+                                                    <option selected="selected" > {{headCAInterest}} </option>
+                                                    <option> No </option>
+                                                    <option> Yes </option>
+                                                </select>
+                                                <div class="select-dropdown"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="rs-select2 js-select-simple select--no-search">
+                                                <select name={{courseId}}previousCA>
+                                                    <option selected="selected" > {{previousCA}} </option>
+                                                    <option> No </option>
+                                                    <option> Yes </option>
+                                                </select>
+                                                <div class="select-dropdown"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </table>
+                            </div>
+
+                    </div>
+                    <div class="p-t-15">
+                        <button class="btn btn--radius-2 btn--blue" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- ***** Main Banner Area End ***** -->
+
+{{/partial }}
+
+{{> base.hbs }}
+<!-- Global Init -->
+<script src="assets/js/custom.js"></script>
+
+
+<!-- Jquery JS-->
+<script src="assets/vendor2/jquery/jquery.min.js"></script>
+<!-- Vendor JS-->
+<script src="assets/vendor2/select2/select2.min.js"></script>
+<script src="assets/vendor2/datepicker/moment.min.js"></script>
+<script src="assets/vendor2/datepicker/daterangepicker.js"></script>
+
+<!-- Main JS-->
+<script src="assets/js/global.js"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<!-- end document-->

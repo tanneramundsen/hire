@@ -1,0 +1,113 @@
+<!-- ***** Header Area End ***** -->
+{{#partial "content" }}
+
+<head>
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
+
+    <link rel="stylesheet" href="../assets/css/templatemo-breezed.css">
+
+    <link rel="stylesheet" href="../assets/css/owl-carousel.css">
+
+    <link rel="stylesheet" href="../assets/css/lightbox.css">
+
+</head>
+
+
+<!-- ***** Course Heading Start ***** -->
+<section class="section" id="landing">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="section-heading">
+                    <h2>{{name}} - {{courseNumber}}</h2>
+                    <br>
+                    <ul>
+                        {{#each instructors}}
+                            <h4> {{name}} </h4>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ***** Course Heading End ***** -->
+
+<section class="section" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <h4><strong>A little more about the position...</strong></h4>
+                <br>
+                {{#if description}}
+                    <h5>{{description}}</h5>
+                {{else}}
+                    <h5>The professor has not yet written a CA position description.</h5>
+                {{/if}}
+            </div>
+            <div class="col-lg-8 offset-lg-2">
+                <br>
+                {{#if hiringComplete}}
+
+                    {{#if isHired}}
+                        <!-- Applicant is in hired list and hiring process is complete -->
+                        <h4><strong>Application Status:</strong> Hired!</h4>
+                    {{else}}
+                        <!--  TODO: Tell people still on the shortlist they are still being interviewed? -->
+                        <!-- Hiring process is complete but applicant is not in hired list -->
+                        <h4><strong>Application Status:</strong> Not hired</h4>
+                    {{/if}}
+
+                {{else}}
+
+                    {{#if linkVisible}}
+                        {{#if isShortListed}}
+                            <!-- Applicant is being interviewed -->
+                            <h4> <strong>Application Status:</strong> Being interviewed</h4>
+                            <h4>Use the given link: <a href = "{{interviewLink}}">{{interviewLink}}</a></h4>
+                        {{else}}
+                            <!-- Applicant is either in Interested or Hired but hiring is not complete -->
+                            <h4><strong>Application Status:</strong> Under Review</h4>
+                        {{/if}}
+                    {{else}}
+                        <!-- Hiring process still happening and interview links not sent out yet -->
+                        <h4><strong>Application Status:</strong> Under Review</h4>
+                    {{/if}}
+
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+        </div>
+    </div>
+</section>
+<!-- ***** Course Info Ends ***** -->
+
+{{/partial }}
+<!-- jQuery -->
+<script src="../assets/js/jquery-2.1.0.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="../assets/js/popper.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+
+<!-- Plugins -->
+<script src="../assets/js/owl-carousel.js"></script>
+<script src="../assets/js/scrollreveal.min.js"></script>
+<script src="../assets/js/waypoints.min.js"></script>
+<script src="../assets/js/jquery.counterup.min.js"></script>
+<script src="../assets/js/imgfix.min.js"></script>
+<script src="../assets/js/slick.js"></script>
+<script src="../assets/js/lightbox.js"></script>
+<script src="../assets/js/isotope.js"></script>
+
+<!-- Global Init -->
+<script src="../assets/js/custom.js"></script>
+{{> base.hbs }}
+</body>
+</html>
+

@@ -1,0 +1,109 @@
+<!-- ***** Header Area End ***** -->
+{{#partial "content" }}
+<!-- ***** Landing Heading Start ***** -->
+<section class="section" id="landing">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="section-heading">
+                    <h2>Welcome Back {{ name }}!</h2>
+                    <h2> </h2>
+                    {{#if isStaffMember}}
+                        <h6>Manage your courses below</h6>
+                        <div class="tooltip"><i class="fa fa-info-circle"></i>
+                            <span class="tooltiptext"> Add courses that{{ name }} is teaching for the semester.</span>
+                        </div>
+                    {{else}}
+                        <h6>See your courses below</h6>
+                        <div class="tooltip"><i class="fa fa-info-circle"></i>
+                            <span class="tooltiptext"> Add courses that you are interested in applying to be a CA for. Complete the application in MY PROFILE.</span>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ***** Landing Heading End ***** -->
+
+<!-- ***** Courses Item Start ***** -->
+<section class="section" id="features">
+    <div class="container">
+        <div class="row">
+            {{#each courseList}}
+                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
+                    <div class="features-item">
+                        <div class="features-icon">
+                            <img src="assets/images/features-icon-1.png" alt="">
+                        </div>
+                        <div class="features-content">
+                            <h4>{{name}}</h4>
+                            <p>Course Number: {{courseNumber}}</p>
+                            {{#if isStaffMember}}
+                                <a href="/{{id}}/courseinfo" class="text-button-icon">
+                                    Manage Course<i class="fa fa-arrow-right"></i>
+                                </a>
+                            {{else}}
+                                <a href="/{{id}}/courseprofile" class="text-button-icon">
+                                    See Progress<i class="fa fa-arrow-right"></i>
+                                </a>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <div class="row"
+             data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+            <div class="col-md-6 col-sm-12">
+                <form action="/addcourse" method="post">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group" data-validate = "Select a course">
+                            <label class="label">Add other courses:</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="newCourses" multiple="multiple">
+                                    <option disabled="disabled" selected="selected">select courses </option>
+                                    {{#each otherCourses}}
+                                        <option>{{name}}</option>
+                                    {{/each}}
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <button type="submit" id="form-submit" class="button">Add! <i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <form action="/deletecourse" method="post">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="input-group" data-validate = "Select a course">
+                            <label class="label">Delete current courses:</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="deleteCourses" multiple="multiple">
+                                    <option disabled="disabled" selected="selected">select courses</option>
+                                    {{#each courseList}}
+                                        <option>{{name}}</option>
+                                    {{/each}}
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <button type="submit" id="form-submit" class="button del">Delete! <i class="fa fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ***** Courses Item End ***** -->
+{{/partial }}
+
+{{> base.hbs }}
+
+</body>
+</html>
