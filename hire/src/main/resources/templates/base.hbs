@@ -1,0 +1,210 @@
+{{#block "header" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Required tags for tool tip-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title> Base </title>
+
+    <!--
+
+    Breezed Template
+
+    https://templatemo.com/tm-543-breezed
+
+    -->
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+
+    <link rel="stylesheet" href="assets/css/templatemo-breezed.css">
+
+    <link rel="stylesheet" href="assets/css/owl-carousel.css">
+
+    <link rel="stylesheet" href="assets/css/lightbox.css">
+
+
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Icons font CSS-->
+    <link href="assets/vendor2/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="assets/vendor2/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="assets/vendor2/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="assets/vendor2/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="assets/css/main2.css" rel="stylesheet" media="all">
+
+    <script src="static/js/validate.js"></script>
+</head>
+
+<style>
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        border-color: green;
+
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        z-index: 1;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+
+    .button {
+        border-radius: 2px;
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 13px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    .del {
+        background-color: #ff3620; /* red */
+    }
+
+</style>
+
+<body>
+
+<!-- ***** Preloader Start ***** -->
+<div id="preloader">
+    <div class="jumper">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<!-- ***** Preloader End ***** -->
+
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="/landing" class="logo">
+                        HÏRE
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        {{#if isStaffMember}}
+                            <li class="scroll-to-section"><a href="/signout">Sign Out</a></li>
+                        {{else}}
+                            <li class="scroll-to-section"><a href="/studentprofile">My Profile</a></li>
+                            <li class="scroll-to-section"><a href="/signout">Sign Out</a></li>
+                        {{/if}}
+                    </ul>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
+{{/block }}
+
+{{#block "content" }}
+{{/block }}
+
+
+<!-- ***** Courses Item End ***** -->
+{{#block "footer" }}
+<!-- ***** Footer Start ***** -->
+<!-- ***** Footer Start ***** -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-xs-12">
+                <div class="left-text-content">
+                    <p>Copyright &copy; 2020 Breezed Co., Ltd.
+
+                        - Design: <a rel="nofollow noopener" href="https://templatemo.com">TemplateMo</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- jQuery -->
+<script src="assets/js/jquery-2.1.0.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="assets/js/popper.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!-- Plugins -->
+<script src="assets/js/owl-carousel.js"></script>
+<script src="assets/js/scrollreveal.min.js"></script>
+<script src="assets/js/waypoints.min.js"></script>
+<script src="assets/js/jquery.counterup.min.js"></script>
+<script src="assets/js/imgfix.min.js"></script>
+<script src="assets/js/slick.js"></script>
+<script src="assets/js/lightbox.js"></script>
+<script src="assets/js/isotope.js"></script>
+
+<!-- Global Init -->
+<script src="assets/js/custom.js"></script>
+
+<script>
+
+    $(function() {
+        var selectedClass = "";
+        $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+            $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+                $("."+selectedClass).fadeIn();
+                $("#portfolio").fadeTo(50, 1);
+            }, 500);
+
+        });
+    });
+
+</script>
+{{/block }}
+<!-- Global Init
+</body>
+</html>
+-->
